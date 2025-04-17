@@ -1,0 +1,142 @@
+.h5p-idea-board-element-interactor-context-menu {
+  --toolbarButtonSize: 2rem;
+  --toolbarButtonBackgroundSize: 1rem;
+  --menuPadding: 0.25rem;
+  --menuBorderWidth: 1px;
+  --menuGap: 1rem;
+  --menuPointerSize: 0.5rem;
+
+  align-items: center;
+  background-color: var(--color-background);
+  border: var(--menuBorderWidth) solid var(--color-primary);
+  box-shadow: 10px 10px 30px var(--color-shadow-light);
+  box-sizing: border-box;
+  column-gap: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  left: 0;
+  position: relative;
+  padding: var(--menuPadding);
+  top: calc( -2 * var(--menuBorderWidth) - 2 * var(--menuPadding) - var(--toolbarButtonSize) - var(--menuGap) );
+  row-gap: 0.25rem;
+  width: fit-content;
+  z-index: 1;
+
+  &::before {
+    position: absolute;
+    display: block;
+    content: "";
+    border-style: solid;
+    border-width: calc(var(--menuPointerSize) + var(--menuBorderWidth)) calc(var(--menuPointerSize) + var(--menuBorderWidth)) 0 0;
+    border-color: var(--color-primary) transparent transparent transparent;
+    bottom: calc(-1 * var(--menuPointerSize) - var(--menuBorderWidth));
+    left: calc(-1 * var(--menuBorderWidth));
+  }
+
+  &::after {
+    position: absolute;
+    display: block;
+    content: "";
+    border-style: solid;
+    border-width: var(--menuPointerSize) var(--menuPointerSize) 0 0;
+    border-color: var(--color-background) transparent transparent transparent;
+    bottom: calc(-1 * var(--menuPointerSize) + var(--menuBorderWidth));
+    left: 0;
+    z-index: 1;
+  }
+
+  .toolbar-non-headline {
+    align-items: center;
+    column-gap: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.25rem;
+  }
+
+  .toolbar-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 1;
+
+    .toolbar-button {
+      color: #1768C4;
+      position: relative;
+
+      &::before {
+        font-family: "H5PFontAwesome4", sans-serif;
+        font-size: 1.15em;
+        height: 1.15em;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 1.15em;
+      }
+
+      &.toolbar-button-edit::before {
+        content: var(--icon-fontawesome-edit);
+        top: calc(50% + 2px);
+      }
+
+      &.toolbar-button-move {
+        &::before {
+          content: var(--icon-fontawesome-move);
+          top: calc(50% + 2px);
+        }
+
+        &.toolbar-button-active {
+          color: var(--color-background);
+        }
+      }
+
+      &.toolbar-button-resize {
+        &::before {
+          content: var(--icon-fontawesome-expand);
+          top: calc(50% + 2px);
+        }
+
+        &.toolbar-button-active {
+          color: var(--color-background);
+        }
+      }
+
+      &.toolbar-button-bringToFront::before {
+        font-family: "H5PIdeaBoard", sans-serif;
+        content: var(--icon-ideaboard-bring-to-front);
+        top: calc(50% + 2px);
+      }
+
+      &.toolbar-button-sendToBack::before {
+        font-family: "H5PIdeaBoard", sans-serif;
+        content: var(--icon-ideaboard-send-to-back);
+        top: calc(50% + 2px);
+      }
+
+      &.toolbar-button-delete::before {
+        content: var(--icon-fontawesome-delete);
+        top: calc(50% + 1px);
+      }
+    }
+  }
+
+  &.display-none {
+    display: none;
+  }
+}
+
+.h5p-content.using-mouse,
+.h5p-idea-board-element-interactor:not(:focus-within) {
+  .toolbar-button-move {
+    display: none;
+  }
+
+  .toolbar-button-resize {
+    display: none;
+  }
+}

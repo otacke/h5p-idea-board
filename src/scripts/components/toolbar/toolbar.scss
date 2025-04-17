@@ -1,0 +1,96 @@
+.h5p-idea-board-toolbar-tool-bar {
+  --toolbarButtonSize: 3em;
+  --toolbarButtonBackgroundSize: 1.25em;
+
+  align-items: center;
+  background-color: var(--color-background);
+  box-shadow: 10px 10px 30px var(--color-shadow-light);
+  box-sizing: border-box;
+  column-gap: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom : .5em;
+  overflow: hidden;
+  padding: 0.5em;
+  row-gap: 0.25rem;
+
+  .toolbar-headline {
+    color: var(--color-text);
+    flex-grow: 1;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .toolbar-non-headline {
+    align-items: center;
+    column-gap: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.25rem;
+  }
+
+  .toolbar-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 1;
+
+    .toolbar-button {
+      color: #1768C4;
+      position: relative;
+
+      &::before {
+        font-family: "H5PFontAwesome4", sans-serif;
+        font-size: 1.15em;
+        height: 1.15em;
+        left: 50%;
+        margin-left: -0.575em;
+        margin-top: -0.575em;
+        position: absolute;
+        top: 50%;
+        width: 1.15em;
+      }
+
+      &.toolbar-button-audio::before {
+        content: var(--icon-fontawesome-audio);
+      }
+
+      &.toolbar-button-text::before {
+        content: var(--icon-fontawesome-text);
+      }
+
+      &.toolbar-button-image::before {
+        content: var(--icon-fontawesome-image);
+      }
+
+      &.toolbar-button-video::before {
+        content: var(--icon-fontawesome-video);
+      }
+
+      &.toolbar-button-fullscreen {
+        &.toolbar-button-exit-fullscreen {
+          &::before {
+            content: var(--icon-fontawesome-compress);
+          }
+        }
+
+        &.toolbar-button-enter-fullscreen {
+          &::before {
+            content: var(--icon-fontawesome-expand);
+          }
+        }
+      }
+    }
+  }
+
+  &.display-none {
+    display: none;
+  }
+}

@@ -1,0 +1,58 @@
+.h5p-idea-board-element-interactor-resize-knob {
+  --knob-size: 12px;
+  --knob-offset: calc(var(--knob-size) / 2);
+
+  background-color: var(--color-background);
+  border: solid 1px var(--color-primary);
+  height: var(--knob-size);
+  position: absolute;
+  width: var(--knob-size);
+
+  &.top-left {
+    cursor: nwse-resize;
+    left: calc(-1 * var(--knob-offset));
+    top: calc(-1 * var(--knob-offset));
+  }
+
+  &.top {
+    cursor: ns-resize;
+    left: calc(50% - var(--knob-offset));
+    top: calc(-1 * var(--knob-offset));
+  }
+
+  &.top-right {
+    cursor: nesw-resize;
+    right: calc(-1 * var(--knob-offset));
+    top: calc(-1 * var(--knob-offset));
+  }
+
+  &.left {
+    cursor: ew-resize;
+    left: calc(-1 * var(--knob-offset));
+    top: calc(50% - var(--knob-offset));
+  }
+
+  &.right {
+    cursor: ew-resize;
+    right: calc(-1 * var(--knob-offset));
+    top: calc(50% - var(--knob-offset));
+  }
+
+  &.bottom-left {
+    cursor: nesw-resize;
+    bottom: calc(-1 * var(--knob-offset));
+    left: calc(-1 * var(--knob-offset));
+  }
+
+  &.bottom {
+    cursor: ns-resize;
+    bottom: calc(-1 * var(--knob-offset));
+    left: calc(50% - var(--knob-offset));
+  }
+
+  &.bottom-right {
+    cursor: nwse-resize;
+    bottom: calc(-1 * var(--knob-offset));
+    right: calc(-1 * var(--knob-offset));
+  }
+}

@@ -1,0 +1,24 @@
+.h5p-idea-board-confirmation-dialog {
+  .h5p-confirmation-dialog-popup {
+    min-width: 15rem;
+
+    .h5p-confirmation-dialog-exit {
+      padding: 1px 6px; /* Workaround for H5P core on iOS */
+    }
+  }
+
+  &.prefers-reduced-motion {
+    .h5p-confirmation-dialog-background {
+      .h5p-confirmation-dialog-popup {
+        -webkit-transition: none;
+        transition: none;
+      }
+
+      &.hiding {
+        .h5p-confirmation-dialog-popup {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}

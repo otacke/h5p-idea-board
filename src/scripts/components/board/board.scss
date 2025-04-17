@@ -1,0 +1,30 @@
+.h5p-idea-board-board {
+  --board-aspect-ratio: 16/9;
+
+  aspect-ratio: var(--board-aspect-ratio);
+  background-color: var(--board-background-color, var(--color-background));
+  box-shadow: 10px 10px 30px var(--color-shadow-light);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  position: relative;
+  user-select: none;
+  z-index: 0;
+
+  &.forced-size {
+    height: var(--forced-height);
+    margin: auto;
+    width: var(--forced-width);
+  }
+
+  .h5p-idea-board-cards-list {
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+}

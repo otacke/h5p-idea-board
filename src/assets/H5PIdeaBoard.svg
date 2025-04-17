@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<metadata>
+Created by FontForge 20230101 at Mon Apr 14 15:54:05 2025
+ By John Smith
+</metadata>
+<defs>
+<font id="FontAwesome" horiz-adv-x="1408" >
+  <font-face 
+    font-family="FontAwesome"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="1792"
+    panose-1="0 0 0 0 0 0 0 0 0 0"
+    ascent="1433"
+    descent="-359"
+    bbox="0 13 1408 1421"
+    underline-thickness="0"
+    underline-position="0"
+    unicode-range="U+000D-F87F"
+  />
+    <missing-glyph />
+    <glyph glyph-name="uniF857" unicode="&#xf857;" 
+d="M1059.12 13v762.236h-122.831l217.822 321.549l217.821 -321.549h-123.838v-762.236h-188.976h0.000976562zM0 1221v200h1408v-200h-1408zM0 415.667v200h700v-200h-700zM0 818.333v200h700v-200h-700zM0 13v200h700v-200h-700z" />
+    <glyph glyph-name="uniF856" unicode="&#xf856;" 
+d="M1154.11 693.828l217.821 -321.549h-123.838v-359.279h-188.977v359.279h-122.83zM0 818.333v200h1408v-200h-1408zM0 13v200h700v-200h-700zM0 415.667v200h700v-200h-700zM0 1221v200h700v-200h-700z" />
+    <glyph glyph-name="uniF87F" unicode="&#xf87f;" 
+d="M1154.11 740.172l-217.822 321.549h122.83v359.279h188.977v-359.279h123.838zM0 615.667h1408v-200h-1408v200zM0 1421h700v-200h-700v200zM0 1018.33h700v-200h-700v200zM0 213h700v-200h-700v200z" />
+    <glyph glyph-name="uniF87E" unicode="&#xf87e;" 
+d="M1059.12 1421h188.977v-762.236h123.838l-217.821 -321.549l-217.822 321.549h122.83v762.236h-0.000976562zM0 213h1408v-200h-1408v200zM0 1018.33h700v-200h-700v200zM0 615.667h700v-200h-700v200zM0 1421h700v-200h-700v200z" />
+  </font>
+</defs></svg>

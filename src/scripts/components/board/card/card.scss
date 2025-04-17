@@ -1,0 +1,13 @@
+.h5p-idea-board-card {
+  background-color: #ffff89;
+  border: 1px solid hsl(50, 100%, 77%);
+  box-shadow: 10px 10px 30px var(--color-shadow-light);
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.5rem;
+
+  .h5p-idea-board-card-exercise {
+    height: 100%;
+    position: relative;
+  }
+}

@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'H5PIdeaBoard';
+  src:
+    url('@assets/H5PIdeaBoard.woff2') format('woff2'),
+    url('@assets/H5PIdeaBoard.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+// These are nice to have, but can cause trouble in the H5P editor
+// *:before, *:after {
+//   box-sizing: inherit;
+// }
+
+.h5p-idea-board {
+  /* Common colors */
+  --color-background: #fff;
+  --color-text: #4c4452;
+  --color-text-dark: var(--color-text);
+  --color-text-light: #fff;
+  --color-shadow-light: rgba(166, 166, 166, .2);
+
+  /* Disabled color, e.g. for buttons */
+  --color-disabled: rgb(128 128 128 / 95%);
+
+  /* Hint box, e.g. for when no content is set */
+  --color-hint-message-background: #f5e8d5;
+  --color-hint-message-border: #ed5;
+  --color-hint-message-text: #9e5c16;
+
+  /* Primary color with common gradients */
+  --color-primary: rgb(26, 115, 217);
+  --color-primary-5: rgb(26 115 217 / 5%);
+  --color-primary-10: rgb(26 115 217 / 10%);
+  --color-primary-15: rgb(26 115 217 / 15%);
+  --color-primary-25: rgb(26 115 217 / 25%);
+  --color-primary-30: rgb(26 115 217 / 30%);
+  --color-primary-50: rgb(26 115 217 / 50%);
+  --color-primary-70: rgb(26 115 217 / 70%);
+  --color-primary-90: rgb(26 115 217 / 90%);
+  --color-primary-95: rgb(26 115 217 / 95%);
+
+  /* Commonly used by H5P Group */
+  --color-joubelui-button: #1a73d9;
+  --color-joubelui-button-hover: #1356a3;
+  --color-joubelui-button-active: #104888;
+
+  /* Icons */
+  --icon-fontawesome-audio: '\f028';
+  --icon-fontawesome-image: '\f03e';
+  --icon-fontawesome-video: '\f03d';
+  --icon-fontawesome-text: '\f031';
+  --icon-fontawesome-compress: '\f066';
+  --icon-fontawesome-expand: '\f065';
+  --icon-fontawesome-move: '\f047';
+  --icon-fontawesome-maximize: '\f0b2';
+  --icon-fontawesome-edit: '\f044';
+  --icon-fontawesome-delete: '\f1f8';
+  --icon-ideaboard-bring-to-front: '\f857';
+  --icon-ideaboard-send-to-back: '\f87e';
+
+  background-color: var(--color-background);
+  color: var(--color-text);
+}

@@ -1,0 +1,12 @@
+.h5p-idea-board-main {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1 / 1 / 1;
+  margin: 1rem;
+  min-width: 0;
+
+  &.display-none {
+    display: none;
+  }
+}

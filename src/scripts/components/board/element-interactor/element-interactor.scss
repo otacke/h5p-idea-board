@@ -1,0 +1,62 @@
+.h5p-idea-board-element-interactor {
+  box-sizing: border-box;
+  left: var(--idea-board-element-x);
+  position: absolute;
+  top: var(--idea-board-element-y);
+  width: var(--idea-board-element-width);
+  height: var(--idea-board-element-height);
+
+  .h5p-idea-board-element-interactor-summary {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:not(.is-interactive) {
+    cursor: move;
+  }
+
+  &:focus:not(.is-interactive) {
+    outline: 2px dotted var(--color-primary) !important; /* H5P Core is overriding this with !important :-/ */
+  }
+
+  &.is-interactive {
+    outline: 2px solid var(--color-primary) !important; /* H5P Core is overriding this with !important :-/ */
+
+    .h5p-idea-board-element-interactor-resize-knob {
+      display: none;
+    }
+  }
+
+  &:not(:focus) {
+    .h5p-idea-board-element-interactor-resize-knob {
+      display: none;
+    }
+  }
+}
+
+.h5p-content.using-mouse {
+  .h5p-idea-board-element-interactor {
+    &:focus:not(.is-interactive) {
+      outline: 2px dotted var(--color-primary) !important; /* H5P Core is overriding this with !important :-/ */
+    }
+
+    &.is-interactive {
+      outline: 2px solid var(--color-primary) !important; /* H5P Core is overriding this with !important :-/ */
+    }
+  }
+}

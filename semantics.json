@@ -1,0 +1,284 @@
+[
+  {
+    "name": "headline",
+    "type": "text",
+    "label": "Headline",
+    "optional": true
+  },
+  {
+    "name": "board",
+    "label": "Idea board",
+    "type": "group",
+    "importance": "high",
+    "fields": [
+      {
+        "name": "cards",
+        "type": "list",
+        "label": "Cards",
+        "entity": "card",
+        "importance": "high",
+        "field": {
+          "name": "card",
+          "type": "group",
+          "label": "Card",
+          "fields": [
+            {
+              "name": "id",
+              "type": "text",
+              "label": "ID"
+            },
+            {
+              "name": "telemetry",
+              "type": "group",
+              "label": "Telemetry",
+              "importance": "low",
+              "fields": [
+                {
+                  "name": "x",
+                  "type": "text"
+                },
+                {
+                  "name": "y",
+                  "type": "text"
+                },
+                {
+                  "name": "height",
+                  "type": "text"
+                },
+                {
+                  "name": "width",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "name": "contentType",
+              "type": "library",
+              "label": "Content type",
+              "importance": "high",
+              "options": [
+                "H5P.EditableText 1.0",
+                "H5P.EditableMedium 1.0"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "backgroundSettings",
+        "label": "Background",
+        "type": "group",
+        "importance": "high",
+        "fields": [
+          {
+            "name": "backgroundImage",
+            "type": "image",
+            "label": "Background image",
+            "optional": true
+          },
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "label": "Background color",
+            "default": "rgb(255, 255, 255)",
+            "widget": "colorSelector",
+            "spectrum": {
+              "showInput": true,
+              "showInitial": true,
+              "preferredFormat": "rgb"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "behaviour",
+    "type": "group",
+    "importance": "low",
+    "label": "Behavioural settings",
+    "fields": [
+      {
+        "name": "sample",
+        "type": "boolean",
+        "label": "Sample behaviour"
+      },
+      {
+        "name": "dummy",
+        "type": "boolean",
+        "label": "Dummy",
+        "widget": "none"
+      }
+    ]
+  },
+  {
+    "name": "l10n",
+    "type": "group",
+    "label": "User interface",
+    "common": true,
+    "fields": [
+      {
+        "name": "confirmDeletionHeader",
+        "type": "text",
+        "label": "Dialog header delete card",
+        "default": "Delete card"
+      },
+      {
+        "name": "confirmDeletionDialog",
+        "type": "text",
+        "label": "Dialog text delete card",
+        "default": "Do you really want to delete this card?"
+      },
+      {
+        "name": "confirmDeletionConfirm",
+        "type": "text",
+        "label": "Dialog confirmation delete card",
+        "default": "Yes, delete!"
+      },
+      {
+        "name": "confirmDeletionCancel",
+        "type": "text",
+        "label": "No",
+        "default": "No"
+      }
+    ]
+  },
+  {
+    "name": "a11y",
+    "type": "group",
+    "label": "Accessibility texts",
+    "common": true,
+    "fields": [
+      {
+        "name": "board",
+        "type": "text",
+        "label": "Board to arragange cards",
+        "default": "Board to arrange cards"
+      },
+      {
+        "name": "boardInstructions",
+        "type": "text",
+        "label": "Instructions for the board",
+        "default": "Use the space bar to interact with card item or tab to the context menu."
+      },
+      {
+        "name": "toolbarFallbackLabel",
+        "type": "text",
+        "label": "Toolbar fallback label",
+        "default": "Idea Board"
+      },
+      {
+        "name": "contextMenu",
+        "type": "text",
+        "label": "Context menu",
+        "description": "@denominator is a placeholder and will be replaced by the respective value.",
+        "default": "Context menu for @denominator"
+      },
+      {
+        "name": "addContentType",
+        "type": "text",
+        "label": "Add content type",
+        "description": "@contentType is a placeholder and will be replaced by the respective value.",
+        "default": "Add @contentType"
+      },
+      {
+        "name": "enterFullscreen",
+        "type": "text",
+        "label": "Enter fullscreen",
+        "default": "Enter fullscreen mode"
+      },
+      {
+        "name": "exitFullscreen",
+        "type": "text",
+        "label": "Exit fullscreen",
+        "default": "Exit fullscreen mode"
+      },
+      {
+        "name": "edit",
+        "type": "text",
+        "label": "Edit",
+        "default": "Edit"
+      },
+      {
+        "name": "toggleMoveModeInactive",
+        "type": "text",
+        "label": "Resize",
+        "default": "Enter move mode"
+      },
+      {
+        "name": "toggleMoceModeActive",
+        "type": "text",
+        "label": "Resize",
+        "default": "Leave move mode. Use arrow keys to move the card."
+      },
+      {
+        "name": "toggleResizeModeInactive",
+        "type": "text",
+        "label": "Resize",
+        "default": "Enter resize mode"
+      },
+      {
+        "name": "toggleResizeModeActive",
+        "type": "text",
+        "label": "Resize",
+        "default": "Leave resize mode. Use arrow keys to resize the card."
+      },
+      {
+        "name": "bringToFront",
+        "type": "text",
+        "label": "Bring to front",
+        "default": "Bring to front"
+      },
+      {
+        "name": "sendToBack",
+        "type": "text",
+        "label": "Send to back",
+        "default": "Send to back"
+      },
+      {
+        "name": "delete",
+        "type": "text",
+        "label": "Delete",
+        "default": "Delete"
+      },
+      {
+        "name": "cardBroughtToFront",
+        "type": "text",
+        "label": "Card brought to front",
+        "default": "The card was brought to front."
+      },
+      {
+        "name": "cardSentToBack",
+        "type": "text",
+        "label": "Card sent to back",
+        "default": "The card was sent to back."
+      },
+      {
+        "name": "cardDeleted",
+        "type": "text",
+        "label": "Card deleted",
+        "default": "The card was deleted."
+      },
+      {
+        "name": "card",
+        "type": "text",
+        "label": "Card",
+        "default": "Card"
+      },
+      {
+        "name": "cardAt",
+        "type": "text",
+        "label": "Card at",
+        "description": "@current is a placeholder and will be replaced by the respective value.",
+        "default": "Card @current"
+      },
+      {
+        "name": "cardXOfY",
+        "type": "text",
+        "label": "Card x of y",
+        "description": "@current and @total are placeholders and will be replaced by the respective values.",
+        "default": "Card @current of @total"
+      }
+    ]
+  }
+]
