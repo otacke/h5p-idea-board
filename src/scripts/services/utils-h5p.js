@@ -22,6 +22,7 @@ export default class H5PUtil {
       if (typeof entry.default !== 'undefined') {
         defaults[entry.name] = entry.default;
       }
+
       if (entry.type === 'list') {
         defaults[entry.name] = []; // Does not set defaults within list items!
       }
