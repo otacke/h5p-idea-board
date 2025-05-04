@@ -177,7 +177,7 @@ export default class Board {
     this.elementInteractors = this.elementInteractors.filter((elementInteractor) => elementInteractor.params.id !== id);
     this.elementInteractors = [...this.elementInteractors, interactor];
 
-    this.dom.append(interactor.getDOM());
+    this.cardsList.append(interactor.getDOM());
 
     // Reattaching the interactor causes it and its children like context menu buttons to lose focus
     if (options.nextFocus) {
@@ -199,7 +199,8 @@ export default class Board {
     this.elementInteractors = this.elementInteractors.filter((elementInteractor) => elementInteractor.params.id !== id);
     this.elementInteractors = [interactor, ...this.elementInteractors];
 
-    this.dom.insertBefore(interactor.getDOM(), this.dom.firstChild);
+
+    this.cardsList.insertBefore(interactor.getDOM(), this.cardsList.firstChild);
 
     // Reattaching the interactor causes it and its children like context menu buttons to lose focus
     if (options.nextFocus) {
