@@ -216,6 +216,8 @@ export default class Main {
         width: window.innerWidth - marginHorizontal,
         height: window.innerHeight - marginVertical - this.toolbar.getFullHeight()
       });
+
+      this.params.globals.get('mainInstance').trigger('resize');
     }, FULL_SCREEN_DELAY_SMALL_MS);
   }
 
