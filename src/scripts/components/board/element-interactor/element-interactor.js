@@ -346,8 +346,14 @@ export default class ElementInteractor {
 
   getSanitizedSize(size = {}) {
     return {
-      width: Math.max(this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'width'), Math.min(size.width ?? this.params.telemetry.width, 100)),
-      height: Math.max(this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'height'), Math.min(size.height ?? this.params.telemetry.height, 100))
+      width: Math.max(
+        this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'width'),
+        Math.min(size.width ?? this.params.telemetry.width, 100)
+      ),
+      height: Math.max(
+        this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'height'),
+        Math.min(size.height ?? this.params.telemetry.height, 100)
+      )
     };
   }
 

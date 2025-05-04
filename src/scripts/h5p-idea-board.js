@@ -22,6 +22,9 @@ const BASE_SIZE = { width: 640, height: 400 };
 /** @constant {number} BASE_FONT_SIZE_PX base font size in px. */
 const BASE_FONT_SIZE_PX = 16;
 
+/** @constant {number} TELEMETRY_PROPERTY_COUNT Number of properties in telemetry object. */
+const TELEMETRY_PROPERTY_COUNT = 4;
+
 export default class IdeaBoard extends H5P.EventDispatcher {
   /**
    * @class
@@ -65,7 +68,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         return false;
       }
 
-      if (Object.keys(card.telemetry ?? {}).length !== 4) {
+      if (Object.keys(card.telemetry ?? {}).length !== TELEMETRY_PROPERTY_COUNT) {
         return false;
       }
 
