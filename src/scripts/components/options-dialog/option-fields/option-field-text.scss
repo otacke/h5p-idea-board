@@ -1,0 +1,22 @@
+.h5p-idea-board-options-dialog-option-field-text-input {
+  --padding: 0.5rem;
+
+  background: var(--color-editor-background);
+  box-shadow: inset 0px 0px 0.25rem var(--color-editor-shadow-light);
+  border: 1px solid var(--color-editor-light-gray);
+  margin: 0;
+  outline: none;
+  padding: var(--padding);
+  width: calc(100% - var(--padding) * 3);
+  word-wrap: break-word;
+
+  &:focus {
+    border: 1px solid var(--color-editor-primary);
+  }
+}
+
+.h5p-idea-board-options-dialog-option-field.has-error {
+  .h5p-idea-board-options-dialog-option-field-text-input:not(:focus) {
+    border: 1px solid var(--color-editor-error);
+  }
+}

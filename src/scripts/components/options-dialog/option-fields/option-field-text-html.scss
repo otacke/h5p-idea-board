@@ -1,0 +1,22 @@
+.h5p-idea-board-options-dialog-option-field-text-html-container {
+  .h5p-idea-board-options-dialog-option-field-text-html-textarea {
+    background: var(--color-editor-background);
+    box-shadow: inset 0px 0px 0.25rem var(--color-editor-shadow-light);
+    border: 1px solid var(--color-editor-light-gray);
+    margin: 0;
+    min-height: 2.5rem;
+    outline: none;
+    padding: var(--padding);
+    word-wrap: break-word;
+
+    &:focus {
+      border: 1px solid var(--color-editor-primary);
+    }
+  }
+}
+
+.h5p-idea-board-options-dialog-option-field.has-error {
+  .h5p-idea-board-options-dialog-option-field-text-html-textarea:not(:focus) {
+    border: 1px solid var(--color-editor-error);
+  }
+}

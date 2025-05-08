@@ -1,0 +1,20 @@
+.h5p-idea-board-options-dialog-option-field {
+  .h5p-idea-board-options-dialog-option-field-label {
+    color: var(--color-editor-label);
+    font-weight: 600;
+  }
+  .h5p-idea-board-options-dialog-option-field-description {
+    font-size: 0.825rem;
+    margin-top: .3em;
+    margin-bottom: 1em;
+    font-weight: 500;
+    color: var(--color-editor-description);
+    line-height: 1rem;
+  }
+
+  .h5p-idea-board-options-dialog-option-field-errors {
+    color: var(--color-editor-error);
+    font-size: 0.825rem;
+    margin-top: .3em;
+  }
+}

@@ -9,7 +9,8 @@ export default class Board {
     this.callbacks = Util.extend({
       onClick: () => {},
       onDrop: () => {},
-      onCardDeleted: () => {}
+      onCardDeleted: () => {},
+      openEditorDialog: () => {}
     }, callbacks);
 
     this.cards = [];
@@ -63,6 +64,8 @@ export default class Board {
         id: card.params.id,
         contentType: card.params.contentType,
         previousState: card.exercise.getCurrentState(),
+        cardBackgroundColor: card.getBackgroundColor(),
+        cardBorderColor: card.getBorderColor(),
         telemetry: interactor?.params?.telemetry
       };
     });
@@ -75,11 +78,16 @@ export default class Board {
         contentType: params.contentType,
         globals: this.params.globals,
         dictionary: this.params.dictionary,
+        backgroundColor: params.cardBackgroundColor,
+        borderColor: params.cardBorderColor,
         previousState: params.previousState
       },
       {
         getBoardRect: () => {
           return this.getRect();
+        },
+        openEditorDialog: (id, params, callbacks) => {
+          this.callbacks.openEditorDialog(id, params, callbacks);
         }
       }
     );

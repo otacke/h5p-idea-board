@@ -60,6 +60,30 @@
                 "H5P.EditableText 1.0",
                 "H5P.EditableMedium 1.0"
               ]
+            },
+            {
+              "name": "cardBackgroundColor",
+              "type": "text",
+              "label": "Card background color",
+              "default": "rgb(255, 255, 137)",
+              "widget": "colorSelector",
+              "spectrum": {
+                "showInput": true,
+                "showInitial": true,
+                "preferredFormat": "rgb"
+              }
+            },
+            {
+              "name": "cardBorderColor",
+              "type": "text",
+              "label": "Card border color",
+              "default": "rgb(255, 235, 138)",
+              "widget": "colorSelector",
+              "spectrum": {
+                "showInput": true,
+                "showInitial": true,
+                "preferredFormat": "rgb"
+              }
             }
           ]
         }
@@ -140,6 +164,30 @@
         "type": "text",
         "label": "No",
         "default": "No"
+      },
+      {
+        "name": "save",
+        "type": "text",
+        "label": "Save",
+        "default": "Save"
+      },
+      {
+        "name": "cancel",
+        "type": "text",
+        "label": "Cancel",
+        "default": "Cancel"
+      },
+      {
+        "name": "choose",
+        "type": "text",
+        "label": "Choose",
+        "default": "Choose"
+      },
+      {
+        "name": "unknownFieldType",
+        "type": "text",
+        "label": "Unknown field type",
+        "default": "Fields of type \"@type\" are not supported."
       }
     ]
   },
@@ -278,6 +326,36 @@
         "label": "Card x of y",
         "description": "@current and @total are placeholders and will be replaced by the respective values.",
         "default": "Card @current of @total"
+      },
+      {
+        "name": "colorPickerDialog",
+        "type": "text",
+        "label": "Color picker dialog",
+        "default": "Color picker dialog"
+      },
+      {
+        "name": "toggleColorPicker",
+        "type": "text",
+        "label": "Toggle color picker dialog",
+        "default": "Toggle color picker dialog"
+      },
+      {
+        "name": "colorSelectionArea",
+        "type": "text",
+        "label": "Color selection area",
+        "default": "Color selection area"
+      },
+      {
+        "name": "opacitySlider",
+        "type": "text",
+        "label": "Opacity",
+        "default": "Opacity"
+      },
+      {
+        "name": "hueSlider",
+        "type": "text",
+        "label": "Hue",
+        "default": "Hue"
       }
     ]
   }

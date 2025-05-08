@@ -8,11 +8,15 @@ export default class Card {
     this.params = Util.extend({}, params);
 
     this.callbacks = Util.extend({
-      getBoardRect: () => {}
+      getBoardRect: () => {},
+      openEditorDialog: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-idea-board-card');
+
+    this.setBackgroundColor(this.params.backgroundColor);
+    this.setBorderColor(this.params.borderColor);
 
     this.exerciseDOM = document.createElement('div');
     this.exerciseDOM.classList.add('h5p-idea-board-card-exercise');
@@ -27,6 +31,9 @@ export default class Card {
       {
         getBoardRect: () => {
           return this.callbacks.getBoardRect();
+        },
+        passEditorDialog: (params, callbacks) => {
+          this.callbacks.openEditorDialog(this.params.id, params, callbacks);
         }
       }
     );
@@ -38,8 +45,30 @@ export default class Card {
     return this.dom;
   }
 
+  getId() {
+    return this.params.id;
+  }
+
   focusContent() {
     return this.exercise.focus();
+  }
+
+  getBackgroundColor() {
+    return this.params.backgroundColor;
+  }
+
+  setBackgroundColor(color) {
+    this.params.backgroundColor = color;
+    this.dom.style.setProperty('--h5p-idea-board-card-background-color', color);
+  }
+
+  getBorderColor() {
+    return this.params.borderColor;
+  }
+
+  setBorderColor(color) {
+    this.params.borderColor = color;
+    this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
   }
 
   getExerciseInstance() {

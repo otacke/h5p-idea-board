@@ -1,0 +1,170 @@
+.h5p-idea-board-options-dialog {
+  --options-dialog-screen-offset: 4rem;
+
+  --color-editor-background: #fff;
+  --color-editor-text: #4c4452;
+  --color-editor-shadow-light: rgba(166, 166, 166, .2);
+  --color-editor-light-gray: #d0d0d1;
+  --color-editor-light-gray-2: #e7e9ee;
+  --color-editor-label: #454347;
+  --color-editor-description: #434446;
+  --color-editor-primary: rgb(26, 115, 217);
+  --color-editor-error: #b71c1c;
+  --color-primary: rgb(26, 115, 217);
+  --color-primary-dark: rgb(23, 104, 196);
+
+  --icon-fontawesome-xmark: '\f00d';
+
+  align-items: center;
+  background-color: rgba(44,44,44,.8);
+  box-sizing: border-box;
+  color: var(--color-editor-text);
+  display: flex;
+  flex-direction: column;
+  grid-area: 1/1/1/1;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: background-color 0.25s;
+  width: 100%;
+  z-index: 1;
+
+  &:not(.open) {
+    display: none;
+  }
+
+  .h5p-idea-board-options-dialog-content-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    max-height: 100%;
+    max-width: 1080px;
+    width: 100%;
+
+    .h5p-idea-board-options-dialog-button-close {
+      grid-area: 1 / 1 / 1 / 1;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      color: #222;
+      cursor: pointer;
+      height: 2.25em;
+      justify-self: end;
+      left: calc( (var(--options-dialog-screen-offset, 4rem) - 2rem) / -2 - 0.25rem);
+      line-height: 1;
+      padding: 3px;
+      position: relative;
+      top: calc( (var(--options-dialog-screen-offset, 4rem) - 2rem) / 2 + 0.25rem);
+      transition: transform .1s ease-in-out;
+      width: 2.25em;
+
+      &:hover {
+        transform: scale(1.25);
+      }
+
+      &::after {
+        font-family: "H5PFontAwesome4", sans-serif;
+        content: var(--icon-fontawesome-xmark);
+        border: 1px solid #222;
+        text-align: center;
+        border-radius: 50%;
+        width: 1.5em;
+        height: 1.5em;
+        display: inline-block;
+        line-height: 1.5;
+      }
+    }
+
+    .h5p-idea-board-options-dialog-content {
+      grid-area: 1 / 1 / 1 / 1;
+      background-color: #fff;
+      border: 0.75rem solid #fff;
+      border-radius: 0.5rem;
+      box-sizing: border-box;
+      margin-bottom: calc(var(--options-dialog-screen-offset, 4rem) / 2);
+      margin-left: calc(var(--options-dialog-screen-offset, 4rem) / 2);
+      margin-top: calc(var(--options-dialog-screen-offset, 4rem) / 2);
+      max-height: 100%;
+      max-width: calc(100% - var(--options-dialog-screen-offset, 4rem));
+      min-width: 0;
+      overflow: hidden;
+      overflow-y: auto;
+
+      .h5p-idea-board-options-dialog-headline {
+        align-items: start;
+        border-bottom: 1px solid var(--color-shadow-dark);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0 0.25rem 0 0;
+
+        .h5p-idea-board-options-dialog-headline-text {
+          display: -webkit-box;
+          font-size: 1.25rem;
+          font-weight: bold;
+          line-clamp: 3;
+          -webkit-line-clamp: 3;
+          overflow: hidden;
+          overflow-wrap: anywhere;
+          -webkit-box-orient: vertical;
+        }
+      }
+
+      .h5p-idea-board-options-dialog-options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 0.5rem;
+
+        .h5p-idea-board-options-dialog-instance-wrapper {
+          .h5p-idea-board-options-dialog-instance {
+            box-sizing: border-box;
+            width: 100%;
+          }
+        }
+
+        .h5p-idea-board-options-dialog-button-row {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin-top: 0.5rem;
+
+          .h5p-idea-board-options-dialog-button {
+            border: none;
+            border-radius: .2rem;
+            cursor: pointer;
+            font-size: 0.825rem;
+            font-weight: 700;
+            padding: .7rem 1.2rem;
+
+            &.save {
+              background-color: var(--color-primary);
+              color: var(--color-background);
+
+              &:hover {
+                background-color: var(--color-primary-dark);
+              }
+            }
+
+            &.cancel {
+              background: none;
+              color: var(--color-editor-text);
+
+              &:hover {
+                background-color: var(--color-editor-light-gray-2);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

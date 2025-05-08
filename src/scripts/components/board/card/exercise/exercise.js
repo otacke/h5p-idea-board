@@ -13,7 +13,8 @@ export default class Exercise {
     this.params = Util.extend({}, params);
 
     this.callbacks = Util.extend({
-      getBoardRect: () => {}
+      getBoardRect: () => {},
+      passEditorDialog: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -75,6 +76,9 @@ export default class Exercise {
     }
 
     const machineName = this.params.contentType?.library?.split?.(' ')[0];
+
+    const contentTypeParams = this.params.contentType?.params ?? {};
+    contentTypeParams.passEditorDialog = this.callbacks.passEditorDialog;
 
     if (!this.instance) {
       this.instance = H5P.newRunnable(

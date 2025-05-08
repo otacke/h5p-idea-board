@@ -1,0 +1,22 @@
+.h5p-idea-board-options-dialog-option-field-text-color-selector {
+  padding-left: 3px;
+
+  .pcr-button {
+    border: 1px solid var(--color-text);
+  }
+
+  .pcr-app.visible {
+    position: unset;
+  }
+
+  .pcr-app:not(.visible) {
+    height: 0;
+    transition: none;
+  }
+}
+
+.h5p-idea-board-options-dialog-option-field.has-error {
+  .h5p-idea-board-options-dialog-option-field-text-color-selector.pickr:not(:focus) {
+    border: 1px solid var(--color-editor-error);
+  }
+}

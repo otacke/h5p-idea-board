@@ -1,7 +1,9 @@
 import Board from '@components/board/board.js';
+import OptionsDialog from '@components/options-dialog/options-dialog.js';
 import Toolbar from '@components/toolbar/toolbar.js';
 import Util from '@services/util.js';
 import H5PUtil from '@services/utils-h5p.js';
+import semantics from '@root/semantics.json';
 import './main.scss';
 
 /** @constant {number} FULL_SCREEN_DELAY_SMALL_MS Time some browsers need to go to full screen. */
@@ -33,6 +35,8 @@ export default class Main {
           id: element.id,
           telemetry: element.telemetry,
           contentType: element.contentType,
+          cardBackgroundColor: element.cardBackgroundColor,
+          cardBorderColor: element.cardBorderColor,
           previousState: element.previousState || {}
         }
       );
@@ -63,10 +67,52 @@ export default class Main {
         },
         onCardDeleted: (params = {}) => {
           this.handleCardDeleted(params);
+        },
+        openEditorDialog: (id, params, callbacks) => {
+          const fields = [
+            ...params.fields,
+            H5PUtil.findSemanticsField('cardBackgroundColor', semantics),
+            H5PUtil.findSemanticsField('cardBorderColor', semantics),
+          ];
+
+          const cardsParams = this.board.getElementsParams();
+          const cardParams = cardsParams.find((card) => card.id === id);
+
+          const values = {
+            ...params.values,
+            cardBackgroundColor: cardParams.cardBackgroundColor,
+            cardBorderColor: cardParams.cardBorderColor,
+          };
+
+          this.optionsDialog.setCallback('onSaved', (values) => {
+            const cards = this.board.getCards();
+            const card = cards.find((card) => card.getId() === id);
+
+            const cardBackgroundColor = values.find((field) => field.name === 'cardBackgroundColor').value;
+            const cardBorderColor = values.find((field) => field.name === 'cardBorderColor').value;
+
+            values = values.filter((field) => field.name !== 'cardBackgroundColor' && field.name !== 'cardBorderColor');
+
+            card.setBackgroundColor(cardBackgroundColor);
+            card.setBorderColor(cardBorderColor);
+
+            callbacks.setValues(values);
+          });
+          this.optionsDialog.setTitle(params.title);
+          this.optionsDialog.setFields(fields, values);
+          this.optionsDialog.show();
         }
       }
     );
     this.dom.append(this.board.getDOM());
+
+    this.optionsDialog = new OptionsDialog(
+      {
+        globals: this.params.globals,
+        dictionary: this.params.dictionary,
+      }
+    );
+    this.dom.append(this.optionsDialog.getDOM());
 
     /*
      * It's important to not simply append the dialog to the document.body, or
@@ -172,6 +218,8 @@ export default class Main {
       this.board.addElement({
         id: params.id ?? H5P.createUUID(),
         telemetry: params.telemetry,
+        cardBackgroundColor: params.cardBackgroundColor,
+        cardBorderColor: params.cardBorderColor,
         contentType: contentType,
         previousState: params.previousState || {}
       });
@@ -198,6 +246,8 @@ export default class Main {
     this.board.addElement({
       id: params.id ?? H5P.createUUID(),
       telemetry: params.telemetry,
+      cardBackgroundColor: params.cardBackgroundColor,
+      cardBorderColor: params.cardBorderColor,
       contentType: contentType,
       previousState: params.previousState || {}
     });
