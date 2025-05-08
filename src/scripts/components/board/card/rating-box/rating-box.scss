@@ -1,7 +1,7 @@
 .h5p-idea-board-card-rating-box {
   display: flex;
   justify-content: center;
-  gap: --rating-box-height / 4;
+  gap: var(--rating-box-height) / 4;
 
   .h5p-idea-board-card-rating-box-star {
     background: none;

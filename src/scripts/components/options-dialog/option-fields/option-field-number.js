@@ -7,7 +7,7 @@ export default class OptionFieldNumber extends OptionField {
     super(field, value, dictionary);
 
     this.contentDOM = document.createElement('input');
-    this.contentDOM.classList.add('h5p-idea-board-options-dialog-option-field-text-input');
+    this.contentDOM.classList.add('h5p-idea-board-options-dialog-option-field-number-input');
     this.contentDOM.setAttribute('id', `field-${this.uuid}`);
     this.contentDOM.setAttribute('type', 'number');
     this.contentDOM.setAttribute('aria-valuemin', this.field.min ?? '');
