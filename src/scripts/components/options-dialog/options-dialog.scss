@@ -91,6 +91,7 @@
       min-width: 0;
       overflow: hidden;
       overflow-y: auto;
+      scrollbar-gutter: stable;
 
       .h5p-idea-board-options-dialog-headline {
         align-items: start;
