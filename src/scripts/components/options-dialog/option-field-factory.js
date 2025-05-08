@@ -1,4 +1,5 @@
 import OptionFieldBoolean from './option-fields/option-field-boolean.js';
+import OptionFieldNumber from './option-fields/option-field-number.js';
 import OptionFieldText from './option-fields/option-field-text.js';
 import OptionFieldTextColorSelector from './option-fields/option-field-text-color-selector.js';
 import OptionFieldTextHtml from './option-fields/option-field-text-html.js';
@@ -16,19 +17,34 @@ export default class OptionsFieldFactory {
   }
 
   static createField(type, field, value, dictionary) {
-    switch (type) {
-      case 'text':
-        return new OptionFieldText(field, value, dictionary);
-      case 'text/colorSelector':
-        return new OptionFieldTextColorSelector(field, value, dictionary);
-      case 'text/html':
-        return new OptionFieldTextHtml(field, value, dictionary);
-      case 'select':
-        return new OptionFieldSelect(field, value, dictionary);
-      case 'boolean':
-        return new OptionFieldBoolean(field, value, dictionary);
-      default:
-        return new OptionFieldUnknown(field, value, dictionary);
+    const [fieldType, widget] = type.split('/');
+
+    if (fieldType === 'text') {
+      if (widget === 'colorSelector') {
+        return new OptionFieldTextColorSelector(field, value, dictionary, this);
+      }
+      else if (widget === 'html') {
+        return new OptionFieldTextHtml(field, value, dictionary, this);
+      }
+      else if (widget) {
+        error.warn(`Unknown widget type "${widget}" for field "${field.name}". Using default text field.`);
+        return new OptionFieldText(field, value, dictionary, this);
+      }
+      else {
+        return new OptionFieldText(field, value, dictionary, this);
+      }
+    }
+    else if (fieldType === 'select') {
+      return new OptionFieldSelect(field, value, dictionary, this);
+    }
+    else if (fieldType === 'boolean') {
+      return new OptionFieldBoolean(field, value, dictionary, this);
+    }
+    else if (fieldType === 'number') {
+      return new OptionFieldNumber(field, value, dictionary, this);
+    }
+    else {
+      return new OptionFieldUnknown(field, value, dictionary, this);
     }
   }
 }

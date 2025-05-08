@@ -2,6 +2,12 @@ import Util from '@services/util.js';
 import Exercise from './exercise/exercise.js';
 import './card.scss';
 
+/** @constant {number} RATING_MIN Minimum rating for card. */
+const RATING_MIN = 0;
+
+/** @constant {number} RATING_MAX Maximum rating for card. */
+const RATING_MAX = 5;
+
 export default class Card {
 
   constructor(params = {}, callbacks = {}) {
@@ -17,6 +23,7 @@ export default class Card {
 
     this.setBackgroundColor(this.params.backgroundColor);
     this.setBorderColor(this.params.borderColor);
+    this.setRating(this.params.rating);
 
     this.exerciseDOM = document.createElement('div');
     this.exerciseDOM.classList.add('h5p-idea-board-card-exercise');
@@ -69,6 +76,27 @@ export default class Card {
   setBorderColor(color) {
     this.params.borderColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
+  }
+
+  canUserRateCard() {
+    return this.params.canUserRateCard ?? false;
+  }
+
+  setRating(rating) {
+    if (!this.params.canUserRateCard) {
+      delete this.rating;
+      return;
+    }
+
+    if (typeof rating !== 'number' || rating < RATING_MIN || rating > RATING_MAX) {
+      return;
+    }
+
+    this.rating = rating;
+  }
+
+  getRating() {
+    return this.rating;
   }
 
   getExerciseInstance() {

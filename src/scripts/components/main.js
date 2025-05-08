@@ -37,6 +37,8 @@ export default class Main {
           contentType: element.contentType,
           cardBackgroundColor: element.cardBackgroundColor,
           cardBorderColor: element.cardBorderColor,
+          cardCanUserRateCard: element.canUserRateCard,
+          cardRating: element.cardRating,
           previousState: element.previousState || {}
         }
       );
@@ -69,14 +71,20 @@ export default class Main {
           this.handleCardDeleted(params);
         },
         openEditorDialog: (id, params, callbacks) => {
+          const cardsParams = this.board.getElementsParams();
+          const cardParams = cardsParams.find((card) => card.id === id);
+
           const fields = [
             ...params.fields,
             H5PUtil.findSemanticsField('cardBackgroundColor', semantics),
             H5PUtil.findSemanticsField('cardBorderColor', semantics),
           ];
 
-          const cardsParams = this.board.getElementsParams();
-          const cardParams = cardsParams.find((card) => card.id === id);
+          if (cardParams.canUserRateCard) {
+            const field = H5PUtil.findSemanticsField('cardRating', semantics);
+            delete field.widget; // showWhen
+            fields.push(field);
+          }
 
           const values = {
             ...params.values,
@@ -84,17 +92,22 @@ export default class Main {
             cardBorderColor: cardParams.cardBorderColor,
           };
 
+          if (cardParams.canUserRateCard) {
+            values.cardRating = cardParams.cardRating;
+          }
+
           this.optionsDialog.setCallback('onSaved', (values) => {
             const cards = this.board.getCards();
             const card = cards.find((card) => card.getId() === id);
 
             const cardBackgroundColor = values.find((field) => field.name === 'cardBackgroundColor').value;
+            card.setBackgroundColor(cardBackgroundColor);
             const cardBorderColor = values.find((field) => field.name === 'cardBorderColor').value;
+            card.setBorderColor(cardBorderColor);
+            const cardRating = parseFloat(values.find((field) => field.name === 'cardRating').value);
+            card.setRating(cardRating);
 
             values = values.filter((field) => field.name !== 'cardBackgroundColor' && field.name !== 'cardBorderColor');
-
-            card.setBackgroundColor(cardBackgroundColor);
-            card.setBorderColor(cardBorderColor);
 
             callbacks.setValues(values);
           });
@@ -220,6 +233,8 @@ export default class Main {
         telemetry: params.telemetry,
         cardBackgroundColor: params.cardBackgroundColor,
         cardBorderColor: params.cardBorderColor,
+        cardCanUserRateCard: params.cardCanUserRateCard,
+        cardRating: params.cardRating,
         contentType: contentType,
         previousState: params.previousState || {}
       });
@@ -248,6 +263,8 @@ export default class Main {
       telemetry: params.telemetry,
       cardBackgroundColor: params.cardBackgroundColor,
       cardBorderColor: params.cardBorderColor,
+      cardCanUserRateCard: params.cardCanUserRateCard,
+      cardRating: params.cardRating,
       contentType: contentType,
       previousState: params.previousState || {}
     });

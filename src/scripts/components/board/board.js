@@ -66,6 +66,8 @@ export default class Board {
         previousState: card.exercise.getCurrentState(),
         cardBackgroundColor: card.getBackgroundColor(),
         cardBorderColor: card.getBorderColor(),
+        canUserRateCard: card.canUserRateCard(),
+        cardRating: card.getRating(),
         telemetry: interactor?.params?.telemetry
       };
     });
@@ -80,6 +82,8 @@ export default class Board {
         dictionary: this.params.dictionary,
         backgroundColor: params.cardBackgroundColor,
         borderColor: params.cardBorderColor,
+        canUserRateCard: params.cardCanUserRateCard,
+        rating: params.cardRating,
         previousState: params.previousState
       },
       {

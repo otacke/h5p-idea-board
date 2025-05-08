@@ -97,7 +97,6 @@ export default class OptionFieldText extends OptionField {
 
     if (message) {
       this.setError(message);
-      return;
     }
   }
 }

@@ -84,6 +84,34 @@
                 "showInitial": true,
                 "preferredFormat": "rgb"
               }
+            },
+            {
+              "name": "canUserRateCard",
+              "type": "boolean",
+              "label": "Can user rate card",
+              "importance": "low",
+              "description": "If enabled, the user can rate the card.",
+              "default": false
+            },
+            {
+              "name": "cardRating",
+              "type": "number",
+              "label": "Card rating",
+              "importance": "low",
+              "description": "Rating of the card.",
+              "default": 0,
+              "min": 0,
+              "max": 5,
+              "step": 1,
+              "widget": "showWhen",
+              "showWhen": {
+                "rules": [
+                  {
+                    "field": "canUserRateCard",
+                    "equals": true
+                  }
+                ]
+              }
             }
           ]
         }
@@ -188,6 +216,42 @@
         "type": "text",
         "label": "Unknown field type",
         "default": "Fields of type \"@type\" are not supported."
+      },
+      {
+        "name": "errorFieldRequired",
+        "type": "text",
+        "label": "Field required",
+        "default": "This field is required and cannot be empty."
+      },
+      {
+        "name": "errorNumberMinValue",
+        "type": "text",
+        "label": "Number minimum value",
+        "default": "The value must be greater than or equal to @min."
+      },
+      {
+        "name": "errorNumberMaxValue",
+        "type": "text",
+        "label": "Number maximum value",
+        "default": "The value must be less than or equal to @max."
+      },
+      {
+        "name": "errorNumberStepValue",
+        "type": "text",
+        "label": "Number step value",
+        "default": "The value must be a multiple of @step."
+      },
+      {
+        "name": "errorTextTooLong",
+        "type": "text",
+        "label": "Text too long",
+        "default": "The text is too long. Maximum length is @max characters."
+      },
+      {
+        "name": "errorNumberStepValue",
+        "type": "text",
+        "label": "Number step value",
+        "default": "The smallest step allowed is @step."
       }
     ]
   },
