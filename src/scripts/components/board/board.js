@@ -74,6 +74,13 @@ export default class Board {
   }
 
   addElement(params = {}) {
+    // TODO: Fetch defaults from semantics (behavioural settings)
+    params = Util.extend({
+      cardBackgroundColor: 'rgb(255, 255, 137)',
+      cardBorderColor: 'rgb(255, 235, 138)',
+      cardCanUserRateCard: false,
+    }, params);
+
     const card = new Card(
       {
         id: params.id,

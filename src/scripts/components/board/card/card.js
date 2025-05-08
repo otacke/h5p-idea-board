@@ -1,5 +1,7 @@
 import Util from '@services/util.js';
+import { roundColorString, getAccessibleContrastColor } from '@services/utils-color.js';
 import Exercise from './exercise/exercise.js';
+import RatingBox from './rating-box/rating-box.js';
 import './card.scss';
 
 /** @constant {number} RATING_MIN Minimum rating for card. */
@@ -21,10 +23,6 @@ export default class Card {
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-idea-board-card');
 
-    this.setBackgroundColor(this.params.backgroundColor);
-    this.setBorderColor(this.params.borderColor);
-    this.setRating(this.params.rating);
-
     this.exerciseDOM = document.createElement('div');
     this.exerciseDOM.classList.add('h5p-idea-board-card-exercise');
     this.dom.append(this.exerciseDOM);
@@ -45,7 +43,33 @@ export default class Card {
       }
     );
     this.exerciseDOM.append(this.exercise.getDOM());
+
+    if (this.params.canUserRateCard) {
+      this.dom.style.setProperty('--has-rating', 1);
+      this.dom.style.setProperty('--star-count', RATING_MAX);
+
+      const ratingDOM = document.createElement('div');
+      ratingDOM.classList.add('h5p-idea-board-card-rating');
+      this.ratingBox = new RatingBox(
+        {
+          max: RATING_MAX
+        },
+        {
+          onRatingChanged: (rating) => {
+            this.setRating(rating);
+          }
+        }
+      );
+      ratingDOM.append(this.ratingBox.getDOM());
+
+      this.dom.append(ratingDOM);
+    }
+
     this.exercise.attachInstance();
+
+    this.setBackgroundColor(this.params.backgroundColor);
+    this.setBorderColor(this.params.borderColor);
+    this.setRating(this.params.rating);
   }
 
   getDOM() {
@@ -67,6 +91,9 @@ export default class Card {
   setBackgroundColor(color) {
     this.params.backgroundColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-background-color', color);
+
+    const contrastColor = getAccessibleContrastColor(roundColorString(color));
+    this.dom.style.setProperty('--h5p-idea-board-card-contrast-color', contrastColor);
   }
 
   getBorderColor() {
@@ -84,7 +111,6 @@ export default class Card {
 
   setRating(rating) {
     if (!this.params.canUserRateCard) {
-      delete this.rating;
       return;
     }
 
@@ -92,11 +118,15 @@ export default class Card {
       return;
     }
 
-    this.rating = rating;
+    this.ratingBox.setRating(rating);
   }
 
   getRating() {
-    return this.rating;
+    if (!this.params.canUserRateCard) {
+      return;
+    }
+
+    return this.ratingBox.getRating();
   }
 
   getExerciseInstance() {

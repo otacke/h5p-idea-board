@@ -1,0 +1,37 @@
+.h5p-idea-board-card-rating-box {
+  display: flex;
+  justify-content: center;
+  gap: --rating-box-height / 4;
+
+  .h5p-idea-board-card-rating-box-star {
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: var(--rating-box-height);
+    margin: 0;
+    min-width: var(--rating-box-height);
+    padding: 0;
+    position: relative;
+
+    &::before {
+      color: var(--h5p-idea-board-card-contrast-color);
+      font-family: "H5PFontAwesome4", sans-serif;
+      font-size: var(--rating-box-height);
+      height: var(--rating-box-height);
+      left: 50%;
+      margin-left: -50%;
+      margin-top: -50%;
+      position: absolute;
+      top: 50%;
+      width: var(--rating-box-height);
+    }
+
+    &:not(.filled)::before {
+      content: var(--icon-fontawesome-star);
+    }
+
+    &.filled::before {
+      content: var(--icon-fontawesome-star-filled);
+    }
+  }
+}

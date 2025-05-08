@@ -1,5 +1,7 @@
 .h5p-idea-board-element-interactor {
   box-sizing: border-box;
+  container-type: inline-size;
+  container-name: element-interactor;
   left: var(--idea-board-element-x);
   position: absolute;
   top: var(--idea-board-element-y);

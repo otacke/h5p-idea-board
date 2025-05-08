@@ -1,13 +1,38 @@
 .h5p-idea-board-card {
+  --padding-single: 0.25rem;
+  --rating-box-height: calc(var(--has-rating, 0) * var(--rating-size));
+
   background-color: var(--h5p-idea-board-card-background-color, rgb(255, 255, 137));
   border: 1px solid var(--h5p-idea-board-card-border-color, rgb(255, 235, 138));
   box-shadow: 10px 10px 30px var(--color-shadow-light);
   box-sizing: border-box;
   height: 100%;
-  padding: 0.5rem;
+  padding-top: var(--padding-single);
+  padding-right: var(--padding-single);
+  padding-left: var(--padding-single);
+
+  &:not(:has(.h5p-idea-board-card-rating)) {
+    padding-bottom: var(--padding-single);
+  }
+
+  &:has(.h5p-idea-board-card-rating) {
+    padding-bottom: calc(2 * var(--padding-single) + var(--rating-box-height));
+  }
 
   .h5p-idea-board-card-exercise {
     height: 100%;
     position: relative;
+  }
+
+  .h5p-idea-board-card-rating {
+    position: relative;
+    bottom: calc(-1 * var(--padding-single));
+    height: var(--rating-box-height, 0);
+  }
+}
+
+@container element-interactor (width > 0) {
+  .h5p-idea-board-card {
+    --rating-size: min(1.5rem, 100cqw / calc(var(--star-count, 5) + 1));
   }
 }
