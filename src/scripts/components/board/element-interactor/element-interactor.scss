@@ -28,7 +28,7 @@
     height: 100%;
   }
 
-  &:not(.is-interactive) {
+  &.can-move:not(.is-interactive) {
     cursor: move;
   }
 

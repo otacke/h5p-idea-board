@@ -76,6 +76,14 @@ export default class H5PUtil {
   }
 
   /**
+   * Get semantics structure.
+   * @returns {object} Semantics structure.
+   */
+  static getSemantics() {
+    return semantics;
+  }
+
+  /**
    * Get loaded library version for an H5P machine name.
    * @param {string} machineName Machine name of the library.
    * @returns {string} Version of the library as major.minor or empty string if not found.

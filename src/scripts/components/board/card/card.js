@@ -108,6 +108,10 @@ export default class Card {
   getCapabilities() {
     return {
       canUserRateCard: this.params.capabilities.canUserRateCard,
+      canUserEditCard: this.params.capabilities.canUserEditCard,
+      canUserDeleteCard: this.params.capabilities.canUserDeleteCard,
+      canUserMoveCard: this.params.capabilities.canUserMoveCard,
+      canUserResizeCard: this.params.capabilities.canUserResizeCard,
       cardRating: this.getRating(),
     };
   }

@@ -1,6 +1,7 @@
 import Util from '@services/util.js';
 import Card from './card/card.js';
 import ElementInteractor, { INTERACTOR_MODE } from './element-interactor/element-interactor.js';
+import H5PUtil from '@services/utils-h5p.js';
 import './board.scss';
 
 export default class Board {
@@ -73,11 +74,16 @@ export default class Board {
   }
 
   addElement(params = {}) {
-    // TODO: Fetch defaults from semantics (behavioural settings)
     params = Util.extend({
-      cardBackgroundColor: 'rgb(255, 255, 137)',
-      cardBorderColor: 'rgb(255, 235, 138)',
-      cardCanUserRateCard: false,
+      cardBackgroundColor: H5PUtil.findSemanticsField('cardBackgroundColor')?.default,
+      cardBorderColor: H5PUtil.findSemanticsField('cardBorderColor')?.default,
+      cardCapabilities: {
+        canUserEditCard: true,
+        canUserDeleteCard: true,
+        canUserMoveCard: true,
+        canUserResizeCard: true,
+        canUserRateCard: true
+      }
     }, params);
 
     const card = new Card(
@@ -109,6 +115,12 @@ export default class Board {
         contentDOM: card.getDOM(),
         globals: this.params.globals,
         dictionary: this.params.dictionary,
+        capabilities: {
+          edit: params.cardCapabilities.canUserEditCard,
+          delete: params.cardCapabilities.canUserDeleteCard,
+          move: params.cardCapabilities.canUserMoveCard,
+          resize: params.cardCapabilities.canUserResizeCard
+        }
       },
       {
         getBoardRect: () => {

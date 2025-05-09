@@ -92,6 +92,34 @@
               "importance": "low",
               "fields": [
                 {
+                  "name": "canUserEditCard",
+                  "type": "boolean",
+                  "label": "Can user edit card",
+                  "importance": "low",
+                  "default": true
+                },
+                {
+                  "name": "canUserMoveCard",
+                  "type": "boolean",
+                  "label": "Can user move card",
+                  "importance": "low",
+                  "default": true
+                },
+                {
+                  "name": "canUserResizeCard",
+                  "type": "boolean",
+                  "label": "Can user resize card",
+                  "importance": "low",
+                  "default": true
+                },
+                {
+                  "name": "canUserDeleteCard",
+                  "type": "boolean",
+                  "label": "Can user delete card",
+                  "importance": "low",
+                  "default": true
+                },
+                {
                   "name": "canUserRateCard",
                   "type": "boolean",
                   "label": "Can user rate card",

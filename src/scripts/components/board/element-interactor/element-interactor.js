@@ -25,6 +25,12 @@ export default class ElementInteractor {
         y: Math.floor(Math.random() * 100),
         width: TELEMETRY_DEFAULT_SIZE,
         height: TELEMETRY_DEFAULT_SIZE
+      },
+      capabilities: {
+        edit: true,
+        move: true,
+        resize: true,
+        delete: true
       }
     }, params);
 
@@ -72,6 +78,10 @@ export default class ElementInteractor {
   buildDOM() {
     this.dom = document.createElement('li');
     this.dom.classList.add('h5p-idea-board-element-interactor');
+
+    if (this.params.capabilities.move) {
+      this.dom.classList.add('can-move');
+    }
     this.dom.setAttribute('tabindex', '0');
     this.contentDOM = document.createElement('div');
     this.contentDOM.classList.add('h5p-idea-board-element-interactor-content');
@@ -129,22 +139,29 @@ export default class ElementInteractor {
     });
 
     this.buildContextMenu();
-    this.buildResizeKnobs();
+    if (this.params.capabilities.resize) {
+      this.buildResizeKnobs();
+    }
 
     this.setTelemetry(this.params.telemetry);
   }
 
   buildContextMenu() {
-    const contextMenuButtonParams = [
-      {
+    const contextMenuButtonParams = [];
+
+    if (this.params.capabilities.edit) {
+      contextMenuButtonParams.push({
         id: 'edit',
         type: 'pulse',
         pulseStates: [{ id: 'edit', label: this.params.dictionary.get('a11y.edit') }],
         onClick: () => {
           this.callbacks.onEdit(this.params.id);
         }
-      },
-      {
+      });
+    }
+
+    if (this.params.capabilities.move) {
+      contextMenuButtonParams.push({
         id: 'move',
         type: 'toggle',
         a11y: {
@@ -157,8 +174,11 @@ export default class ElementInteractor {
         onKeyup: () => {
           this.handleMoveEnd();
         }
-      },
-      {
+      });
+    }
+
+    if (this.params.capabilities.resize) {
+      contextMenuButtonParams.push({
         id: 'resize',
         type: 'toggle',
         a11y: {
@@ -171,32 +191,37 @@ export default class ElementInteractor {
         onKeyup: () => {
           this.handleResizeEnd();
         }
-      },
-      {
-        id: 'bringToFront',
-        type: 'pulse',
-        pulseStates: [{ id: 'bringToFront', label: this.params.dictionary.get('a11y.bringToFront') }],
-        onClick: (event, options) => {
-          this.handleBringToFront(event, options);
-        }
-      },
-      {
-        id: 'sendToBack',
-        type: 'pulse',
-        pulseStates: [{ id: 'sendToBack', label: this.params.dictionary.get('a11y.sendToBack') }],
-        onClick: (event, options) => {
-          this.handleSendToBack(event, options);
-        }
-      },
-      {
+      });
+    }
+
+    contextMenuButtonParams.push({
+      id: 'bringToFront',
+      type: 'pulse',
+      pulseStates: [{ id: 'bringToFront', label: this.params.dictionary.get('a11y.bringToFront') }],
+      onClick: (event, options) => {
+        this.handleBringToFront(event, options);
+      }
+    });
+
+    contextMenuButtonParams.push({
+      id: 'sendToBack',
+      type: 'pulse',
+      pulseStates: [{ id: 'sendToBack', label: this.params.dictionary.get('a11y.sendToBack') }],
+      onClick: (event, options) => {
+        this.handleSendToBack(event, options);
+      }
+    });
+
+    if (this.params.capabilities.delete) {
+      contextMenuButtonParams.push({
         id: 'delete',
         type: 'pulse',
         pulseStates: [{ id: 'delete', label: this.params.dictionary.get('a11y.delete') }],
-        onClick: () => {
+        onClick: (event, options) => {
           this.callbacks.onDelete(this.params.id);
         }
-      }
-    ];
+      });
+    }
 
     this.contextMenu = new ElementInteractorContextMenu(
       {
@@ -249,6 +274,12 @@ export default class ElementInteractor {
   }
 
   setMode(mode = INTERACTOR_MODE.view) {
+    let modeWasOverridden = false;
+    if (!this.params.capabilities.edit) {
+      modeWasOverridden = (mode === INTERACTOR_MODE.interact);
+      mode = INTERACTOR_MODE.view;
+    }
+
     this.mode = mode;
 
     this.dom.classList.toggle('is-interactive', mode === INTERACTOR_MODE.interact);
@@ -258,7 +289,9 @@ export default class ElementInteractor {
       this.dom.removeAttribute('tabindex');
     }
     else {
-      this.contextMenu.hide();
+      if (!modeWasOverridden) {
+        this.contextMenu.hide();
+      }
       this.updateAriaSummary();
       this.dom.setAttribute('tabindex', '0');
     }
@@ -622,13 +655,18 @@ export default class ElementInteractor {
 
     this.isMoving = true;
 
+    document.addEventListener('pointerup', this.handlePointerUp);
+    if (!this.params.capabilities.move) {
+      return;
+    }
+
+
     this.moveStartPx = { x: event.clientX, y: event.clientY };
 
     this.dom.setPointerCapture(event.pointerId);
 
     document.addEventListener('touchmove', this.handleTouchEvent, { passive: false });
     document.addEventListener('pointermove', this.handlePointerMove);
-    document.addEventListener('pointerup', this.handlePointerUp);
 
     event.preventDefault();
   }
@@ -638,6 +676,10 @@ export default class ElementInteractor {
    * @param {TouchEvent} event Touch move event.
    */
   handleTouchEvent(event) {
+    if (!this.params.capabilities.move) {
+      return;
+    }
+
     // Prevent default touch events like moving screen when moving/resizing could take place.
     if (this.mode === INTERACTOR_MODE.view && event.target === this.dom) {
       event.preventDefault();

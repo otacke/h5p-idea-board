@@ -3,7 +3,6 @@ import OptionsDialog from '@components/options-dialog/options-dialog.js';
 import Toolbar from '@components/toolbar/toolbar.js';
 import Util from '@services/util.js';
 import H5PUtil from '@services/utils-h5p.js';
-import semantics from '@root/semantics.json';
 import './main.scss';
 
 /** @constant {number} FULL_SCREEN_DELAY_SMALL_MS Time some browsers need to go to full screen. */
@@ -73,6 +72,8 @@ export default class Main {
           const cardsParams = this.board.getElementsParams();
           const cardParams = cardsParams.find((card) => card.id === id);
 
+          const semantics = H5PUtil.getSemantics();
+
           const fields = [
             ...params.fields,
             H5PUtil.findSemanticsField('cardBackgroundColor', semantics),
@@ -103,8 +104,11 @@ export default class Main {
             card.setBackgroundColor(cardBackgroundColor);
             const cardBorderColor = values.find((field) => field.name === 'cardBorderColor').value;
             card.setBorderColor(cardBorderColor);
-            const cardRating = parseFloat(values.find((field) => field.name === 'cardRating').value);
-            card.setRating(cardRating);
+
+            const cardRating = parseFloat(values.find((field) => field.name === 'cardRating')?.value);
+            if (typeof cardRating === 'number' && !isNaN(cardRating)) {
+              card.setRating(cardRating);
+            }
 
             values = values.filter((field) => field.name !== 'cardBackgroundColor' && field.name !== 'cardBorderColor');
 
@@ -249,7 +253,7 @@ export default class Main {
         telemetry: params.telemetry,
         cardBackgroundColor: params.cardBackgroundColor,
         cardBorderColor: params.cardBorderColor,
-        cardCapabilities: params.cardCapabilities,
+        cardCapabilities: params.cardCapabilities || {},
         contentType: contentType,
         previousState: params.previousState || {}
       });
