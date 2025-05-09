@@ -151,15 +151,48 @@
     "label": "Behavioural settings",
     "fields": [
       {
-        "name": "sample",
+        "name": "userCanAddCards",
         "type": "boolean",
-        "label": "Sample behaviour"
+        "label": "User is allowed to add cards",
+        "default": true
       },
       {
-        "name": "dummy",
-        "type": "boolean",
-        "label": "Dummy",
-        "widget": "none"
+        "name": "addableTypes",
+        "type": "group",
+        "importance": "low",
+        "label": "Card types that the user may add",
+        "fields": [
+          {
+            "name": "addableTypeText",
+            "type": "boolean",
+            "label": "Text",
+            "default": true
+          },
+          {
+            "name": "addableTypeImage",
+            "type": "boolean",
+            "label": "Image"
+          },
+          {
+            "name": "addableTypeAudio",
+            "type": "boolean",
+            "label": "Audio"
+          },
+          {
+            "name": "addableTypeVideo",
+            "type": "boolean",
+            "label": "Video"
+          }
+        ],
+        "widget": "showWhen",
+        "showWhen": {
+          "rules": [
+            {
+              "field": "userCanAddCards",
+              "equals": true
+            }
+          ]
+        }
       }
     ]
   },

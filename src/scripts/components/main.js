@@ -139,6 +139,19 @@ export default class Main {
     const globalParams = this.params.globals.get('params');
     const toolbarButtons = [];
 
+    console.log('globalParams', globalParams);
+
+
+
+    let allowedContentTypes = [];
+    if (globalParams.behaviour.userCanAddCards) {
+      Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
+        if (globalParams.behaviour.addableTypes[key] === true) {
+          allowedContentTypes.push(key.replace('addableType', '').toLowerCase());
+        }
+      });
+    }
+
     const contentTypeField = H5PUtil.findSemanticsField('contentType');
     const versionedMachineNames = (contentTypeField?.options ?? []);
 
@@ -149,7 +162,7 @@ export default class Main {
         'Text' :
         machineName.split('.').pop().toLowerCase();
 
-      if (machineName !== 'H5P.EditableMedium') {
+      if (machineName !== 'H5P.EditableMedium' && allowedContentTypes.includes('text')) {
         toolbarButtons.push({
           id: contentTypeName,
           versionedMachineName: versionedMachineName,
@@ -168,6 +181,14 @@ export default class Main {
       }
       else {
         ['H5P.Image', 'H5P.Audio', 'H5P.Video'].forEach((machineName) => {
+          if (
+            machineName === 'H5P.Image' && !allowedContentTypes.includes('image') ||
+            machineName === 'H5P.Audio' && !allowedContentTypes.includes('audio') ||
+            machineName === 'H5P.Video' && !allowedContentTypes.includes('video')
+          ) {
+            return;
+          }
+
           const loadedLibraryVersion = H5PUtil.getLibraryVersion(machineName);
           const subcontentMachineName = `${machineName} ${loadedLibraryVersion}`;
           const type = machineName.split('.').pop();
