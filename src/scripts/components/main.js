@@ -68,20 +68,21 @@ export default class Main {
         onCardDeleted: (params = {}) => {
           this.handleCardDeleted(params);
         },
-        openEditorDialog: (id, params, callbacks) => {
+        openEditorDialog: async (id, params, callbacks) => {
           const cardsParams = this.board.getElementsParams();
           const cardParams = cardsParams.find((card) => card.id === id);
 
-          const semantics = H5PUtil.getSemantics();
+          this.semantics = this.semantics ??
+            await H5PUtil.getTranslatedSemantics(this.params.globals.get('defaultLanguage'));
 
           const fields = [
             ...params.fields,
-            H5PUtil.findSemanticsField('cardBackgroundColor', semantics),
-            H5PUtil.findSemanticsField('cardBorderColor', semantics),
+            H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
+            H5PUtil.findSemanticsField('cardBorderColor', this.semantics),
           ];
 
           if (cardParams.canUserRateCard) {
-            const field = H5PUtil.findSemanticsField('cardRating', semantics);
+            const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
             delete field.widget; // showWhen
             fields.push(field);
           }
@@ -245,8 +246,11 @@ export default class Main {
     if (!versionedSubContentMachineName) {
       const contentType = params.contentType ?? {
         library: versionedMachineName,
-        params: {}
+        params: {},
       };
+
+      contentType.metadata = contentType.metadata || {};
+      contentType.metadata.defaultLanguage = this.params.globals.get('defaultLanguage');
 
       this.board.addElement({
         id: params.id ?? H5P.createUUID(),
@@ -270,6 +274,10 @@ export default class Main {
         }
       }
     };
+
+    contentType.metadata = contentType.metadata || {};
+    contentType.metadata.defaultLanguage = this.params.globals.get('defaultLanguage');
+
 
     const machineName = versionedMachineName.split(' ')[0];
     if (machineName === 'H5P.EditableMedium') {

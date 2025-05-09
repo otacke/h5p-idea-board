@@ -1,4 +1,6 @@
+import Util from '@services/util.js';
 import semantics from '@root/semantics.json';
+import libraryJson from '@root/library.json';
 
 /** Class for h5p related utility functions */
 export default class H5PUtil {
@@ -84,6 +86,25 @@ export default class H5PUtil {
   }
 
   /**
+   * Get a translated version of semantics if available.
+   * @param {string} languageCode Language code.
+   * @returns {object} Translated semantics structure.
+   */
+  static async getTranslatedSemantics(languageCode) {
+    if (!languageCode || languageCode === 'en') {
+      return semantics;
+    }
+
+    const translation = await H5PUtil.getTranslation(languageCode);
+
+    if (!translation?.semantics) {
+      return semantics;
+    }
+
+    return Util.mergeDeep(semantics, translation.semantics);
+  }
+
+  /**
    * Get loaded library version for an H5P machine name.
    * @param {string} machineName Machine name of the library.
    * @returns {string} Version of the library as major.minor or empty string if not found.
@@ -97,5 +118,36 @@ export default class H5PUtil {
     const matchedKey = Object.keys(dirs).find((key) => key.startsWith(machineName));
 
     return matchedKey ? matchedKey.split('-').pop() : '';
+  }
+
+  /**
+   * Get the Uber name of the library.
+   * @returns {string} Uber name of the content type.
+   */
+  static getUberName() {
+    return `${libraryJson.machineName}-${libraryJson.majorVersion}.${libraryJson.minorVersion}`;
+  }
+
+  /**
+   * Get translation file contents for a given language code.
+   * @param {string} [languageCode] Language code.
+   * @returns {Promise<object>} Translation object or undefined if not found.
+   */
+  static async getTranslation(languageCode = 'en') {
+    const libraryPath = H5P.getLibraryPath(H5PUtil.getUberName());
+    const languagePath = `${libraryPath}/language/${languageCode}.json`;
+
+    try {
+      const response = await fetch(languagePath);
+      if (!response.ok) {
+        return;
+      }
+
+      const translation = await response.json();
+      return translation;
+    }
+    catch (error) {
+      return;
+    }
   }
 }

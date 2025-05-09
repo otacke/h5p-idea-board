@@ -50,6 +50,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.globals.set('baseFontSizePx', BASE_FONT_SIZE_PX);
     this.globals.set('isFullscreenSupported', this.isRoot() && H5P.fullscreenSupported);
     this.globals.set('Screenreader', Screenreader);
+    this.globals.set('defaultLanguage', extras?.metadata?.defaultLanguage || 'en');
 
     this.dictionary = new Dictionary();
     this.dictionary.fill({ l10n: this.params.l10n, a11y: this.params.a11y });

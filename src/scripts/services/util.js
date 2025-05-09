@@ -114,4 +114,34 @@ export default class Util {
       });
     });
   }
+
+  static mergeDeep(obj1, obj2) {
+    if (Array.isArray(obj1) && Array.isArray(obj2)) {
+      const maxLength = Math.max(obj1.length, obj2.length);
+      const result = [];
+      for (let i = 0; i < maxLength; i++) {
+        if (i in obj2) {
+          result[i] = Util.mergeDeep(obj1[i], obj2[i]);
+        }
+        else {
+          result[i] = obj1[i];
+        }
+      }
+      return result;
+    }
+
+    if (
+      typeof obj1 === 'object' && obj1 !== null && !Array.isArray(obj1) &&
+      typeof obj2 === 'object' && obj2 !== null && !Array.isArray(obj2)
+    ) {
+      const result = { ...obj1 };
+      for (const key in obj2) {
+        result[key] = Util.mergeDeep(obj1[key], obj2[key]);
+      }
+      return result;
+    }
+
+    // Primitive or obj2 overrides
+    return obj2 !== undefined ? obj2 : obj1;
+  }
 }
