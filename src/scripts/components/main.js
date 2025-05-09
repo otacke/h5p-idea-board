@@ -139,10 +139,6 @@ export default class Main {
     const globalParams = this.params.globals.get('params');
     const toolbarButtons = [];
 
-    console.log('globalParams', globalParams);
-
-
-
     let allowedContentTypes = [];
     if (globalParams.behaviour.userCanAddCards) {
       Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
