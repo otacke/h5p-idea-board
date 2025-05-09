@@ -489,6 +489,20 @@
         "type": "text",
         "label": "Hue",
         "default": "Hue"
+      },
+      {
+        "name": "giveRatingOf",
+        "type": "text",
+        "label": "Give rating of",
+        "description": "@rating is a placeholder and will be replaced by the respective value.",
+        "default": "Rate this card with a rating of @rating."
+      },
+      {
+        "name": "ratingChanged",
+        "type": "text",
+        "label": "Rating changed",
+        "description": "@rating is a placeholder and will be replaced by the respective value.",
+        "default": "The rating was changed to @rating."
       }
     ]
   }

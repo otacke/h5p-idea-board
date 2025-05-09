@@ -1,4 +1,5 @@
 import Util from '@services/util.js';
+import Screenreader from '@services/screenreader.js';
 import './rating-box.scss';
 
 export default class RatingBox {
@@ -33,12 +34,18 @@ export default class RatingBox {
     return this.dom;
   }
 
-  setRating(rating) {
+  setRating(rating, options = {}) {
     this.rating = rating;
 
     this.stars.forEach((star, i) => {
       star.classList.toggle('filled', i < this.rating);
     });
+
+    this.updateAriaLabels();
+
+    if (!options.silent) {
+      Screenreader.read(this.params.dictionary.get('a11y.ratingChanged').replace('@rating', this.rating));
+    }
   }
 
   getRating() {
@@ -47,5 +54,12 @@ export default class RatingBox {
 
   changeRatingBy(indexClicked) {
     this.setRating(this.rating === indexClicked + 1 ? indexClicked : indexClicked + 1);
+  }
+
+  updateAriaLabels() {
+    this.stars.forEach((star, index) => {
+      const targetRating = (index === this.rating - 1) ? index : index + 1;
+      star.setAttribute('aria-label', this.params.dictionary.get('a11y.giveRatingOf').replace('@rating', targetRating));
+    });
   }
 }

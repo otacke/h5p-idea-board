@@ -52,7 +52,8 @@ export default class Card {
       ratingDOM.classList.add('h5p-idea-board-card-rating');
       this.ratingBox = new RatingBox(
         {
-          max: RATING_MAX
+          max: RATING_MAX,
+          dictionary: this.params.dictionary,
         },
         {
           onRatingChanged: (rating) => {
@@ -69,7 +70,7 @@ export default class Card {
 
     this.setBackgroundColor(this.params.backgroundColor);
     this.setBorderColor(this.params.borderColor);
-    this.setRating(this.params.capabilities.cardRating);
+    this.setRating(this.params.capabilities.cardRating, { silent: true });
   }
 
   getDOM() {
@@ -116,7 +117,7 @@ export default class Card {
     };
   }
 
-  setRating(rating) {
+  setRating(rating, options = {}) {
     if (!this.params.capabilities.canUserRateCard) {
       return;
     }
@@ -125,7 +126,7 @@ export default class Card {
       return;
     }
 
-    this.ratingBox.setRating(rating);
+    this.ratingBox.setRating(rating, options);
   }
 
   getRating() {
