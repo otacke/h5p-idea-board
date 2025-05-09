@@ -44,7 +44,7 @@ export default class Card {
     );
     this.exerciseDOM.append(this.exercise.getDOM());
 
-    if (this.params.canUserRateCard) {
+    if (this.params.capabilities.canUserRateCard) {
       this.dom.style.setProperty('--has-rating', 1);
       this.dom.style.setProperty('--star-count', RATING_MAX);
 
@@ -69,7 +69,7 @@ export default class Card {
 
     this.setBackgroundColor(this.params.backgroundColor);
     this.setBorderColor(this.params.borderColor);
-    this.setRating(this.params.rating);
+    this.setRating(this.params.capabilities.cardRating);
   }
 
   getDOM() {
@@ -105,12 +105,15 @@ export default class Card {
     this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
   }
 
-  canUserRateCard() {
-    return this.params.canUserRateCard ?? false;
+  getCapabilities() {
+    return {
+      canUserRateCard: this.params.capabilities.canUserRateCard,
+      cardRating: this.getRating(),
+    };
   }
 
   setRating(rating) {
-    if (!this.params.canUserRateCard) {
+    if (!this.params.capabilities.canUserRateCard) {
       return;
     }
 
@@ -122,7 +125,7 @@ export default class Card {
   }
 
   getRating() {
-    if (!this.params.canUserRateCard) {
+    if (!this.params.capabilities.canUserRateCard) {
       return;
     }
 

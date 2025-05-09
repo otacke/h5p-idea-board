@@ -86,32 +86,40 @@
               }
             },
             {
-              "name": "canUserRateCard",
-              "type": "boolean",
-              "label": "Can user rate card",
+              "name": "cardCapabilities",
+              "type": "group",
+              "label": "Capabilities for card",
               "importance": "low",
-              "description": "If enabled, the user can rate the card.",
-              "default": false
-            },
-            {
-              "name": "cardRating",
-              "type": "number",
-              "label": "Card rating",
-              "importance": "low",
-              "description": "Rating of the card.",
-              "default": 0,
-              "min": 0,
-              "max": 5,
-              "step": 1,
-              "widget": "showWhen",
-              "showWhen": {
-                "rules": [
-                  {
-                    "field": "canUserRateCard",
-                    "equals": true
+              "fields": [
+                {
+                  "name": "canUserRateCard",
+                  "type": "boolean",
+                  "label": "Can user rate card",
+                  "importance": "low",
+                  "description": "If enabled, the user can rate the card.",
+                  "default": false
+                },
+                {
+                  "name": "cardRating",
+                  "type": "number",
+                  "label": "Card rating",
+                  "importance": "low",
+                  "description": "Rating of the card.",
+                  "default": 0,
+                  "min": 0,
+                  "max": 5,
+                  "step": 1,
+                  "widget": "showWhen",
+                  "showWhen": {
+                    "rules": [
+                      {
+                        "field": "canUserRateCard",
+                        "equals": true
+                      }
+                    ]
                   }
-                ]
-              }
+                }
+              ]
             }
           ]
         }

@@ -37,8 +37,7 @@ export default class Main {
           contentType: element.contentType,
           cardBackgroundColor: element.cardBackgroundColor,
           cardBorderColor: element.cardBorderColor,
-          cardCanUserRateCard: element.canUserRateCard,
-          cardRating: element.cardRating,
+          cardCapabilities: element.cardCapabilities,
           previousState: element.previousState || {}
         }
       );
@@ -92,8 +91,8 @@ export default class Main {
             cardBorderColor: cardParams.cardBorderColor,
           };
 
-          if (cardParams.canUserRateCard) {
-            values.cardRating = cardParams.cardRating;
+          if (cardParams.cardCapabilities.canUserRateCard) {
+            values.cardRating = cardParams.cardCapabilities.cardRating;
           }
 
           this.optionsDialog.setCallback('onSaved', (values) => {
@@ -250,8 +249,7 @@ export default class Main {
         telemetry: params.telemetry,
         cardBackgroundColor: params.cardBackgroundColor,
         cardBorderColor: params.cardBorderColor,
-        cardCanUserRateCard: params.cardCanUserRateCard,
-        cardRating: params.cardRating,
+        cardCapabilities: params.cardCapabilities,
         contentType: contentType,
         previousState: params.previousState || {}
       });
@@ -280,8 +278,7 @@ export default class Main {
       telemetry: params.telemetry,
       cardBackgroundColor: params.cardBackgroundColor,
       cardBorderColor: params.cardBorderColor,
-      cardCanUserRateCard: params.cardCanUserRateCard,
-      cardRating: params.cardRating,
+      cardCapabilities: params.cardCapabilities,
       contentType: contentType,
       previousState: params.previousState || {}
     });
