@@ -27,8 +27,21 @@ export default class Board {
   }
 
   buildDOM() {
+    const params = this.params.globals.get('params');
+    let backgroundImageURL;
+    if (params?.backgroundSettings?.backgroundImage) {
+      backgroundImageURL = H5P.getPath(
+        params.backgroundSettings.backgroundImage.path ?? '',
+        this.params.globals.get('contentId')
+      );
+    }
+
     this.dom = document.createElement('section');
     this.dom.setAttribute('role', 'application');
+    this.dom.style.setProperty('--board-background-color', params?.backgroundSettings?.backgroundColor);
+    if (backgroundImageURL) {
+      this.dom.style.setProperty('--board-background-image-url', `url(${backgroundImageURL})`);
+    }
     this.dom.setAttribute(
       'aria-label',
       `${this.params.dictionary.get('a11y.board')}. ${this.params.dictionary.get('a11y.boardInstructions')}`

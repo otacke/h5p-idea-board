@@ -3,6 +3,8 @@
 
   aspect-ratio: var(--board-aspect-ratio);
   background-color: var(--board-background-color, var(--color-background));
+  background-image: var(--board-background-image-url);
+  background-size: cover;
   box-shadow: 10px 10px 30px var(--color-shadow-light);
   box-sizing: border-box;
   display: grid;
