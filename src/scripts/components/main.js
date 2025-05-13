@@ -309,7 +309,7 @@ export default class Main {
       ]
     };
 
-    if (cardParams.canUserRateCard) {
+    if (cardParams.cardCapabilities.canUserRateCard) {
       const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
       delete field.widget; // showWhen
       cardParamsField.fields.push(field);
