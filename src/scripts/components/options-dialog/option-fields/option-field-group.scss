@@ -1,42 +1,5 @@
 .h5p-idea-board-options-dialog-option-field-group {
   .h5p-idea-board-options-dialog-option-field-group-panel {
-    &.importance-high {
-      background-color: var(--color-primary);
-
-      .h5p-idea-board-options-dialog-option-field-group-panel-button {
-        color: var(--color-background);
-        font-weight: bold;
-      }
-    }
-    &.importance-medium {
-      background-color: var(--color-editor-dark-gray-2);
-
-      .h5p-idea-board-options-dialog-option-field-group-panel-header {
-        border-color: var(--color-editor-dark-gray);
-        border-style: solid;
-        border-width: 1px;
-
-        .h5p-idea-board-options-dialog-option-field-group-panel-button {
-          color: var(--color-background);
-          font-weight: bold;
-        }
-      }
-    }
-
-    &.importance-low {
-      background-color: var(--color-editor-light-gray-2);
-
-      .h5p-idea-board-options-dialog-option-field-group-panel-header {
-        border-color: var(--color-editor-light-gray);
-        border-style: solid;
-        border-width: 1px;
-
-        .h5p-idea-board-options-dialog-option-field-group-panel-button {
-          color: var(--color-text);
-        }
-      }
-    }
-
     background-color: var(--color-primary);
 
     .h5p-idea-board-options-dialog-option-field-group-panel-header {
@@ -85,6 +48,43 @@
       border-style: solid;
       border-width: 0 1px 1px 1px;
       padding: 0.5rem;
+    }
+
+    &.importance-high {
+      background-color: var(--color-primary);
+
+      .h5p-idea-board-options-dialog-option-field-group-panel-button {
+        color: var(--color-background);
+        font-weight: bold;
+      }
+    }
+    &.importance-medium {
+      background-color: var(--color-editor-dark-gray-2);
+
+      .h5p-idea-board-options-dialog-option-field-group-panel-header {
+        border-color: var(--color-editor-dark-gray);
+        border-style: solid;
+        border-width: 1px;
+
+        .h5p-idea-board-options-dialog-option-field-group-panel-button {
+          color: var(--color-background);
+          font-weight: bold;
+        }
+      }
+    }
+
+    &.importance-low {
+      background-color: var(--color-editor-light-gray-2);
+
+      .h5p-idea-board-options-dialog-option-field-group-panel-header {
+        border-color: var(--color-editor-light-gray);
+        border-style: solid;
+        border-width: 1px;
+
+        .h5p-idea-board-options-dialog-option-field-group-panel-button {
+          color: var(--color-text);
+        }
+      }
     }
   }
 }
