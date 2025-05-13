@@ -64,7 +64,7 @@
             {
               "name": "cardBackgroundColor",
               "type": "text",
-              "label": "Card background color",
+              "label": "Background color",
               "default": "rgb(255, 255, 137)",
               "widget": "colorSelector",
               "spectrum": {
@@ -76,7 +76,7 @@
             {
               "name": "cardBorderColor",
               "type": "text",
-              "label": "Card border color",
+              "label": "Border color",
               "default": "rgb(255, 235, 138)",
               "widget": "colorSelector",
               "spectrum": {
@@ -350,6 +350,12 @@
         "type": "text",
         "label": "Number step value",
         "default": "The smallest step allowed is @step."
+      },
+      {
+        "name": "cardSettings",
+        "type": "text",
+        "label": "Card settings",
+        "default": "Card settings"
       }
     ]
   },

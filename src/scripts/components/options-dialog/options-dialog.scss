@@ -4,8 +4,10 @@
   --color-editor-background: #fff;
   --color-editor-text: #4c4452;
   --color-editor-shadow-light: rgba(166, 166, 166, .2);
+  --color-editor-dark-gray: #636164;
+  --color-editor-dark-gray-2: #747275;
   --color-editor-light-gray: #d0d0d1;
-  --color-editor-light-gray-2: #e7e9ee;
+    --color-editor-light-gray-2: #e7e9ee;
   --color-editor-label: #454347;
   --color-editor-description: #434446;
   --color-editor-primary: rgb(26, 115, 217);
@@ -121,6 +123,7 @@
         gap: 1rem;
         margin-top: 0.5rem;
         max-width: calc(100% - 0.5rem);
+        padding-left: 1px; /* Allow space for outline */
 
         .h5p-idea-board-options-dialog-instance-wrapper {
           .h5p-idea-board-options-dialog-instance {

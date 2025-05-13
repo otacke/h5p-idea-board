@@ -1,7 +1,7 @@
 import OptionField from '../option-field.js';
-import './option-field-select.scss';
+import './option-field-boolean.scss';
 
-export default class OptionFieldSelect extends OptionField {
+export default class OptionFieldBoolean extends OptionField {
 
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);

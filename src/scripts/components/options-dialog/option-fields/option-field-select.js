@@ -7,7 +7,7 @@ export default class OptionFieldSelect extends OptionField {
     super(field, value, dictionary);
 
     this.contentDOM = document.createElement('select');
-    this.contentDOM.classList.add('h5p-idea-board-options-dialog-option-field-select');
+    this.contentDOM.classList.add('h5p-idea-board-options-dialog-option-field-boolean');
     this.contentDOM.setAttribute('id', `field-${this.uuid}`);
     if (this.description) {
       this.contentDOM.setAttribute('aria-describedby', `field-${this.uuid}-description`);

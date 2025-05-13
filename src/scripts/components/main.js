@@ -69,55 +69,7 @@ export default class Main {
           this.handleCardDeleted(params);
         },
         openEditorDialog: async (id, params, callbacks) => {
-          const cardsParams = this.board.getElementsParams();
-          const cardParams = cardsParams.find((card) => card.id === id);
-
-          this.semantics = this.semantics ??
-            await H5PUtil.getTranslatedSemantics(this.params.globals.get('defaultLanguage'));
-
-          const fields = [
-            ...params.fields,
-            H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
-            H5PUtil.findSemanticsField('cardBorderColor', this.semantics),
-          ];
-
-          if (cardParams.canUserRateCard) {
-            const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
-            delete field.widget; // showWhen
-            fields.push(field);
-          }
-
-          const values = {
-            ...params.values,
-            cardBackgroundColor: cardParams.cardBackgroundColor,
-            cardBorderColor: cardParams.cardBorderColor,
-          };
-
-          if (cardParams.cardCapabilities.canUserRateCard) {
-            values.cardRating = cardParams.cardCapabilities.cardRating;
-          }
-
-          this.optionsDialog.setCallback('onSaved', (values) => {
-            const cards = this.board.getCards();
-            const card = cards.find((card) => card.getId() === id);
-
-            const cardBackgroundColor = values.find((field) => field.name === 'cardBackgroundColor').value;
-            card.setBackgroundColor(cardBackgroundColor);
-            const cardBorderColor = values.find((field) => field.name === 'cardBorderColor').value;
-            card.setBorderColor(cardBorderColor);
-
-            const cardRating = parseFloat(values.find((field) => field.name === 'cardRating')?.value);
-            if (typeof cardRating === 'number' && !isNaN(cardRating)) {
-              card.setRating(cardRating);
-            }
-
-            values = values.filter((field) => field.name !== 'cardBackgroundColor' && field.name !== 'cardBorderColor');
-
-            callbacks.setValues(values);
-          });
-          this.optionsDialog.setTitle(params.title);
-          this.optionsDialog.setFields(fields, values);
-          this.optionsDialog.show();
+          this.openEditorDialog(id, params, callbacks);
         }
       }
     );
@@ -327,5 +279,80 @@ export default class Main {
     else {
       this.toolbar.focus();
     }
+  }
+
+  async openEditorDialog(id, params, callbacks) {
+    const cardsParams = this.board.getElementsParams();
+    const cardParams = cardsParams.find((card) => card.id === id);
+
+    this.semantics = this.semantics ??
+      await H5PUtil.getTranslatedSemantics(this.params.globals.get('defaultLanguage'));
+
+    const contentTypeField = {
+      name: 'contentType',
+      type: 'group',
+      label: params.title,
+      importance: 'high',
+      expanded: true,
+      description: this.params.dictionary.get('l10n.contentTypeDescription'),
+      fields: [ ...params.fields ]
+    };
+
+    const cardParamsField = {
+      name: 'cardParams',
+      type: 'group',
+      label: this.params.dictionary.get('l10n.cardSettings'),
+      description: this.params.dictionary.get('l10n.contentTypeDescription'),
+      fields: [
+        H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
+        H5PUtil.findSemanticsField('cardBorderColor', this.semantics)
+      ]
+    };
+
+    if (cardParams.canUserRateCard) {
+      const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
+      delete field.widget; // showWhen
+      cardParamsField.fields.push(field);
+    }
+
+    const fields = [
+      contentTypeField,
+      cardParamsField
+    ];
+
+    const values = {
+      contentType: { ...params.values },
+      cardParams: {
+        cardBackgroundColor: cardParams.cardBackgroundColor,
+        cardBorderColor: cardParams.cardBorderColor,
+      }
+    };
+
+    if (cardParams.cardCapabilities.canUserRateCard) {
+      values.cardParams.cardRating = cardParams.cardCapabilities.cardRating;
+    }
+
+    this.optionsDialog.setCallback('onSaved', (values) => {
+      const cards = this.board.getCards();
+      const card = cards.find((card) => card.getId() === id);
+
+      const cardParamsValues = values.find((field) => field.name === 'cardParams').value;
+      const cardBackgroundColor = cardParamsValues.find((field) => field.name === 'cardBackgroundColor').value;
+      card.setBackgroundColor(cardBackgroundColor);
+      const cardBorderColor = cardParamsValues.find((field) => field.name === 'cardBorderColor').value;
+      card.setBorderColor(cardBorderColor);
+
+      const cardRating = parseFloat(cardParamsValues.find((field) => field.name === 'cardRating')?.value);
+      if (typeof cardRating === 'number' && !isNaN(cardRating)) {
+        card.setRating(cardRating);
+      }
+
+      const contentTypeValues = values.find((field) => field.name === 'contentType').value;
+
+      callbacks.setValues(contentTypeValues);
+    });
+
+    this.optionsDialog.setFields(fields, values);
+    this.optionsDialog.show();
   }
 }

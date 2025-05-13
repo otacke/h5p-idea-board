@@ -1,4 +1,5 @@
 import OptionFieldBoolean from './option-fields/option-field-boolean.js';
+import OptionFieldGroup from './option-fields/option-field-group.js';
 import OptionFieldNumber from './option-fields/option-field-number.js';
 import OptionFieldText from './option-fields/option-field-text.js';
 import OptionFieldTextColorSelector from './option-fields/option-field-text-color-selector.js';
@@ -42,6 +43,12 @@ export default class OptionsFieldFactory {
     }
     else if (fieldType === 'number') {
       return new OptionFieldNumber(field, value, dictionary, this);
+    }
+    else if (fieldType === 'group') {
+      return new OptionFieldGroup(field, value, dictionary, this);
+    }
+    else if (fieldType === 'unknown') {
+      return new OptionFieldGroup(field, value, dictionary, this);
     }
     else {
       return new OptionFieldUnknown(field, value, dictionary, this);

@@ -40,6 +40,10 @@ export default class OptionField {
     return this.dom;
   }
 
+  getName() {
+    return this.field.name;
+  }
+
   getValue() {
     return; // Must be implemented
   }
