@@ -70,7 +70,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
       }
 
       if (Object.keys(card.telemetry ?? {}).length !== TELEMETRY_PROPERTY_COUNT) {
-        return false;
+        return false; // TODO: This could be nicer by checking for telemetry properties
       }
 
       return true;
