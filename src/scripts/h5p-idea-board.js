@@ -64,7 +64,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     // Screenreader for polite screen reading
     document.body.append(Screenreader.getDOM());
 
-    params.board.cards = params.board.cards.filter((card) => {
+    this.params.board.cards = (this.params.board.cards ?? []).filter((card) => {
       if (!card.contentType?.library) {
         return false;
       }
@@ -80,7 +80,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
       {
         globals: this.globals,
         dictionary: this.dictionary,
-        previousState: this.previousState.main ?? { elements: params.board.cards },
+        previousState: this.previousState.main ?? { elements: this.params.board.cards },
       },
       {
         onFullscreenClicked: () => {
