@@ -77,9 +77,6 @@ export default class Exercise {
 
     const machineName = this.params.contentType?.library?.split?.(' ')[0];
 
-    const contentTypeParams = this.params.contentType?.params ?? {};
-    contentTypeParams.passEditorDialog = this.callbacks.passEditorDialog;
-
     if (!this.instance) {
       this.instance = H5P.newRunnable(
         this.params.contentType,
@@ -93,6 +90,8 @@ export default class Exercise {
     if (!this.instance) {
       return;
     }
+
+    this.instance.setPassEditorDialogCallback(this.callbacks.passEditorDialog);
 
     // Resize parent when children resize
     this.bubbleUp(
@@ -300,7 +299,5 @@ export default class Exercise {
     }
 
     return machineName;
-
-    return this.instance.getSummaryText?.() ?? this.params.dictionary.get('noSummaryAvailable');
   }
 }

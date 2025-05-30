@@ -1,5 +1,6 @@
 import FocusTrap from '@services/focus-trap.js';
 import Util from '@services/util.js';
+import H5PUtil from '@services/utils-h5p.js';
 import OptionFieldFactory from './option-field-factory.js';
 import './options-dialog.scss';
 
@@ -129,12 +130,26 @@ export default class OptionsDialog {
     }
   }
 
+  setEditorForm(data = {}) {
+    this.data = data;
+    this.formFields = [];
+
+    this.contentContainer.innerHTML = '';
+
+    this.formFields = data.parent.children;
+    this.contentContainer.append(data.formDOM);
+
+    this.contentContainer.append(this.buttonRow);
+  }
+
   /**
    * Set the form fields.
    * @param {object} fields Fields to set.
    * @param {object} values Values to set.
    */
-  setFields(fields, values) {
+  setCustomForm(fields, values) {
+    this.type = 'custom';
+
     this.contentContainer.innerHTML = '';
 
     this.formFields = fields
@@ -153,20 +168,73 @@ export default class OptionsDialog {
   }
 
   save() {
-    const isInputValid = this.formFields.every((field) => field.isValid());
-    if (!isInputValid) {
+    this.hide();
+
+    let values;
+
+    if (H5PUtil.isEditor()) {
       this.formFields.forEach((field) => {
         field.validate();
       });
 
-      return;
+      values = [];
+
+      const contentTypeValues = Object
+        .keys(this.data.values.contentTypeGroup.contentType.params)
+        .map((key) => {
+          return {
+            name: key,
+            value: this.data.values.contentTypeGroup.contentType.params[key]
+          };
+        });
+
+      values.push({
+        name: 'contentType',
+        value: contentTypeValues
+      });
+
+      const cardSettingsValues = Object
+        .keys(this.data.values.cardSettings)
+        .map((key) => {
+          return {
+            name: key,
+            value: this.data.values.cardSettings[key]
+          };
+        });
+
+      values.push({
+        name: 'cardSettings',
+        value: cardSettingsValues
+      });
+
+      const cardCapabilitiesValues = Object
+        .keys(this.data.values.cardCapabilities)
+        .map((key) => {
+          return {
+            name: key,
+            value: this.data.values.cardCapabilities[key]
+          };
+        });
+
+      values.push({
+        name: 'cardCapabilities',
+        value: cardCapabilitiesValues
+      });
     }
+    else {
+      const isInputValid = this.formFields.every((field) => field.isValid());
+      if (!isInputValid) {
+        this.formFields.forEach((field) => {
+          field.validate();
+        });
 
-    this.hide();
+        return;
+      }
 
-    const values = this.formFields.map((field) => {
-      return field.getValue();
-    });
+      values = this.formFields.map((field) => {
+        return field.getValue();
+      });
+    }
 
     this.callbacks.onSaved(values);
   }
@@ -212,11 +280,6 @@ export default class OptionsDialog {
 
   cancel() {
     this.hide();
-    this.formFields.forEach((field) => {
-      if (!field.isValid()) {
-        field.reset();
-      }
-    });
 
     this.callbacks.onCanceled();
   }

@@ -39,8 +39,8 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.params = Util.extend(defaults, params);
 
     this.contentId = contentId;
-    this.extras = extras;
-    this.previousState = extras?.previousState || {};
+    this.extras = extras ?? {};
+    this.previousState = extras?.previousState ?? {};
 
     this.globals = new Globals();
     this.globals.set('contentId', this.contentId);
@@ -51,6 +51,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.globals.set('isFullscreenSupported', this.isRoot() && H5P.fullscreenSupported);
     this.globals.set('Screenreader', Screenreader);
     this.globals.set('defaultLanguage', extras?.metadata?.defaultLanguage || 'en');
+    this.globals.set('editor', this.extras.IdeaBoardEditor ?? false);
 
     this.dictionary = new Dictionary();
     this.dictionary.fill({ l10n: this.params.l10n, a11y: this.params.a11y });
@@ -63,28 +64,27 @@ export default class IdeaBoard extends H5P.EventDispatcher {
 
     // Screenreader for polite screen reading
     document.body.append(Screenreader.getDOM());
+    console.log(this.params.board.cards.filter(() => true));
 
-    this.params.board.cards = (this.params.board.cards ?? []).filter((card) => {
-      if (!card.contentType?.library) {
-        return false;
-      }
-
-      if (Object.keys(card.telemetry ?? {}).length !== TELEMETRY_PROPERTY_COUNT) {
-        return false; // TODO: This could be nicer by checking for telemetry properties
-      }
-
-      return true;
-    });
+    this.sanitizeCards();
 
     this.main = new Main(
       {
         globals: this.globals,
         dictionary: this.dictionary,
+        // Setting editor params as previous state if the latter is not set
         previousState: this.previousState.main ?? { elements: this.params.board.cards },
       },
       {
         onFullscreenClicked: () => {
           this.handleFullscreenClicked();
+        },
+        setEditorContentValues: () => {
+          if (!this.extras.IdeaBoardEditor) {
+            return;
+          }
+
+          this.extras.IdeaBoardEditor.updateValue(this.getEditorValue());
         }
       }
     );
@@ -112,6 +112,20 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         recomputeDimensions();
       }, false);
     }
+  }
+
+  sanitizeCards() {
+    this.params.board.cards = (this.params.board.cards ?? []).filter((card) => {
+      if (!card.contentType?.library) {
+        return false;
+      }
+
+      if (Object.keys(card.telemetry ?? {}).length !== TELEMETRY_PROPERTY_COUNT) {
+        return false; // TODO: This could be nicer by checking for telemetry properties
+      }
+
+      return true;
+    });
   }
 
   /**
@@ -201,5 +215,17 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     return {
       main: this.main.getCurrentState()
     };
+  }
+
+  setBackgroundImage(image) {
+    this.main.setBackgroundImage(image);
+  }
+
+  setBackgroundColor(color) {
+    this.main.setBackgroundColor(color);
+  }
+
+  getEditorValue() {
+    return this.main.getEditorValue();
   }
 }

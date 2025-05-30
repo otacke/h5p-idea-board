@@ -11,6 +11,10 @@ html {
   box-sizing: border-box;
 }
 
+.h5p-idea-board-card-exercise * {
+  box-sizing: inherit;
+}
+
 // These are nice to have, but can cause trouble in the H5P editor
 // *:before, *:after {
 //   box-sizing: inherit;

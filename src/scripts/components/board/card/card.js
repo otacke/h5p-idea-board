@@ -17,7 +17,8 @@ export default class Card {
 
     this.callbacks = Util.extend({
       getBoardRect: () => {},
-      openEditorDialog: () => {}
+      openEditorDialog: () => {},
+      onUpdated: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -58,6 +59,7 @@ export default class Card {
         {
           onRatingChanged: (rating) => {
             this.setRating(rating);
+            this.callbacks.onUpdated();
           }
         }
       );
@@ -70,7 +72,8 @@ export default class Card {
 
     this.setBackgroundColor(this.params.backgroundColor);
     this.setBorderColor(this.params.borderColor);
-    this.setRating(this.params.capabilities.cardRating, { silent: true });
+
+    this.setRating(this.params.rating, { silent: true });
   }
 
   getDOM() {
@@ -83,6 +86,19 @@ export default class Card {
 
   focusContent() {
     return this.exercise.focus();
+  }
+
+  getEditorValue() {
+    return {
+      id: this.params.id,
+      contentType: this.params.contentType,
+      cardSettings: {
+        cardBackgroundColor: this.getBackgroundColor(),
+        cardBorderColor: this.getBorderColor(),
+        cardRating: this.getRating(),
+      },
+      cardCapabilities: this.params.capabilities,
+    };
   }
 
   getBackgroundColor() {
@@ -106,6 +122,17 @@ export default class Card {
     this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
   }
 
+  setCapabilities(capabilities = []) {
+    capabilities.forEach((capability) => {
+      this.params.capabilities[capability.name] = capability.value;
+    });
+  }
+
+  setContentTypeValues(contentTypeValues = {}) {
+    const paramsObject = Util.paramsArrayToPlainObject(contentTypeValues);
+    this.params.contentType.params = Util.extend(this.params.contentType.params, paramsObject);
+  };
+
   getCapabilities() {
     return {
       canUserRateCard: this.params.capabilities.canUserRateCard,
@@ -113,7 +140,6 @@ export default class Card {
       canUserDeleteCard: this.params.capabilities.canUserDeleteCard,
       canUserMoveCard: this.params.capabilities.canUserMoveCard,
       canUserResizeCard: this.params.capabilities.canUserResizeCard,
-      cardRating: this.getRating(),
     };
   }
 

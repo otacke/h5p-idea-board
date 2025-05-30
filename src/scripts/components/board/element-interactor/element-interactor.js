@@ -2,6 +2,7 @@ import Util from '@services/util.js';
 import ElementInteractorContextMenu from './element-interactor-context-menu.js';
 import ElementInteractorResizeKnob from './element-interactor-resize-knob.js';
 import './element-interactor.scss';
+import H5PUtil from '../../../services/utils-h5p.js';
 
 /** @constant {number} MOVE_DELTA_INCREMENT Increment added when moving constantly. */
 const MOVE_DELTA_INCREMENT = 0.4;
@@ -71,6 +72,14 @@ export default class ElementInteractor {
     this.buildDOM();
   }
 
+  getId() {
+    return this.params.id;
+  }
+
+  getTelemetry() {
+    return this.params.telemetry;
+  }
+
   getDOM() {
     return this.dom;
   }
@@ -79,7 +88,7 @@ export default class ElementInteractor {
     this.dom = document.createElement('li');
     this.dom.classList.add('h5p-idea-board-element-interactor');
 
-    if (this.params.capabilities.move) {
+    if (this.params.capabilities.move || H5PUtil.isEditor()) {
       this.dom.classList.add('can-move');
     }
     this.dom.setAttribute('tabindex', '0');
@@ -139,7 +148,7 @@ export default class ElementInteractor {
     });
 
     this.buildContextMenu();
-    if (this.params.capabilities.resize) {
+    if (this.params.capabilities.resize || H5PUtil.isEditor()) {
       this.buildResizeKnobs();
     }
 
@@ -149,7 +158,7 @@ export default class ElementInteractor {
   buildContextMenu() {
     const contextMenuButtonParams = [];
 
-    if (this.params.capabilities.edit) {
+    if (this.params.capabilities.edit || H5PUtil.isEditor()) {
       contextMenuButtonParams.push({
         id: 'edit',
         type: 'pulse',
@@ -160,7 +169,7 @@ export default class ElementInteractor {
       });
     }
 
-    if (this.params.capabilities.move) {
+    if (this.params.capabilities.move || H5PUtil.isEditor()) {
       contextMenuButtonParams.push({
         id: 'move',
         type: 'toggle',
@@ -177,7 +186,7 @@ export default class ElementInteractor {
       });
     }
 
-    if (this.params.capabilities.resize) {
+    if (this.params.capabilities.resize || H5PUtil.isEditor()) {
       contextMenuButtonParams.push({
         id: 'resize',
         type: 'toggle',
@@ -212,7 +221,7 @@ export default class ElementInteractor {
       }
     });
 
-    if (this.params.capabilities.delete) {
+    if (this.params.capabilities.delete || H5PUtil.isEditor()) {
       contextMenuButtonParams.push({
         id: 'delete',
         type: 'pulse',
@@ -275,7 +284,7 @@ export default class ElementInteractor {
 
   setMode(mode = INTERACTOR_MODE.view) {
     let modeWasOverridden = false;
-    if (!this.params.capabilities.edit) {
+    if (!this.params.capabilities.edit && !H5PUtil.isEditor()) {
       modeWasOverridden = (mode === INTERACTOR_MODE.interact);
       mode = INTERACTOR_MODE.view;
     }

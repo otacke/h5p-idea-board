@@ -9,6 +9,7 @@
     "name": "board",
     "label": "Idea board",
     "type": "group",
+    "widget": "ideaboard",
     "importance": "high",
     "fields": [
       {
@@ -25,13 +26,15 @@
             {
               "name": "id",
               "type": "text",
-              "label": "ID"
+              "label": "ID",
+              "widget": "none"
             },
             {
               "name": "telemetry",
               "type": "group",
               "label": "Telemetry",
               "importance": "low",
+              "widget": "none",
               "fields": [
                 {
                   "name": "x",
@@ -52,38 +55,72 @@
               ]
             },
             {
-              "name": "contentType",
-              "type": "library",
+              "name": "contentTypeGroup",
+              "type": "group",
               "label": "Content type",
               "importance": "high",
-              "options": [
-                "H5P.EditableText 1.0",
-                "H5P.EditableMedium 1.0"
+              "expanded": true,
+              "fields": [
+                {
+                  "name": "contentType",
+                  "type": "library",
+                  "label": "Content type",
+                  "importance": "high",
+                  "options": [
+                    "H5P.EditableText 1.0",
+                    "H5P.EditableMedium 1.0"
+                  ]
+                },
+                {
+                  "name": "Dummy",
+                  "type": "boolean",
+                  "label": "Dummy",
+                  "widget": "none"
+                }
               ]
             },
             {
-              "name": "cardBackgroundColor",
-              "type": "text",
-              "label": "Background color",
-              "default": "rgb(247, 249, 54)",
-              "widget": "colorSelector",
-              "spectrum": {
-                "showInput": true,
-                "showInitial": true,
-                "preferredFormat": "rgb"
-              }
-            },
-            {
-              "name": "cardBorderColor",
-              "type": "text",
-              "label": "Border color",
-              "default": "rgb(226, 227, 45)",
-              "widget": "colorSelector",
-              "spectrum": {
-                "showInput": true,
-                "showInitial": true,
-                "preferredFormat": "rgb"
-              }
+              "name": "cardSettings",
+              "type": "group",
+              "label": "Card settings",
+              "importance": "low",
+              "fields": [
+                {
+                  "name": "cardBackgroundColor",
+                  "type": "text",
+                  "label": "Background color",
+                  "default": "rgb(247, 249, 54)",
+                  "widget": "colorSelector",
+                  "spectrum": {
+                    "showInput": true,
+                    "showInitial": true,
+                    "preferredFormat": "rgb"
+                  }
+                },
+                {
+                  "name": "cardBorderColor",
+                  "type": "text",
+                  "label": "Border color",
+                  "default": "rgb(226, 227, 45)",
+                  "widget": "colorSelector",
+                  "spectrum": {
+                    "showInput": true,
+                    "showInitial": true,
+                    "preferredFormat": "rgb"
+                  }
+                },
+                {
+                  "name": "cardRating",
+                  "type": "number",
+                  "label": "Card rating",
+                  "importance": "low",
+                  "description": "Rating of the card.",
+                  "default": 0,
+                  "min": 0,
+                  "max": 5,
+                  "step": 1
+                }
+              ]
             },
             {
               "name": "cardCapabilities",
@@ -126,26 +163,6 @@
                   "importance": "low",
                   "description": "If enabled, the user can rate the card.",
                   "default": false
-                },
-                {
-                  "name": "cardRating",
-                  "type": "number",
-                  "label": "Card rating",
-                  "importance": "low",
-                  "description": "Rating of the card.",
-                  "default": 0,
-                  "min": 0,
-                  "max": 5,
-                  "step": 1,
-                  "widget": "showWhen",
-                  "showWhen": {
-                    "rules": [
-                      {
-                        "field": "canUserRateCard",
-                        "equals": true
-                      }
-                    ]
-                  }
                 }
               ]
             }

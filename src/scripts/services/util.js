@@ -144,4 +144,19 @@ export default class Util {
     // Primitive or obj2 overrides
     return obj2 !== undefined ? obj2 : obj1;
   }
+
+  static paramsArrayToPlainObject(arr) {
+    const result = {};
+
+    arr.forEach((item) => {
+      if (Array.isArray(item.value)) {
+        result[item.name] = paramsArrayToPlainObject(item.value);
+      }
+      else {
+        result[item.name] = item.value;
+      }
+    });
+
+    return result;
+  }
 }

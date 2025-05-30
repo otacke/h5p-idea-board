@@ -7,7 +7,7 @@
   margin: 0;
   outline: none;
   padding: var(--padding);
-  width: 100%;
+  width: calc(100% - 2 * var(--padding));
 
   &:focus {
     border: 1px solid var(--color-editor-primary);

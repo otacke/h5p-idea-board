@@ -124,7 +124,7 @@ export default class H5PUtil {
    * Get the Uber name of the library.
    * @returns {string} Uber name of the content type.
    */
-  static getUberName() {
+  static getUberNameNoSpaces() {
     return `${libraryJson.machineName}-${libraryJson.majorVersion}.${libraryJson.minorVersion}`;
   }
 
@@ -134,7 +134,7 @@ export default class H5PUtil {
    * @returns {Promise<object>} Translation object or undefined if not found.
    */
   static async getTranslation(languageCode = 'en') {
-    const libraryPath = H5P.getLibraryPath(H5PUtil.getUberName());
+    const libraryPath = H5P.getLibraryPath(H5PUtil.getUberNameNoSpaces());
     const languagePath = `${libraryPath}/language/${languageCode}.json`;
 
     try {
@@ -149,5 +149,13 @@ export default class H5PUtil {
     catch (error) {
       return;
     }
+  }
+
+  /**
+   * Determine whether the H5P editor is being used.
+   * @returns {boolean} True if the H5P editor is being used, false otherwise.
+   */
+  static isEditor() {
+    return window.H5PEditor !== undefined;
   }
 }

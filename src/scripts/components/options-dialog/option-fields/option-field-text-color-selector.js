@@ -44,7 +44,6 @@ export default class OptionFieldText extends OptionField {
         theme: 'nano',
         components: {
           preview: true,
-          opacity: true,
           hue: true,
 
           interaction: {

@@ -50,7 +50,7 @@ export default class OptionFieldGroup extends OptionField {
     this.toggle(this.field.expanded === true);
 
     this.children = (this.field.fields ?? [])
-      .map((field) => factory.produce(field, value[field.name], dictionary))
+      .map((field) => factory.produce(field, value?.[field.name], dictionary))
       .filter((field) => field !== undefined && field !== null);
 
     this.children.forEach((field) => {

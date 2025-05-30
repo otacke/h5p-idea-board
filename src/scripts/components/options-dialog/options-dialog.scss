@@ -167,6 +167,22 @@
             }
           }
         }
+
+        .h5p-idea-board-content-form {
+          .field-name-contentTypeGroup .content >.field.library {
+            .h5p-editor-flex-wrapper {
+              display: none;
+            }
+
+            select[id^="field-contenttype-"] {
+              display: none;
+            }
+
+            .libwrap {
+              margin-top: -20px;
+            }
+          }
+        }
       }
     }
   }

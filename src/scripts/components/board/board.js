@@ -11,7 +11,8 @@ export default class Board {
       onClick: () => {},
       onDrop: () => {},
       onCardDeleted: () => {},
-      openEditorDialog: () => {}
+      openEditorDialog: () => {},
+      onUpdated: () => {}
     }, callbacks);
 
     this.cards = [];
@@ -28,20 +29,9 @@ export default class Board {
 
   buildDOM() {
     const params = this.params.globals.get('params');
-    let backgroundImageURL;
-    if (params?.backgroundSettings?.backgroundImage) {
-      backgroundImageURL = H5P.getPath(
-        params.backgroundSettings.backgroundImage.path ?? '',
-        this.params.globals.get('contentId')
-      );
-    }
 
     this.dom = document.createElement('section');
     this.dom.setAttribute('role', 'application');
-    this.dom.style.setProperty('--board-background-color', params?.backgroundSettings?.backgroundColor);
-    if (backgroundImageURL) {
-      this.dom.style.setProperty('--board-background-image-url', `url(${backgroundImageURL})`);
-    }
     this.dom.setAttribute(
       'aria-label',
       `${this.params.dictionary.get('a11y.board')}. ${this.params.dictionary.get('a11y.boardInstructions')}`
@@ -65,6 +55,9 @@ export default class Board {
       this.callbacks.onDrop(versionedMachineName, { x, y });
     });
 
+    this.setBackgroundImage(params?.backgroundSettings?.backgroundImage);
+    this.setBackgroundColor(params?.backgroundSettings?.backgroundColor);
+
     this.cardsList = document.createElement('ol');
     this.cardsList.classList.add('h5p-idea-board-cards-list');
     this.dom.append(this.cardsList);
@@ -78,8 +71,11 @@ export default class Board {
         id: card.params.id,
         contentType: card.params.contentType,
         previousState: card.exercise.getCurrentState(),
-        cardBackgroundColor: card.getBackgroundColor(),
-        cardBorderColor: card.getBorderColor(),
+        cardSettings: {
+          cardBackgroundColor: card.getBackgroundColor(),
+          cardBorderColor: card.getBorderColor(),
+          cardRating: card.getRating(),
+        },
         cardCapabilities: card.getCapabilities(),
         telemetry: interactor?.params?.telemetry
       };
@@ -87,9 +83,10 @@ export default class Board {
   }
 
   addElement(params = {}) {
-    params = Util.extend({
+    const elementParams = Util.extend({
       cardBackgroundColor: H5PUtil.findSemanticsField('cardBackgroundColor')?.default,
       cardBorderColor: H5PUtil.findSemanticsField('cardBorderColor')?.default,
+      cardRating: H5PUtil.findSemanticsField('cardRating')?.default,
       cardCapabilities: {
         canUserEditCard: true,
         canUserDeleteCard: true,
@@ -101,14 +98,15 @@ export default class Board {
 
     const card = new Card(
       {
-        id: params.id,
-        contentType: params.contentType,
+        id: elementParams.id,
+        contentType: elementParams.contentType,
         globals: this.params.globals,
         dictionary: this.params.dictionary,
-        backgroundColor: params.cardBackgroundColor,
-        borderColor: params.cardBorderColor,
-        capabilities: params.cardCapabilities,
-        previousState: params.previousState
+        backgroundColor: elementParams.cardBackgroundColor,
+        borderColor: elementParams.cardBorderColor,
+        rating: elementParams.cardRating,
+        capabilities: elementParams.cardCapabilities,
+        previousState: elementParams.previousState
       },
       {
         getBoardRect: () => {
@@ -116,23 +114,26 @@ export default class Board {
         },
         openEditorDialog: (id, params, callbacks) => {
           this.callbacks.openEditorDialog(id, params, callbacks);
-        }
+        },
+        onUpdated: () => {
+          this.callbacks.onUpdated();
+        },
       }
     );
     this.cards.push(card);
 
     const element = new ElementInteractor(
       {
-        id: params.id,
-        telemetry: params.telemetry,
+        id: elementParams.id,
+        telemetry: elementParams.telemetry,
         contentDOM: card.getDOM(),
         globals: this.params.globals,
         dictionary: this.params.dictionary,
         capabilities: {
-          edit: params.cardCapabilities.canUserEditCard,
-          delete: params.cardCapabilities.canUserDeleteCard,
-          move: params.cardCapabilities.canUserMoveCard,
-          resize: params.cardCapabilities.canUserResizeCard
+          edit: elementParams.cardCapabilities.canUserEditCard,
+          delete: elementParams.cardCapabilities.canUserDeleteCard,
+          move: elementParams.cardCapabilities.canUserMoveCard,
+          resize: elementParams.cardCapabilities.canUserResizeCard
         }
       },
       {
@@ -446,5 +447,51 @@ export default class Board {
     }
 
     return denominator;
+  }
+
+  setBackgroundImage(imageParams) {
+    if (!imageParams) {
+      this.dom.style.removeProperty('--board-background-image-url');
+      return;
+    }
+
+    const contentId = H5PUtil.isEditor() ? H5PEditor.contentId : this.params.globals.get('contentId');
+    const backgroundImageURL = H5P.getPath(imageParams.path ?? '', contentId);
+
+    if (backgroundImageURL) {
+      this.dom.style.setProperty('--board-background-image-url', `url(${backgroundImageURL})`);
+    }
+
+    this.backgroundImageParams = imageParams;
+  }
+
+  setBackgroundColor(color) {
+    if (typeof color !== 'string') {
+      this.dom.style.removeProperty('--board-background-color');
+      return;
+    }
+
+    this.dom.style.setProperty('--board-background-color', color);
+
+    this.backgroundColor = color;
+  }
+
+  getEditorValue() {
+    let cardValues = this.cards.map((card) => {
+      const editorValue = card.getEditorValue();
+      const cardId = card.getId();
+      const interactor = this.elementInteractors.find((interactor) => interactor.getId() === cardId);
+      editorValue.telemetry = interactor.getTelemetry();
+
+      return editorValue;
+    });
+
+    return {
+      cards: cardValues,
+      backgroundSettings: {
+        backgroundImage: this.backgroundImageParams,
+        backgroundColor: this.backgroundColor
+      }
+    };
   }
 }

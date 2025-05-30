@@ -16,7 +16,9 @@ export default class Main {
     }, params);
 
     this.callbacks = Util.extend({
-      onFullscreenClicked: () => {}
+      onFullscreenClicked: () => {},
+      setEditorContentValues: () => {},
+      onUpdated: () => {}
     }, callbacks);
 
     this.buildDOM();
@@ -34,8 +36,9 @@ export default class Main {
           id: element.id,
           telemetry: element.telemetry,
           contentType: element.contentType,
-          cardBackgroundColor: element.cardBackgroundColor,
-          cardBorderColor: element.cardBorderColor,
+          cardBackgroundColor: element.cardSettings.cardBackgroundColor,
+          cardBorderColor: element.cardSettings.cardBorderColor,
+          cardRating: element.cardSettings.cardRating,
           cardCapabilities: element.cardCapabilities,
           previousState: element.previousState || {}
         }
@@ -70,6 +73,9 @@ export default class Main {
         },
         openEditorDialog: async (id, params, callbacks) => {
           this.openEditorDialog(id, params, callbacks);
+        },
+        onUpdated: () => {
+          this.callbacks.onUpdated();
         }
       }
     );
@@ -96,12 +102,22 @@ export default class Main {
     const toolbarButtons = [];
 
     let allowedContentTypes = [];
-    if (globalParams.behaviour.userCanAddCards) {
-      Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
-        if (globalParams.behaviour.addableTypes[key] === true) {
-          allowedContentTypes.push(key.replace('addableType', '').toLowerCase());
-        }
-      });
+    if (H5PUtil.isEditor()) {
+      const addableTypes = H5PUtil.findSemanticsField('addableTypes');
+      if (!addableTypes?.fields) {
+        throw new Error('No addableTypes found in semantics');
+      }
+
+      allowedContentTypes = addableTypes.fields.map((field) => field.name.replace('addableType', '').toLowerCase());
+    }
+    else {
+      if (globalParams.behaviour.userCanAddCards || H5PUtil.isEditor()) {
+        Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
+          if (globalParams.behaviour.addableTypes[key] === true || H5PUtil.isEditor()) {
+            allowedContentTypes.push(key.replace('addableType', '').toLowerCase());
+          }
+        });
+      }
     }
 
     const contentTypeField = H5PUtil.findSemanticsField('contentType');
@@ -209,6 +225,7 @@ export default class Main {
         telemetry: params.telemetry,
         cardBackgroundColor: params.cardBackgroundColor,
         cardBorderColor: params.cardBorderColor,
+        cardRating: params.cardRating,
         cardCapabilities: params.cardCapabilities || {},
         contentType: contentType,
         previousState: params.previousState || {}
@@ -242,6 +259,7 @@ export default class Main {
       telemetry: params.telemetry,
       cardBackgroundColor: params.cardBackgroundColor,
       cardBorderColor: params.cardBorderColor,
+      cardRating: params.cardRating,
       cardCapabilities: params.cardCapabilities,
       contentType: contentType,
       previousState: params.previousState || {}
@@ -285,74 +303,141 @@ export default class Main {
     const cardsParams = this.board.getElementsParams();
     const cardParams = cardsParams.find((card) => card.id === id);
 
-    this.semantics = this.semantics ??
-      await H5PUtil.getTranslatedSemantics(this.params.globals.get('defaultLanguage'));
-
-    const contentTypeField = {
-      name: 'contentType',
-      type: 'group',
-      label: params.title,
-      importance: 'high',
-      expanded: true,
-      description: this.params.dictionary.get('l10n.contentTypeDescription'),
-      fields: [ ...params.fields ]
-    };
-
-    const cardParamsField = {
-      name: 'cardParams',
-      type: 'group',
-      label: this.params.dictionary.get('l10n.cardSettings'),
-      description: this.params.dictionary.get('l10n.contentTypeDescription'),
-      fields: [
-        H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
-        H5PUtil.findSemanticsField('cardBorderColor', this.semantics)
-      ]
-    };
-
-    if (cardParams.cardCapabilities.canUserRateCard) {
-      const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
-      delete field.widget; // showWhen
-      cardParamsField.fields.push(field);
-    }
-
-    const fields = [
-      contentTypeField,
-      cardParamsField
-    ];
-
-    const values = {
-      contentType: { ...params.values },
-      cardParams: {
-        cardBackgroundColor: cardParams.cardBackgroundColor,
-        cardBorderColor: cardParams.cardBorderColor,
+    if (H5PUtil.isEditor()) {
+      // Override text background color to transparent
+      if (params.versionedName.startsWith('H5P.EditableText ')) {
+        params.params.backgroundColor = 'rgba(255, 255, 255, 0)';
       }
-    };
 
-    if (cardParams.cardCapabilities.canUserRateCard) {
-      values.cardParams.cardRating = cardParams.cardCapabilities.cardRating;
+      const contentFormDOM = document.createElement('div');
+      contentFormDOM.classList.add('h5p-idea-board-content-form');
+
+      const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(0);
+
+      groupInstance.params.contentTypeGroup.contentType.library = params.versionedName;
+      groupInstance.params.contentTypeGroup.contentType.params = params.params;
+      groupInstance.params.id = cardParams.id;
+      groupInstance.params.telemetry = cardParams.telemetry;
+      groupInstance.params.cardSettings = cardParams.cardSettings || {};
+      groupInstance.params.cardCapabilities = cardParams.cardCapabilities;
+
+      H5PEditor.processSemanticsChunk(
+        groupInstance.field.fields,
+        groupInstance.params,
+        H5P.jQuery(contentFormDOM),
+        groupInstance,
+      );
+
+      this.optionsDialog.setEditorForm({
+        fields: groupInstance.field.fields,
+        values: groupInstance.params,
+        formDOM: contentFormDOM,
+        parent: groupInstance,
+      });
+    }
+    else {
+      this.semantics = this.semantics ??
+        await H5PUtil.getTranslatedSemantics(this.params.globals.get('defaultLanguage'));
+
+      const contentTypeField = {
+        name: 'contentType',
+        type: 'group',
+        label: params.title,
+        importance: 'high',
+        expanded: true,
+        description: this.params.dictionary.get('l10n.contentTypeDescription'),
+        fields: [ ...params.fields ]
+      };
+
+      // Remove background color field if it exists
+      contentTypeField.fields = contentTypeField.fields.filter((field) => field.name !== 'backgroundColor');
+
+      const cardSettingsField = {
+        name: 'cardSettings',
+        type: 'group',
+        label: this.params.dictionary.get('l10n.cardSettings'),
+        description: this.params.dictionary.get('l10n.contentTypeDescription'),
+        fields: [
+          H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
+          H5PUtil.findSemanticsField('cardBorderColor', this.semantics)
+        ]
+      };
+
+      if (cardParams.cardCapabilities.canUserRateCard) {
+        const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
+        delete field.widget; // showWhen
+        cardSettingsField.fields.push(field);
+      }
+
+      const fields = [
+        contentTypeField,
+        cardSettingsField
+      ];
+
+      const values = {
+        contentType: { ...params.values },
+        cardSettings: {
+          cardBackgroundColor: cardParams.cardSettings.cardBackgroundColor,
+          cardBorderColor: cardParams.cardSettings.cardBorderColor,
+        }
+      };
+
+      // Override text background color to transparent
+      values.contentType.backgroundColor = 'rgba(255, 255, 255, 0)';
+
+      if (cardParams.cardCapabilities.canUserRateCard) {
+        values.cardSettings.cardRating = cardParams.cardSettings.cardRating;
+      }
+
+      this.optionsDialog.setCustomForm(fields, values);
     }
 
     this.optionsDialog.setCallback('onSaved', (values) => {
-      const cards = this.board.getCards();
-      const card = cards.find((card) => card.getId() === id);
-
-      const cardParamsValues = values.find((field) => field.name === 'cardParams').value;
-      const cardBackgroundColor = cardParamsValues.find((field) => field.name === 'cardBackgroundColor').value;
-      card.setBackgroundColor(cardBackgroundColor);
-      const cardBorderColor = cardParamsValues.find((field) => field.name === 'cardBorderColor').value;
-      card.setBorderColor(cardBorderColor);
-
-      const cardRating = parseFloat(cardParamsValues.find((field) => field.name === 'cardRating')?.value);
-      if (typeof cardRating === 'number' && !isNaN(cardRating)) {
-        card.setRating(cardRating);
-      }
-
-      const contentTypeValues = values.find((field) => field.name === 'contentType').value;
-
-      callbacks.setValues(contentTypeValues);
+      this.handleOptionsDialogSave(values, id, callbacks);
     });
 
-    this.optionsDialog.setFields(fields, values);
     this.optionsDialog.show();
+  }
+
+  setBackgroundImage(image) {
+    this.board.setBackgroundImage(image);
+  }
+
+  setBackgroundColor(color) {
+    this.board.setBackgroundColor(color);
+  }
+
+  handleOptionsDialogSave(values, id, callbacks) {
+    const cards = this.board.getCards();
+    const card = cards.find((card) => card.getId() === id);
+
+    const cardSettings = values.find((field) => field.name === 'cardSettings')?.value;
+
+    const cardBackgroundColor = cardSettings.find((field) => field.name === 'cardBackgroundColor').value;
+    card.setBackgroundColor(cardBackgroundColor);
+
+    const cardBorderColor = cardSettings.find((field) => field.name === 'cardBorderColor').value;
+    card.setBorderColor(cardBorderColor);
+
+    const cardRating = parseFloat(cardSettings.find((field) => field.name === 'cardRating')?.value);
+    if (typeof cardRating === 'number' && !isNaN(cardRating)) {
+      card.setRating(cardRating);
+    }
+
+    const cardCapabilities = values.find((field) => field.name === 'cardCapabilities')?.value;
+    card.setCapabilities(cardCapabilities);
+
+    const contentTypeValues = values.find((field) => field.name === 'contentType')?.value;
+    card.setContentTypeValues(contentTypeValues);
+
+    // Sending back to subcontent type
+    callbacks.setValues(contentTypeValues, H5PUtil.isEditor());
+
+    // Store for parent content type
+    this.callbacks.setEditorContentValues();
+  }
+
+  getEditorValue() {
+    return this.board.getEditorValue();
   }
 }
