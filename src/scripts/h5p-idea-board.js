@@ -64,7 +64,6 @@ export default class IdeaBoard extends H5P.EventDispatcher {
 
     // Screenreader for polite screen reading
     document.body.append(Screenreader.getDOM());
-    console.log(this.params.board.cards.filter(() => true));
 
     this.sanitizeCards();
 
