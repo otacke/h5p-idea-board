@@ -183,14 +183,14 @@
             }
           }
 
+          .libwrap.h5p-editabletext-editor .field-name-behaviour {
+            display: none; // Don't need this as subcontent
+          }
+
           .libwrap.h5p-editablemedium-editor:not(:has(.libwrap.h5p-image-editor)) {
             >.field-name-behaviour{
               display: none; // ShowWhen widget not working in editor overlay
             }
-          }
-
-          .libwrap.h5p-editabletext-editor .field-name-behaviour {
-            display: none; // Don't need this as subcontent
           }
         }
       }
