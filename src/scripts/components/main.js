@@ -448,4 +448,8 @@ export default class Main {
   getEditorValue() {
     return this.board.getEditorValue();
   }
+
+  resize() {
+    this.optionsDialog.resize();
+  }
 }

@@ -21,6 +21,8 @@ export default class OptionsDialog {
       onSaved: () => {},
     }, callbacks);
 
+    this.isShowingState = false;
+
     this.handleGlobalClick = this.handleGlobalClick.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
 
@@ -258,6 +260,8 @@ export default class OptionsDialog {
 
       this.params.globals.get('mainInstance').trigger('resize');
     });
+
+    this.isShowingState = true;
   }
 
   /**
@@ -276,6 +280,8 @@ export default class OptionsDialog {
         this.returnFocusTo.focus();
       });
     }
+
+    this.isShowingState = false;
   }
 
   cancel() {
@@ -325,5 +331,28 @@ export default class OptionsDialog {
       event.preventDefault();
       this.cancel();
     }
+  }
+
+  resize() {
+    /*
+     * Workaround for CKEditor resizing issues in the editor.
+     * // TODO: Remove once HFP-4262 is resolved, @see https://h5ptechnology.atlassian.net/browse/HFP-4262
+     */
+    if (!H5PUtil.isEditor() || !this.formFields || !this.isShowingState) {
+      return;
+    }
+
+    const openCKEditorDOMs = [...this.content.querySelectorAll('.ck.ck-editor')];
+    if (!openCKEditorDOMs) {
+      return;
+    }
+
+    openCKEditorDOMs.forEach((openCKEditorDOM) => {
+      openCKEditorDOM.style.maxWidth = '';
+      openCKEditorDOM.style.width = 0;
+      window.requestAnimationFrame(() => {
+        openCKEditorDOM.style.width = `${openCKEditorDOM.parentElement.offsetWidth}px`;
+      });
+    });
   }
 }

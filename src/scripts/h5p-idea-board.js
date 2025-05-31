@@ -107,6 +107,10 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         recomputeDimensions();
       }, false);
     }
+
+    this.on('resize', () => {
+      this.main.resize();
+    });
   }
 
   /**

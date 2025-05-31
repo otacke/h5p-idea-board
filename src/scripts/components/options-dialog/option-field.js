@@ -64,4 +64,8 @@ export default class OptionField {
     this.dom.classList.toggle('has-error', !!message);
     this.error.innerText = message ?? '';
   }
+
+  resize() {
+    return; // May be implemented by subclasses
+  }
 }
