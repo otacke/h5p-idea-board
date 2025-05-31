@@ -284,12 +284,6 @@ export default class ElementInteractor {
   }
 
   setMode(mode = INTERACTOR_MODE.view) {
-    let modeWasOverridden = false;
-    if (!this.params.capabilities.edit && !H5PUtil.isEditor()) {
-      modeWasOverridden = (mode === INTERACTOR_MODE.interact);
-      mode = INTERACTOR_MODE.view;
-    }
-
     this.mode = mode;
 
     this.dom.classList.toggle('is-interactive', mode === INTERACTOR_MODE.interact);
@@ -299,9 +293,7 @@ export default class ElementInteractor {
       this.dom.removeAttribute('tabindex');
     }
     else {
-      if (!modeWasOverridden) {
-        this.contextMenu.hide();
-      }
+      this.contextMenu.hide();
       this.updateAriaSummary();
       this.dom.setAttribute('tabindex', '0');
     }

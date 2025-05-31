@@ -1,3 +1,4 @@
+import H5PUtil from '@services/utils-h5p.js';
 import Util from '@services/util.js';
 import { roundColorString, getAccessibleContrastColor } from '@services/utils-color.js';
 import Exercise from './exercise/exercise.js';
@@ -27,6 +28,10 @@ export default class Card {
     this.exerciseDOM = document.createElement('div');
     this.exerciseDOM.classList.add('h5p-idea-board-card-exercise');
     this.dom.append(this.exerciseDOM);
+
+    if (!this.params.capabilities.canUserEditCard && !H5PUtil.isEditor()) {
+      this.params.contentType.params.behaviour = Util.extend({ userCanEdit: false }, this.params.contentType.behaviour);
+    };
 
     this.exercise = new Exercise(
       {
