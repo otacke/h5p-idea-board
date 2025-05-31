@@ -78,12 +78,8 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         onFullscreenClicked: () => {
           this.handleFullscreenClicked();
         },
-        setEditorContentValues: () => {
-          if (!this.extras.IdeaBoardEditor) {
-            return;
-          }
-
-          this.extras.IdeaBoardEditor.updateValue(this.getEditorValue());
+        updateEditorValues: () => {
+          this.updateEditorValues();
         }
       }
     );
@@ -111,6 +107,17 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         recomputeDimensions();
       }, false);
     }
+  }
+
+  /**
+   * Update the board values in the editor.
+   */
+  updateEditorValues() {
+    if (!this.extras.IdeaBoardEditor || !this.main) {
+      return;
+    }
+
+    this.extras.IdeaBoardEditor.updateValue(this.getEditorValue());
   }
 
   sanitizeCards() {

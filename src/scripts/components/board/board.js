@@ -155,6 +155,9 @@ export default class Board {
         onDelete: (id) => {
           this.deleteElement(id);
         },
+        onMove: () => {
+          this.callbacks.onUpdated();
+        },
         resizeCard: (id) => {
           this.resizeCardInstance(id);
         },
@@ -231,6 +234,8 @@ export default class Board {
     }
 
     this.params.globals.get('Screenreader').read(this.params.dictionary.get('a11y.cardBroughtToFront'));
+
+    this.callbacks.onUpdated();
   }
 
   sendElementToBack(id, options = {}) {
@@ -254,10 +259,11 @@ export default class Board {
     }
 
     this.params.globals.get('Screenreader').read(this.params.dictionary.get('a11y.cardSentToBack'));
+
+    this.callbacks.onUpdated();
   }
 
   deleteElement(id) {
-
     const activeElement = document.activeElement;
 
     const confirmationDialog = this.params.globals.get('ConfirmationDialog');
@@ -288,6 +294,8 @@ export default class Board {
             id: element.params.id,
             focusDOM: focusDOM,
           });
+
+          this.callbacks.onUpdated();
         },
         onCanceled: () => {
           const element = this.getInteractor(id);
@@ -392,6 +400,8 @@ export default class Board {
     }
 
     card.resizeInstance();
+
+    this.callbacks.onUpdated();
   }
 
   getSummaryText(id) {

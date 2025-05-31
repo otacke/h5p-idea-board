@@ -53,6 +53,7 @@ export default class ElementInteractor {
       onBringToFront: () => {},
       onSendToBack: () => {},
       onDelete: () => {},
+      onMove: () => {},
       resizeCard: () => {},
       getDenominator: () => {},
       getSummaryText: () => {}
@@ -180,8 +181,8 @@ export default class ElementInteractor {
         onKeydown: (event, options) => {
           this.handleMoveStart(event, options);
         },
-        onKeyup: () => {
-          this.handleMoveEnd();
+        onKeyup: (event, options) => {
+          this.handleMoveEnd(event, options);
         }
       });
     }
@@ -197,8 +198,8 @@ export default class ElementInteractor {
         onKeydown: (event, options) => {
           this.handleResizeStart(event, options);
         },
-        onKeyup: () => {
-          this.handleResizeEnd();
+        onKeyup: (event, options) => {
+          this.handleResizeEnd(event, options);
         }
       });
     }
@@ -607,8 +608,13 @@ export default class ElementInteractor {
     event.stopPropagation();
   }
 
-  handleMoveEnd() {
+  handleMoveEnd(event, options) {
+    if (!options.active) {
+      return;
+    }
+
     this.moveDelta = 1;
+    this.callbacks.onMove();
   }
 
   handleResizeStart(event, options) {
@@ -636,8 +642,13 @@ export default class ElementInteractor {
     event.stopPropagation();
   }
 
-  handleResizeEnd() {
+  handleResizeEnd(event, options) {
+    if (!options.active) {
+      return;
+    }
+
     this.resizeDelta = 1;
+    this.callbacks.resizeCard(this.params.id);
   }
 
   /**
@@ -668,7 +679,6 @@ export default class ElementInteractor {
     if (!this.params.capabilities.move) {
       return;
     }
-
 
     this.moveStartPx = { x: event.clientX, y: event.clientY };
 
@@ -757,6 +767,8 @@ export default class ElementInteractor {
     document.removeEventListener('touchmove', this.handleTouchEvent);
     document.removeEventListener('pointermove', this.handlePointerMove);
     document.removeEventListener('pointerup', this.handlePointerUp);
+
+    this.callbacks.onMove();
   }
 
   retainFocus() {

@@ -17,7 +17,7 @@ export default class Main {
 
     this.callbacks = Util.extend({
       onFullscreenClicked: () => {},
-      setEditorContentValues: () => {},
+      updateEditorValues: () => {},
       onUpdated: () => {}
     }, callbacks);
 
@@ -75,7 +75,7 @@ export default class Main {
           this.openEditorDialog(id, params, callbacks);
         },
         onUpdated: () => {
-          this.callbacks.onUpdated();
+          this.callbacks.updateEditorValues();
         }
       }
     );
@@ -231,6 +231,8 @@ export default class Main {
         previousState: params.previousState || {}
       });
 
+      this.callbacks.updateEditorValues();
+
       return;
     }
 
@@ -264,6 +266,8 @@ export default class Main {
       contentType: contentType,
       previousState: params.previousState || {}
     });
+
+    this.callbacks.updateEditorValues();
   }
 
   setFullscreen(isFullscreen) {
@@ -297,6 +301,8 @@ export default class Main {
     else {
       this.toolbar.focus();
     }
+
+    this.callbacks.updateEditorValues();
   }
 
   async openEditorDialog(id, params, callbacks) {
@@ -401,10 +407,12 @@ export default class Main {
 
   setBackgroundImage(image) {
     this.board.setBackgroundImage(image);
+    this.callbacks.updateEditorValues();
   }
 
   setBackgroundColor(color) {
     this.board.setBackgroundColor(color);
+    this.callbacks.updateEditorValues();
   }
 
   handleOptionsDialogSave(values, id, callbacks) {
@@ -434,7 +442,7 @@ export default class Main {
     callbacks.setValues(contentTypeValues, H5PUtil.isEditor());
 
     // Store for parent content type
-    this.callbacks.setEditorContentValues();
+    this.callbacks.updateEditorValues();
   }
 
   getEditorValue() {
