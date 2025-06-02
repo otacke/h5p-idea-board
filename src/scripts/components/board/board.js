@@ -83,9 +83,6 @@ export default class Board {
   }
 
   addElement(params = {}) {
-    console.log(params);
-
-
     const elementParams = Util.extend({
       cardBackgroundColor: H5PUtil.findSemanticsField('cardBackgroundColor')?.default,
       cardBorderColor: H5PUtil.findSemanticsField('cardBorderColor')?.default,
