@@ -118,6 +118,11 @@
         top: calc(50% + 2px);
       }
 
+      &.toolbar-button-copy::before {
+        content: var(--icon-fontawesome-copy);
+        top: calc(50% + 1px);
+      }
+
       &.toolbar-button-delete::before {
         content: var(--icon-fontawesome-delete);
         top: calc(50% + 1px);

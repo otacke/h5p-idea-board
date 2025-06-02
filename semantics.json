@@ -469,6 +469,12 @@
         "default": "Send to back"
       },
       {
+        "name": "copy",
+        "type": "text",
+        "label": "Copy",
+        "default": "Copy"
+      },
+      {
         "name": "delete",
         "type": "text",
         "label": "Delete",

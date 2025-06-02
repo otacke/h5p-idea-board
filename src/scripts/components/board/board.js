@@ -83,6 +83,9 @@ export default class Board {
   }
 
   addElement(params = {}) {
+    console.log(params);
+
+
     const elementParams = Util.extend({
       cardBackgroundColor: H5PUtil.findSemanticsField('cardBackgroundColor')?.default,
       cardBorderColor: H5PUtil.findSemanticsField('cardBorderColor')?.default,
@@ -151,6 +154,9 @@ export default class Board {
         },
         onSendToBack: (id, options) => {
           this.sendElementToBack(id, options);
+        },
+        onCopy: (id) => {
+          this.copyElement(id);
         },
         onDelete: (id) => {
           this.deleteElement(id);
@@ -261,6 +267,35 @@ export default class Board {
     this.params.globals.get('Screenreader').read(this.params.dictionary.get('a11y.cardSentToBack'));
 
     this.callbacks.onUpdated();
+  }
+
+  copyElement(id) {
+    const interactor = this.getInteractor(id);
+    if (!interactor) {
+      return;
+    }
+
+    const card = this.getCard(id);
+    if (!card) {
+      return;
+    }
+
+    const telemetry = interactor.params.telemetry;
+    telemetry.x = Math.floor(Math.random() * 100);
+    telemetry.y = Math.floor(Math.random() * 100);
+
+    const copyParams = {
+      id: H5P.createUUID(),
+      contentType: card.params.contentType,
+      previousState: card.exercise.getCurrentState(),
+      cardBackgroundColor: card.getBackgroundColor(),
+      cardBorderColor: card.getBorderColor(),
+      cardRating: card.getRating(),
+      cardCapabilities: card.getCapabilities(),
+      telemetry: telemetry
+    };
+
+    this.addElement(copyParams);
   }
 
   deleteElement(id) {

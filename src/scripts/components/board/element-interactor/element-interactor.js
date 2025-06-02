@@ -52,6 +52,7 @@ export default class ElementInteractor {
       onEdit: () => {},
       onBringToFront: () => {},
       onSendToBack: () => {},
+      onCopy: () => {},
       onDelete: () => {},
       onMove: () => {},
       resizeCard: () => {},
@@ -219,6 +220,15 @@ export default class ElementInteractor {
       pulseStates: [{ id: 'sendToBack', label: this.params.dictionary.get('a11y.sendToBack') }],
       onClick: (event, options) => {
         this.handleSendToBack(event, options);
+      }
+    });
+
+    contextMenuButtonParams.push({
+      id: 'copy',
+      type: 'pulse',
+      pulseStates: [{ id: 'copy', label: this.params.dictionary.get('a11y.copy') }],
+      onClick: (event, options) => {
+        this.callbacks.onCopy(this.params.id);
       }
     });
 
