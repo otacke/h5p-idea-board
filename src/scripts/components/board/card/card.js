@@ -138,6 +138,10 @@ export default class Card {
     this.params.contentType.params = Util.extend(this.params.contentType.params, paramsObject);
   };
 
+  getContentTypeParams() {
+    return this.params.contentType;
+  }
+
   getCapabilities() {
     return {
       canUserRateCard: this.params.capabilities.canUserRateCard,

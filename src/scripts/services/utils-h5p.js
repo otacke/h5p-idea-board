@@ -40,41 +40,73 @@ export default class H5PUtil {
   }
 
   /**
-   * Find a semantics field by name in a semantics structure. Beware of duplicate field names!
-   * @param {string} fieldName Name of the field to find.
-   * @param {object|Array} semanticsStructure Semantics structure to search in.
-   * @returns {object|null} The first semantics field that fits, null otherwise.
+   * Find a semantics field by its selectors. Will only return the first match just like querySelector.
+   * @param {object} selectors Selectors to match against semantics fields.
+   * @param {object} [semanticsStructure] Semantics structure to search in.
+   * @returns {object|null} The matching semantics field or null if not found.
    */
-  static findSemanticsField(fieldName, semanticsStructure = semantics) {
-    if (!semanticsStructure) {
+  static semanticsFieldSelector(selectors = {}, semanticsStructure = semantics) {
+    if (!semanticsStructure || !Object.keys(selectors).length) {
       return null;
     }
 
-    if (Array.isArray(semanticsStructure)) {
-      return semanticsStructure
-        .map((semanticsChunk) => H5PUtil.findSemanticsField(fieldName, semanticsChunk))
-        .find((result) => result !== null) || null;
-    }
+    const stack = [semanticsStructure];
 
-    if (semanticsStructure.name === fieldName) {
-      return semanticsStructure;
-    }
+    while (stack.length) {
+      const current = stack.pop();
 
-    if (semanticsStructure.field) {
-      const result = H5PUtil.findSemanticsField(fieldName, semanticsStructure.field);
-      if (result !== null) {
-        return result;
+      if (Array.isArray(current)) {
+        for (let i = current.length - 1; i >= 0; i--) {
+          stack.push(current[i]);
+        }
+        continue;
       }
-    }
 
-    if (semanticsStructure.fields) {
-      const result = H5PUtil.findSemanticsField(fieldName, semanticsStructure.fields);
-      if (result !== null) {
-        return result;
+      if (Object.keys(selectors).every((key) => current[key] === selectors[key])) {
+        return current;
+      }
+
+      if (current.field) {
+        stack.push(current.field);
+      }
+      if (current.fields) {
+        stack.push(current.fields);
       }
     }
 
     return null;
+  }
+
+  /**
+   * Find all semantics fields by their selectors. Returns all matches as an array.
+   * @param {object} selectors Selectors to match against semantics fields.
+   * @param {object} [semanticsStructure] Semantics structure to search in.
+   * @returns {object[]} Array of matching semantics fields.
+   */
+  static semanticsFieldSelectorAll(selectors = {}, semanticsStructure = semantics) {
+    const matches = [];
+    if (!semanticsStructure || !Object.keys(selectors).length) {
+      return matches;
+    }
+
+    const search = (structure) => {
+      if (Array.isArray(structure)) {
+        structure.forEach(search);
+        return;
+      }
+      if (Object.keys(selectors).every((key) => structure[key] === selectors[key])) {
+        matches.push(structure);
+      }
+      if (structure.field) {
+        search(structure.field);
+      }
+      if (structure.fields) {
+        search(structure.fields);
+      }
+    };
+
+    search(semanticsStructure);
+    return matches;
   }
 
   /**
@@ -121,11 +153,19 @@ export default class H5PUtil {
   }
 
   /**
-   * Get the Uber name of the library.
+   * Get the Uber name of the library without spaces.
    * @returns {string} Uber name of the content type.
    */
   static getUberNameNoSpaces() {
     return `${libraryJson.machineName}-${libraryJson.majorVersion}.${libraryJson.minorVersion}`;
+  }
+
+  /**
+   * Get the Uber name of the library.
+   * @returns {string} Uber name of the content type.
+   */
+  static getUberName() {
+    return `${libraryJson.machineName} ${libraryJson.majorVersion}.${libraryJson.minorVersion}`;
   }
 
   /**

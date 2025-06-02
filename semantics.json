@@ -561,6 +561,18 @@
         "label": "Rating changed",
         "description": "@rating is a placeholder and will be replaced by the respective value.",
         "default": "The rating was changed to @rating."
+      },
+      {
+        "name": "pasteContent",
+        "type": "text",
+        "label": "Paste content",
+        "default": "Paste content from the clipboard."
+      },
+      {
+        "name": "pasteContentDisabled",
+        "type": "text",
+        "label": "Paste content disabled",
+        "default": "No suitable content to be pasted."
       }
     ]
   }

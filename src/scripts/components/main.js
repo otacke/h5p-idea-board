@@ -3,6 +3,7 @@ import OptionsDialog from '@components/options-dialog/options-dialog.js';
 import Toolbar from '@components/toolbar/toolbar.js';
 import Util from '@services/util.js';
 import H5PUtil from '@services/utils-h5p.js';
+import { getH5PClipboard, shapeParamsForClipboard, shapeParamsFromClipboard } from '@services/h5p-clipboard.js';
 import './main.scss';
 
 /** @constant {number} FULL_SCREEN_DELAY_SMALL_MS Time some browsers need to go to full screen. */
@@ -44,6 +45,67 @@ export default class Main {
         }
       );
     });
+
+    H5P.externalDispatcher.on('datainclipboard', (event) => {
+      this.updatePasteButtonState(event.data);
+    });
+
+    this.updatePasteButtonState();
+  }
+
+  updatePasteButtonState(data = {}) {
+    let canPaste = !data.reset;
+    if (canPaste) {
+      canPaste = this.canPasteFromClipboard();
+    }
+
+    if (canPaste) {
+      this.toolbar.enableButton('paste');
+    }
+    else {
+      this.toolbar.disableButton('paste');
+    }
+  }
+
+  getSupportedSubcontentTypes() {
+    const mainUberName = H5PUtil.getUberName();
+
+    const subcontentUberNames = Array.from(
+      new Set(H5PUtil.semanticsFieldSelectorAll({ type: 'library' }).flatMap((field) => field.options || []))
+    );
+
+    const subsubcontentUberNames = ['H5P.AdvancedText', 'H5P.Image', 'H5P.Audio', 'H5P.Video']
+      .map((machineName) => {
+        const libraryVersion = H5PUtil.getLibraryVersion(machineName);
+        return libraryVersion ? `${machineName} ${libraryVersion}` : null;
+      })
+      .filter(Boolean);
+
+    return [mainUberName, ...subcontentUberNames, ...subsubcontentUberNames];
+  }
+
+  isSupportedContentType(uberName) {
+    return this.getSupportedSubcontentTypes().includes(uberName);
+  }
+
+  canPasteFromClipboard() {
+    const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
+
+    if (!clipboard) {
+      return false;
+    }
+
+    const machineName = H5PUtil.getUberName().split(' ').shift();
+    if (
+      clipboard.from === machineName && (!clipboard.generic || this.isSupportedContentType(clipboard.generic.library))
+    ) {
+      return true;
+    }
+    else if (clipboard.generic && this.isSupportedContentType(clipboard.generic.library)) {
+      return true;
+    }
+
+    return false;
   }
 
   getDOM() {
@@ -67,6 +129,9 @@ export default class Main {
         },
         onDrop: (versionedMachineName, telemetry) => {
           this.addElementToBoard(versionedMachineName, { telemetry });
+        },
+        onCardCopied: (params = {}) => {
+          this.handleCardCopied(params);
         },
         onCardDeleted: (params = {}) => {
           this.handleCardDeleted(params);
@@ -95,6 +160,28 @@ export default class Main {
      * content is embedded.
      */
     this.dom.append(this.params.globals.get('ConfirmationDialog').getDOM());
+
+    document.addEventListener('keydown', (event) => {
+      this.handleKeyDown(event);
+    });
+  }
+
+  handleKeyDown(event) {
+    const isControlPressed = event.ctrlKey || event.metaKey;
+    if (!isControlPressed) {
+      return;
+    }
+
+    if (event.key !== 'v') {
+      return;
+    }
+
+    const isFromSubContent = event.target.closest('.h5p-idea-board-card-exercise') !== null;
+    if (isFromSubContent) {
+      return;
+    }
+
+    this.pasteContentFromClipboard();
   }
 
   buildToolbar() {
@@ -103,7 +190,7 @@ export default class Main {
 
     let allowedContentTypes = [];
     if (H5PUtil.isEditor()) {
-      const addableTypes = H5PUtil.findSemanticsField('addableTypes');
+      const addableTypes = H5PUtil.semanticsFieldSelector({ name: 'addableTypes' });
       if (!addableTypes?.fields) {
         throw new Error('No addableTypes found in semantics');
       }
@@ -120,7 +207,7 @@ export default class Main {
       }
     }
 
-    const contentTypeField = H5PUtil.findSemanticsField('contentType');
+    const contentTypeField = H5PUtil.semanticsFieldSelector({ name: 'contentType' });
     const versionedMachineNames = (contentTypeField?.options ?? []);
 
     versionedMachineNames.forEach((versionedMachineName) => {
@@ -177,6 +264,23 @@ export default class Main {
             }
           });
         });
+      }
+    });
+
+    toolbarButtons.push({
+      id: 'paste',
+      type: 'pulse',
+      pulseStates: [
+        {
+          id: 'paste',
+          label: this.params.dictionary.get('a11y.pasteContent'),
+        }
+      ],
+      a11y: {
+        disabled: this.params.dictionary.get('a11y.pasteContentDisabled')
+      },
+      onClick: () => {
+        this.pasteContentFromClipboard();
       }
     });
 
@@ -294,6 +398,47 @@ export default class Main {
     };
   }
 
+  pasteContentFromClipboard() {
+    if (!this.canPasteFromClipboard()) {
+      // TODO
+      console.warn('Cannot paste content from clipboard, no valid data found.');
+      return;
+    }
+
+    const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
+    const shapedParams = shapeParamsFromClipboard(clipboard, this.getSupportedSubcontentTypes());
+
+    let taintedMachineName = shapedParams.library ?? '';
+    if (taintedMachineName.startsWith('H5P.EditableMedium ')) {
+      const versionedSubContentMachineName = shapedParams?.params?.contentType?.library ?? '';
+      taintedMachineName = `${taintedMachineName}/${versionedSubContentMachineName}`;
+    }
+
+    this.addElementToBoard(
+      taintedMachineName,
+      { contentType: shapedParams }
+    );
+  }
+
+  handleCardCopied(params = {}) {
+    const clipboardData = {
+      contentId: this.params.globals.get('contentId'),
+      from: H5PUtil.getUberName().split(' ').shift(),
+      generic: 'contentType',
+    };
+
+    Object.keys(params).forEach((key) => {
+      if (['cardBackgroundColor', 'cardBorderColor', 'cardRating', 'cardCapabilities', 'telemetry'].includes(key)) {
+        clipboardData[key] = params[key];
+      }
+    });
+
+    clipboardData.specific = params;
+
+    const reshapedParams = shapeParamsForClipboard(clipboardData, this.getSupportedSubcontentTypes());
+    H5P.setClipboard(reshapedParams);
+  }
+
   handleCardDeleted(params = {}) {
     if (params.focusDOM) {
       params.focusDOM.focus();
@@ -364,13 +509,13 @@ export default class Main {
         label: this.params.dictionary.get('l10n.cardSettings'),
         description: this.params.dictionary.get('l10n.contentTypeDescription'),
         fields: [
-          H5PUtil.findSemanticsField('cardBackgroundColor', this.semantics),
-          H5PUtil.findSemanticsField('cardBorderColor', this.semantics)
+          H5PUtil.semanticsFieldSelector({ name: 'cardBackgroundColor' }, this.semantics),
+          H5PUtil.semanticsFieldSelector({ name: 'cardBorderColor' }, this.semantics)
         ]
       };
 
       if (cardParams.cardCapabilities.canUserRateCard) {
-        const field = H5PUtil.findSemanticsField('cardRating', this.semantics);
+        const field = H5PUtil.semanticsFieldSelector({ name: 'cardRating' }, this.semantics);
         delete field.widget; // showWhen
         cardSettingsField.fields.push(field);
       }

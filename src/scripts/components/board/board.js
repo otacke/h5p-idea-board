@@ -10,6 +10,8 @@ export default class Board {
     this.callbacks = Util.extend({
       onClick: () => {},
       onDrop: () => {},
+      onContentPasted: () => {},
+      onCardCopied: () => {},
       onCardDeleted: () => {},
       openEditorDialog: () => {},
       onUpdated: () => {}
@@ -84,9 +86,9 @@ export default class Board {
 
   addElement(params = {}) {
     const elementParams = Util.extend({
-      cardBackgroundColor: H5PUtil.findSemanticsField('cardBackgroundColor')?.default,
-      cardBorderColor: H5PUtil.findSemanticsField('cardBorderColor')?.default,
-      cardRating: H5PUtil.findSemanticsField('cardRating')?.default,
+      cardBackgroundColor: H5PUtil.semanticsFieldSelector({ name: 'cardBackgroundColor' })?.default,
+      cardBorderColor: H5PUtil.semanticsFieldSelector({ name: 'cardBorderColor' })?.default,
+      cardRating: H5PUtil.semanticsFieldSelector({ name: 'cardRating' })?.default,
       cardCapabilities: {
         canUserEditCard: true,
         canUserDeleteCard: true,
@@ -277,22 +279,16 @@ export default class Board {
       return;
     }
 
-    const telemetry = interactor.params.telemetry;
-    telemetry.x = Math.floor(Math.random() * 100);
-    telemetry.y = Math.floor(Math.random() * 100);
-
     const copyParams = {
-      id: H5P.createUUID(),
-      contentType: card.params.contentType,
-      previousState: card.exercise.getCurrentState(),
+      contentType: card.getContentTypeParams(),
       cardBackgroundColor: card.getBackgroundColor(),
       cardBorderColor: card.getBorderColor(),
       cardRating: card.getRating(),
       cardCapabilities: card.getCapabilities(),
-      telemetry: telemetry
+      telemetry: interactor.getTelemetry()
     };
 
-    this.addElement(copyParams);
+    this.callbacks.onCardCopied(copyParams);
   }
 
   deleteElement(id) {
@@ -472,7 +468,7 @@ export default class Board {
   }
 
   getDenominator(id) {
-    const index = this.elementInteractors.findIndex((elementInteractor) => elementInteractor.params.id === id);
+    const index = this.elementInteractors.findIndex((elementInteractor) => elementInteractor.getId() === id);
     const position = (index === -1) ? null : index + 1;
 
     const total = this.elementInteractors.length;

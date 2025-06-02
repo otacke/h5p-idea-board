@@ -125,6 +125,12 @@ export default class ElementInteractor {
       if (event.key === 'Enter' || event.key === ' ') {
         this.setMode(INTERACTOR_MODE.interact);
       }
+
+      const isControlPressed = event.ctrlKey || event.metaKey;
+      if (isControlPressed && event.key === 'c') {
+        this.callbacks.onCopy(this.params.id);
+        event.preventDefault();
+      }
     });
 
     this.dom.addEventListener('keyup', (event) => {

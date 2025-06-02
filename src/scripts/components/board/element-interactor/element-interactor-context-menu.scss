@@ -134,14 +134,3 @@
     display: none;
   }
 }
-
-.h5p-content.using-mouse,
-.h5p-idea-board-element-interactor:not(:focus-within) {
-  .toolbar-button-move {
-    display: none;
-  }
-
-  .toolbar-button-resize {
-    display: none;
-  }
-}

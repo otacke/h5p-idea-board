@@ -74,6 +74,10 @@
         content: var(--icon-fontawesome-video);
       }
 
+      &.toolbar-button-paste::before {
+        content: var(--icon-fontawesome-paste);
+      }
+
       &.toolbar-button-fullscreen {
         &.toolbar-button-exit-fullscreen {
           &::before {

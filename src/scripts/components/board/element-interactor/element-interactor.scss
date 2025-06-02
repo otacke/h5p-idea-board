@@ -52,6 +52,18 @@
   }
 }
 
+.h5p-content.using-mouse,
+.h5p-idea-board-element-interactor:not(:focus-within),
+.h5p-idea-board-exercise-instance:focus-within {
+  .toolbar-button-move {
+    display: none;
+  }
+
+  .toolbar-button-resize {
+    display: none;
+  }
+}
+
 .h5p-content.using-mouse {
   .h5p-idea-board-element-interactor {
     &:focus:not(.is-interactive) {
