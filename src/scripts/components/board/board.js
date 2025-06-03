@@ -515,6 +515,32 @@ export default class Board {
   }
 
   /**
+   * Get card by id.
+   * @param {string} id Id of the card.
+   * @returns {Card|undefined} Card or undefined if not available.
+   */
+  getCard(id) {
+    if (!id) {
+      return;
+    }
+
+    return this.cards.find((card) => card.params.id === id);
+  }
+
+  /**
+   * Get interactor by id.
+   * @param {string} id Id of the interactor.
+   * @returns {ElementInteractor|undefined} Interactor or undefined if not available.
+   */
+  getInteractor(id) {
+    if (!id) {
+      return;
+    }
+
+    return this.elementInteractors.find((interactor) => interactor.params.id === id);
+  }
+
+  /**
    * Get denominator text for a card (e.g. "Card 1 of 5").
    * @param {string} id Card id.
    * @returns {string} Denominator text.
