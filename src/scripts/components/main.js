@@ -109,8 +109,6 @@ export default class Main {
    * @returns {string[]} Array of supported uber names.
    */
   getSupportedSubcontentTypes() {
-    const mainUberName = H5PUtil.getUberName();
-
     const subcontentUberNames = Array.from(
       new Set(H5PUtil.semanticsFieldSelectorAll({ type: 'library' }).flatMap((field) => field.options || []))
     );
@@ -122,7 +120,7 @@ export default class Main {
       })
       .filter(Boolean);
 
-    return [mainUberName, ...subcontentUberNames, ...subsubcontentUberNames];
+    return [...subcontentUberNames, ...subsubcontentUberNames];
   }
 
   /**

@@ -53,6 +53,7 @@
 }
 
 .h5p-content.using-mouse,
+.h5p-idea-board.using-mouse,
 .h5p-idea-board-element-interactor:not(:focus-within),
 .h5p-idea-board-exercise-instance:focus-within {
   .toolbar-button-move {
@@ -64,7 +65,8 @@
   }
 }
 
-.h5p-content.using-mouse {
+.h5p-content.using-mouse,
+.h5p-idea-board.using-mouse {
   .h5p-idea-board-element-interactor {
     &:focus:not(.is-interactive) {
       outline: 2px dotted var(--color-primary) !important; /* H5P Core is overriding this with !important :-/ */
