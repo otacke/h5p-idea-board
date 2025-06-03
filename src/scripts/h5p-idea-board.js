@@ -152,16 +152,18 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.dom.appendChild(this.main.getDOM());
 
     // When in editor, using-mouse not set by H5P Core, so we set it manually
-    this.dom.classList.add('using-mouse');
-    this.dom.addEventListener('mousedown', () => {
+    if (H5PUtil.isEditor()) {
       this.dom.classList.add('using-mouse');
-    });
-    this.dom.addEventListener('keydown', () => {
-      this.dom.classList.remove('using-mouse');
-    });
-    this.dom.addEventListener('keyup', () => {
-      this.dom.classList.remove('using-mouse');
-    });
+      this.dom.addEventListener('mousedown', () => {
+        this.dom.classList.add('using-mouse');
+      });
+      this.dom.addEventListener('keydown', () => {
+        this.dom.classList.remove('using-mouse');
+      });
+      this.dom.addEventListener('keyup', () => {
+        this.dom.classList.remove('using-mouse');
+      });
+    }
 
     // Using same mechanism to determine base width as Course Presentation
     const domWidth = parseInt(this.dom.style.width) || 0;
