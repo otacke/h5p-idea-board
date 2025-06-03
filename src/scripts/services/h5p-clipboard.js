@@ -106,15 +106,10 @@ export const shapeParamsForClipboard = (params, supportedSubcontentTypeUberNames
 };
 
 export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberNames) => {
-  let masterParams;
-  if (typeof params.generic === 'string') {
-    masterParams = params.specific[params.generic];
-  }
-  else {
-    masterParams = params.generic;
-  }
+  let genericParams = params.generic;
+  let specificParams = params.specific;
 
-  const subContentUberName = masterParams.library;
+  const subContentUberName = genericParams.library;
 
   const contentType = {};
 
@@ -123,7 +118,7 @@ export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberName
       supportedSubcontentTypeUberNames.filter((name) => name.startsWith('H5P.EditableText '))[0] || '';
     if (editableTextUberName.length > 0) {
       contentType.library = editableTextUberName;
-      contentType.params = { text: masterParams.params.text };
+      contentType.params = { text: genericParams.params.text };
     }
   }
   else if (
@@ -136,15 +131,19 @@ export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberName
 
     contentType.library = editableMediumUberName;
     contentType.params = {
-      contentType: masterParams
+      contentType: genericParams
     };
   }
 
   if (Object.keys(contentType).length) {
-    return contentType;
+    return {
+      specific: specificParams,
+      generic: contentType
+    };
   }
 
-  // TODO: We need to include the specific params as well
-
-  return masterParams;
+  return {
+    specific: specificParams,
+    generic: genericParams
+  };
 };

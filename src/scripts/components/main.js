@@ -407,16 +407,19 @@ export default class Main {
 
     const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
     const shapedParams = shapeParamsFromClipboard(clipboard, this.getSupportedSubcontentTypes());
+    delete shapedParams.specific.contentType;
+    delete shapedParams.specific.telemetry?.x;
+    delete shapedParams.specific.telemetry?.y;
 
-    let taintedMachineName = shapedParams.library ?? '';
+    let taintedMachineName = shapedParams.generic.library ?? '';
     if (taintedMachineName.startsWith('H5P.EditableMedium ')) {
-      const versionedSubContentMachineName = shapedParams?.params?.contentType?.library ?? '';
+      const versionedSubContentMachineName = shapedParams.generic?.params?.contentType?.library ?? '';
       taintedMachineName = `${taintedMachineName}/${versionedSubContentMachineName}`;
     }
 
     this.addElementToBoard(
       taintedMachineName,
-      { contentType: shapedParams }
+      { ...shapedParams.specific, contentType: shapedParams.generic }
     );
   }
 
