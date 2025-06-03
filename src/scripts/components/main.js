@@ -237,8 +237,9 @@ export default class Main {
       return; // Only handle paste events
     }
 
+    const isWithinIdeaBoard = event.target.closest('.h5p-idea-board-main') !== null;
     const isFromSubContent = event.target.closest('.h5p-idea-board-card-exercise') !== null;
-    if (isFromSubContent) {
+    if (isFromSubContent || !isWithinIdeaBoard) {
       return;
     }
 
