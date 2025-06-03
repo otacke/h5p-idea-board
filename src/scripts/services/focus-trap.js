@@ -50,88 +50,6 @@ export default class FocusTrap {
   }
 
   /**
-   * Deactivate.
-   */
-  deactivate() {
-    if (!this.isActivated) {
-      return;
-    }
-
-    this.observer?.unobserve(this.params.trapElement);
-    this.observer?.disconnect();
-
-    this.params.trapElement
-      .removeEventListener('keydown', this.handleKeydownEvent, true);
-    this.isActivated = false;
-  }
-
-  /**
-   * Update list of focusable elements.
-   */
-  updateFocusableElements() {
-    if (!this.params.trapElement) {
-      return;
-    }
-
-    this.focusableElements = this.getFocusableElements(this.params.trapElement);
-  }
-
-  /**
-   * Get focusable elements within container.
-   * @param {HTMLElement} container Container to look in.
-   * @returns {HTMLElement[]|undefined} Focusable elements within container.
-   */
-  getFocusableElements(container) {
-    if (!container) {
-      return;
-    }
-
-    const focusableElementsSelector = [
-      'a[href]:not([disabled])',
-      'button:not([disabled])',
-      'textarea:not([disabled])',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'video',
-      'audio',
-      '*[tabindex="0"]',
-    ].join(', ');
-
-    return Array.from(container.querySelectorAll(focusableElementsSelector))
-      .filter((element) => {
-
-        return (
-          element.disabled !== true &&
-          element.getAttribute('tabindex') !== '-1' &&
-          this.isElementVisible(element)
-        );
-      });
-  }
-
-  /**
-   * Check whether HTML element is child of trap.
-   * @param {HTMLElement} element Element to check.
-   * @returns {boolean} True, if element is child.
-   */
-  isChild(element) {
-    if (!this.params.trapElement) {
-      return false;
-    }
-
-    const parent = element.parentNode;
-
-    if (!parent) {
-      return false;
-    }
-
-    if (parent === this.params.trapElement) {
-      return true;
-    }
-
-    return this.isChild(parent);
-  }
-
-  /**
    * Handle visible.
    */
   handleVisible() {
@@ -169,6 +87,66 @@ export default class FocusTrap {
   }
 
   /**
+   * Update list of focusable elements.
+   */
+  updateFocusableElements() {
+    if (!this.params.trapElement) {
+      return;
+    }
+
+    this.focusableElements = this.getFocusableElements(this.params.trapElement);
+  }
+
+  /**
+   * Get focusable elements within container.
+   * @param {HTMLElement} container Container to look in.
+   * @returns {HTMLElement[]|undefined} Focusable elements within container.
+   */
+  getFocusableElements(container) {
+    if (!container) {
+      return;
+    }
+
+    const focusableElementsSelector = [
+      'a[href]:not([disabled])',
+      'button:not([disabled])',
+      'textarea:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'video',
+      'audio',
+      '*[tabindex="0"]',
+    ].join(', ');
+
+    return Array.from(container.querySelectorAll(focusableElementsSelector))
+      .filter((element) => {
+        return (
+          element.disabled !== true &&
+          element.getAttribute('tabindex') !== '-1' &&
+          this.isElementVisible(element)
+        );
+      });
+  }
+
+  /**
+   * Check whether element is visible.
+   * @param {HTMLElement} element Element to check.
+   * @returns {boolean} True, if element is visible, false otherwise.
+   */
+  isElementVisible(element) {
+    if (!element) {
+      return false;
+    }
+
+    const style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden') {
+      return false;
+    }
+
+    return element.parentElement ? this.isElementVisible(element.parentElement) : true;
+  }
+
+  /**
    * Handle keyboard event.
    * @param {KeyboardEvent} event Keyboard event.
    */
@@ -203,20 +181,40 @@ export default class FocusTrap {
   }
 
   /**
-   * Check whether element is visible.
+   * Check whether HTML element is child of trap.
    * @param {HTMLElement} element Element to check.
-   * @returns {boolean} True, if element is visible, false otherwise.
+   * @returns {boolean} True, if element is child.
    */
-  isElementVisible(element) {
-    if (!element) {
+  isChild(element) {
+    if (!this.params.trapElement) {
       return false;
     }
 
-    const style = window.getComputedStyle(element);
-    if (style.display === 'none' || style.visibility === 'hidden') {
+    const parent = element.parentNode;
+
+    if (!parent) {
       return false;
     }
 
-    return element.parentElement ? this.isElementVisible(element.parentElement) : true;
+    if (parent === this.params.trapElement) {
+      return true;
+    }
+
+    return this.isChild(parent);
+  }
+
+  /**
+   * Deactivate.
+   */
+  deactivate() {
+    if (!this.isActivated) {
+      return;
+    }
+
+    this.observer?.unobserve(this.params.trapElement);
+    this.observer?.disconnect();
+
+    this.params.trapElement.removeEventListener('keydown', this.handleKeydownEvent, true);
+    this.isActivated = false;
   }
 }

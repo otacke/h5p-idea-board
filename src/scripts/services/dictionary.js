@@ -19,28 +19,6 @@ export default class Dictionary {
   }
 
   /**
-   * Get translation for a key.
-   * @param {string} key Key to look for.
-   * @param {object} [base] Base to start looking.
-   * @returns {string} Translation.
-   */
-  get(key, base = this.translation) {
-    const splits = key.split(/[./]+/);
-
-    if (splits.length === 1) {
-      return base[key];
-    }
-
-    key = splits.shift();
-
-    if (typeof base[key] !== 'object') {
-      return; // Path doesn't exist
-    }
-
-    return this.get(splits.join('.'), base[key]);
-  }
-
-  /**
    * Sanitize translations recursively: HTML decode and strip HTML.
    * @param {string|object} translation Translation.
    * @returns {string} Translation value.
@@ -62,5 +40,27 @@ export default class Dictionary {
     }
 
     return translation;
+  }
+
+  /**
+   * Get translation for a key.
+   * @param {string} key Key to look for.
+   * @param {object} [base] Base to start looking.
+   * @returns {string} Translation.
+   */
+  get(key, base = this.translation) {
+    const splits = key.split(/[./]+/);
+
+    if (splits.length === 1) {
+      return base[key];
+    }
+
+    key = splits.shift();
+
+    if (typeof base[key] !== 'object') {
+      return; // Path doesn't exist
+    }
+
+    return this.get(splits.join('.'), base[key]);
   }
 }
