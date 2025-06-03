@@ -1,4 +1,3 @@
-
 import OptionField from '../option-field.js';
 import Util from '@services/util.js';
 
@@ -33,7 +32,13 @@ const DEFAULT_CKE_CONFIG = {
 };
 
 export default class OptionFieldText extends OptionField {
-
+  /**
+   * HTML text field for options dialog.
+   * @class
+   * @param {object} field Field definition.
+   * @param {string} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);
 
@@ -122,6 +127,9 @@ export default class OptionFieldText extends OptionField {
     this.updateTextAreaFromCKEditor();
   }
 
+  /**
+   * Show CKEditor.
+   */
   showCKEditor() {
     if (this.isShowingCKEditor) {
       return;
@@ -157,6 +165,9 @@ export default class OptionFieldText extends OptionField {
     });
   }
 
+  /**
+   * Hide CKEditor.
+   */
   hideCKEditor() {
     if (!this.ckeditor) {
       return;
@@ -224,6 +235,10 @@ export default class OptionFieldText extends OptionField {
     observer.observe(dom, { attributes: true, childList: true, subtree: true });
   }
 
+  /**
+   * Get field value.
+   * @returns {object} Field name and value.
+   */
   getValue() {
     return {
       name: this.field.name,
@@ -231,12 +246,19 @@ export default class OptionFieldText extends OptionField {
     };
   }
 
+  /**
+   * Reset field to default value.
+   */
   reset() {
     this.hideCKEditor();
     this.textarea.innerHTML = '';
     this.setError();
   }
 
+  /**
+   * Check if field value is valid.
+   * @returns {boolean} True if valid.
+   */
   isValid() {
     const value = this.getHTML().trim();
     if (value === '') {
@@ -246,6 +268,9 @@ export default class OptionFieldText extends OptionField {
     return true;
   }
 
+  /**
+   * Validate field value and show error if invalid.
+   */
   validate() {
     if (this.isValid()) {
       this.setError();

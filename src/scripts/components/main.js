@@ -12,7 +12,11 @@ import './main.scss';
 const FULL_SCREEN_DELAY_SMALL_MS = 50;
 
 export default class Main {
-
+  /**
+   * @class
+   * @param {object} params Parameters.
+   * @param {object} callbacks Callbacks.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({
       previousState: {}
@@ -55,6 +59,10 @@ export default class Main {
     this.updatePasteButtonState();
   }
 
+  /**
+   * Update the paste button state based on clipboard content.
+   * @param {object} data Event data.
+   */
   updatePasteButtonState(data = {}) {
     let canPaste = !data.reset;
     if (canPaste) {
@@ -96,6 +104,10 @@ export default class Main {
     }
   }
 
+  /**
+   * Get all supported subcontent types.
+   * @returns {string[]} Array of supported uber names.
+   */
   getSupportedSubcontentTypes() {
     const mainUberName = H5PUtil.getUberName();
 
@@ -113,10 +125,19 @@ export default class Main {
     return [mainUberName, ...subcontentUberNames, ...subsubcontentUberNames];
   }
 
+  /**
+   * Check if content type is supported.
+   * @param {string} uberName Library uber name to be checked.
+   * @returns {boolean} True if content type is supported, false otherwise.
+   */
   isSupportedContentType(uberName) {
     return this.getSupportedSubcontentTypes().includes(uberName);
   }
 
+  /**
+   * Check if clipboard content can be pasted.
+   * @returns {boolean} True if clipboard content can be pasted, false otherwise.
+   */
   canPasteFromClipboard() {
     const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
 
@@ -137,10 +158,17 @@ export default class Main {
     return false;
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The main DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Build the main DOM structure.
+   */
   buildDOM() {
     this.dom = document.createElement('main');
     this.dom.classList.add('h5p-idea-board-main');
@@ -195,6 +223,10 @@ export default class Main {
     });
   }
 
+  /**
+   * Handle keyboard events.
+   * @param {KeyboardEvent} event Keyboard event.
+   */
   handleKeyDown(event) {
     const isControlPressed = event.ctrlKey || event.metaKey;
     if (!isControlPressed) {
@@ -202,7 +234,7 @@ export default class Main {
     }
 
     if (event.key !== 'v') {
-      return;
+      return; // Only handle paste events
     }
 
     const isFromSubContent = event.target.closest('.h5p-idea-board-card-exercise') !== null;
@@ -213,6 +245,9 @@ export default class Main {
     this.pasteContentFromClipboard();
   }
 
+  /**
+   * Build the toolbar.
+   */
   buildToolbar() {
     const globalParams = this.params.globals.get('params');
     const toolbarButtons = [];
@@ -341,6 +376,11 @@ export default class Main {
     this.dom.append(this.toolbar.getDOM());
   }
 
+  /**
+   * Add an element to the board.
+   * @param {string} taintedMachineName Machine name of the content type (possibly tainted).
+   * @param {object} params Element parameters.
+   */
   addElementToBoard(taintedMachineName, params = {}) {
     const [ versionedMachineName, versionedSubContentMachineName ] = taintedMachineName.split('/');
 
@@ -403,7 +443,11 @@ export default class Main {
     this.callbacks.updateEditorValues();
   }
 
-  setFullscreen(isFullscreen) {
+  /**
+   * Set fullscreen mode.
+   * @param {boolean} shouldBeFullscreen Whether to enter or exit fullscreen.
+   */
+  setFullscreen(shouldBeFullscreen) {
     const style = window.getComputedStyle(this.dom);
     const marginHorizontal = parseFloat(style.getPropertyValue('margin-left')) +
       parseFloat(style.getPropertyValue('margin-right'));
@@ -412,7 +456,7 @@ export default class Main {
       parseFloat(style.getPropertyValue('margin-bottom'));
 
     window.setTimeout(() => {
-      this.board.setFullscreen(isFullscreen, {
+      this.board.setFullscreen(shouldBeFullscreen, {
         width: window.innerWidth - marginHorizontal,
         height: window.innerHeight - marginVertical - this.toolbar.getFullHeight()
       });
@@ -421,12 +465,19 @@ export default class Main {
     }, FULL_SCREEN_DELAY_SMALL_MS);
   }
 
+  /**
+   * Get current state for resume support.
+   * @returns {object} Current state.
+   */
   getCurrentState() {
     return {
       elements: this.board.getElementsParams(),
     };
   }
 
+  /**
+   * Paste content from clipboard.
+   */
   pasteContentFromClipboard() {
     if (!this.canPasteFromClipboard()) {
       return;
@@ -450,6 +501,10 @@ export default class Main {
     );
   }
 
+  /**
+   * Handle card copied event.
+   * @param {object} params Card parameters.
+   */
   handleCardCopied(params = {}) {
     const clipboardData = {
       contentId: this.params.globals.get('contentId'),
@@ -469,6 +524,11 @@ export default class Main {
     H5P.setClipboard(reshapedParams);
   }
 
+  /**
+   * Handle card deleted event.
+   * @param {object} params Parameters.
+   * @param {HTMLElement} [params.focusDOM] DOM element to focus after deletion.
+   */
   handleCardDeleted(params = {}) {
     if (params.focusDOM) {
       params.focusDOM.focus();
@@ -480,6 +540,12 @@ export default class Main {
     this.callbacks.updateEditorValues();
   }
 
+  /**
+   * Open editor dialog for a card.
+   * @param {string} id Card ID.
+   * @param {object} params Card parameters.
+   * @param {object} callbacks Callbacks for dialog.
+   */
   async openEditorDialog(id, params, callbacks) {
     const cardsParams = this.board.getElementsParams();
     const cardParams = cardsParams.find((card) => card.id === id);
@@ -580,16 +646,30 @@ export default class Main {
     this.optionsDialog.show();
   }
 
+  /**
+   * Set background image.
+   * @param {object} image Image object.
+   */
   setBackgroundImage(image) {
     this.board.setBackgroundImage(image);
     this.callbacks.updateEditorValues();
   }
 
+  /**
+   * Set background color.
+   * @param {string} color CSS color value.
+   */
   setBackgroundColor(color) {
     this.board.setBackgroundColor(color);
     this.callbacks.updateEditorValues();
   }
 
+  /**
+   * Handle options dialog save event.
+   * @param {object[]} values Values from the dialog.
+   * @param {string} id Card ID.
+   * @param {object} callbacks Callbacks for handling saved values.
+   */
   handleOptionsDialogSave(values, id, callbacks) {
     const cards = this.board.getCards();
     const card = cards.find((card) => card.getId() === id);
@@ -620,10 +700,17 @@ export default class Main {
     this.callbacks.updateEditorValues();
   }
 
+  /**
+   * Get editor values.
+   * @returns {object} Editor values.
+   */
   getEditorValue() {
     return this.board.getEditorValue();
   }
 
+  /**
+   * Handle resize events.
+   */
   resize() {
     this.optionsDialog.resize();
   }

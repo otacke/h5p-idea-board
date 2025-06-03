@@ -37,6 +37,9 @@ export default class Exercise {
     return this.dom;
   }
 
+  /**
+   * Resize the exercise instance.
+   */
   resize() {
     if (!this.instance) {
       return;
@@ -110,6 +113,9 @@ export default class Exercise {
     }
   }
 
+  /**
+   * Resize font size for HTML text content.
+   */
   resizeHTMLTextFontSize() {
     if (!this.instance) {
       return;
@@ -285,9 +291,13 @@ export default class Exercise {
     }
   }
 
+  /**
+   * Get summary text for the exercise.
+   * @returns {string} Summary text or machine name.
+   */
   getSummaryText() {
     if (!this.instance) {
-      return;
+      return '';
     }
 
     const machineName = this.instance.libraryInfo.machineName;

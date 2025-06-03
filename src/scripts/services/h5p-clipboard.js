@@ -31,7 +31,6 @@ export const getH5PClipboard = () => {
     clipboardData = localStorage.getItem('h5pClipboard');
   }
   catch (error) {
-    // TODO
     console.warn('H5P Clipboard is not supported in this browser.');
     return;
   }
@@ -44,7 +43,6 @@ export const getH5PClipboard = () => {
     clipboardData = JSON.parse(clipboardData);
   }
   catch (error) {
-    // TODO
     console.warn('H5P Clipboard data is not valid JSON.');
     return;
   }
@@ -80,7 +78,6 @@ export const getH5PClipboard = () => {
  * @returns {object} Shaped params.
  */
 export const shapeParamsForClipboard = (params, supportedSubcontentTypeUberNames) => {
-
   let mainParams = params.specific[params.generic];
   const library = mainParams.library;
 
@@ -105,6 +102,14 @@ export const shapeParamsForClipboard = (params, supportedSubcontentTypeUberNames
   return params;
 };
 
+/**
+ * Shape params from clipboard format to internal content type format.
+ * @param {object} params Clipboard params.
+ * @param {object} params.generic Generic params.
+ * @param {object} params.specific Specific params.
+ * @param {string[]} supportedSubcontentTypeUberNames List of supported subcontent type uber names.
+ * @returns {object} Shaped params for internal use.
+ */
 export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberNames) => {
   let genericParams = params.generic;
   let specificParams = params.specific;
@@ -152,7 +157,7 @@ export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberName
  * Get the reason why pasting is not possible.
  * @param {object} clipboard H5P clipboard data.
  * @param {object[]} supportedLibraries Supported libraries for the content type.
- * @returns {object} Reason and replaceable strings if applicable.
+ * @returns {string} reason.reason The reason code for paste failure, or empty string if successful.
  */
 export const getNoPasteReason = (clipboard, supportedLibraries) => {
   if (!clipboard || !clipboard.generic) {

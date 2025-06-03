@@ -5,6 +5,12 @@ import H5PUtil from '@services/utils-h5p.js';
 import './board.scss';
 
 export default class Board {
+  /**
+   * Board component for IdeaBoard.
+   * @class
+   * @param {object} params Parameters.
+   * @param {object} callbacks Callbacks.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({}, params);
     this.callbacks = Util.extend({
@@ -25,10 +31,17 @@ export default class Board {
     this.buildDOM();
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The board DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Build the DOM structure.
+   */
   buildDOM() {
     const params = this.params.globals.get('params');
 
@@ -65,6 +78,10 @@ export default class Board {
     this.dom.append(this.cardsList);
   }
 
+  /**
+   * Get parameters for all elements.
+   * @returns {object[]} Element parameters.
+   */
   getElementsParams() {
     return this.elementInteractors.map((interactor) => {
       const card = this.getCard(interactor.params.id);
@@ -84,6 +101,10 @@ export default class Board {
     });
   }
 
+  /**
+   * Add an element to the board.
+   * @param {object} params Element parameters.
+   */
   addElement(params = {}) {
     const elementParams = Util.extend({
       cardBackgroundColor: H5PUtil.semanticsFieldSelector({ name: 'cardBackgroundColor' })?.default,
@@ -182,6 +203,11 @@ export default class Board {
     // TODO: Add on drag event!? Check how DnB does it
   }
 
+  /**
+   * Handle editing mode change for an element.
+   * @param {string} elementIntaractorId Id of the element interactor.
+   * @param {string} mode New mode.
+   */
   handleEditingModeChanged(elementIntaractorId, mode) {
     const card = this.getCard(elementIntaractorId);
     if (mode === INTERACTOR_MODE.interact) {
@@ -200,6 +226,10 @@ export default class Board {
     }
   }
 
+  /**
+   * Edit an element.
+   * @param {string} id Element id.
+   */
   editElement(id) {
     const interactor = this.getInteractor(id);
     if (!interactor) {
@@ -219,6 +249,11 @@ export default class Board {
     });
   }
 
+  /**
+   * Bring element to front.
+   * @param {string} id Element id.
+   * @param {object} options Options.
+   */
   bringElementToFront(id, options = {}) {
     const interactor = this.elementInteractors.find((elementInteractor) => elementInteractor.params.id === id);
     if (!interactor) {
@@ -243,6 +278,11 @@ export default class Board {
     this.callbacks.onUpdated();
   }
 
+  /**
+   * Send element to back.
+   * @param {string} id Element id.
+   * @param {object} options Options.
+   */
   sendElementToBack(id, options = {}) {
     const interactor = this.getInteractor(id);
     if (!interactor) {
@@ -268,6 +308,10 @@ export default class Board {
     this.callbacks.onUpdated();
   }
 
+  /**
+   * Copy an element.
+   * @param {string} id Element id.
+   */
   copyElement(id) {
     const interactor = this.getInteractor(id);
     if (!interactor) {
@@ -291,6 +335,10 @@ export default class Board {
     this.callbacks.onCardCopied(copyParams);
   }
 
+  /**
+   * Delete an element.
+   * @param {string} id Element id.
+   */
   deleteElement(id) {
     const activeElement = document.activeElement;
 
@@ -342,6 +390,10 @@ export default class Board {
     confirmationDialog.show();
   }
 
+  /**
+   * Check if editing has ended.
+   * @param {Event} event Click event.
+   */
   checkEditingEnded(event) {
     this.elementInteractors.forEach((elementInteractor) => {
       if (event.target.closest('.h5p-idea-board-element-interactor') !== elementInteractor.getDOM()) {
@@ -350,14 +402,26 @@ export default class Board {
     });
   }
 
+  /**
+   * Get board rectangle.
+   * @returns {DOMRect} Board rectangle.
+   */
   getRect() {
     return this.dom.getBoundingClientRect();
   }
 
+  /**
+   * Get all cards.
+   * @returns {object[]} Cards.
+   */
   getCards() {
     return this.cards;
   }
 
+  /**
+   * Get all element interactors.
+   * @returns {object[]} Element interactors.
+   */
   getElementInteractors() {
     return this.elementInteractors;
   }
@@ -421,6 +485,10 @@ export default class Board {
     });
   }
 
+  /**
+   * Resize a card instance.
+   * @param {string} id Card id.
+   */
   resizeCardInstance(id) {
     const card = this.getCard(id);
     if (!card) {
@@ -432,6 +500,11 @@ export default class Board {
     this.callbacks.onUpdated();
   }
 
+  /**
+   * Get summary text for a card.
+   * @param {string} id Card id.
+   * @returns {string} Summary text.
+   */
   getSummaryText(id) {
     const card = this.getCard(id);
     if (!card) {
@@ -442,31 +515,10 @@ export default class Board {
   }
 
   /**
-   * Get card by id.
-   * @param {string} id Id of the card.
-   * @returns {Card|undefined} Card or undefined if not available.
+   * Get denominator text for a card (e.g. "Card 1 of 5").
+   * @param {string} id Card id.
+   * @returns {string} Denominator text.
    */
-  getCard(id) {
-    if (!id) {
-      return;
-    }
-
-    return this.cards.find((card) => card.params.id === id);
-  }
-
-  /**
-   * Get interactor by id.
-   * @param {string} id Id of the interactor.
-   * @returns {ElementInteractor|undefined} Interactor or undefined if not available.
-   */
-  getInteractor(id) {
-    if (!id) {
-      return;
-    }
-
-    return this.elementInteractors.find((interactor) => interactor.params.id === id);
-  }
-
   getDenominator(id) {
     const index = this.elementInteractors.findIndex((elementInteractor) => elementInteractor.getId() === id);
     const position = (index === -1) ? null : index + 1;
@@ -487,6 +539,10 @@ export default class Board {
     return denominator;
   }
 
+  /**
+   * Set background image.
+   * @param {object} imageParams Image parameters.
+   */
   setBackgroundImage(imageParams) {
     if (!imageParams) {
       this.dom.style.removeProperty('--board-background-image-url');
@@ -503,6 +559,10 @@ export default class Board {
     this.backgroundImageParams = imageParams;
   }
 
+  /**
+   * Set background color.
+   * @param {string} color Background color.
+   */
   setBackgroundColor(color) {
     if (typeof color !== 'string') {
       this.dom.style.removeProperty('--board-background-color');
@@ -514,6 +574,10 @@ export default class Board {
     this.backgroundColor = color;
   }
 
+  /**
+   * Get editor value.
+   * @returns {object} Editor value.
+   */
   getEditorValue() {
     let cardValues = this.cards.map((card) => {
       const editorValue = card.getEditorValue();

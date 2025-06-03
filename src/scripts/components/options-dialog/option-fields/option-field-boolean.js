@@ -2,7 +2,13 @@ import OptionField from '../option-field.js';
 import './option-field-boolean.scss';
 
 export default class OptionFieldBoolean extends OptionField {
-
+  /**
+   * Boolean field for options dialog.
+   * @class
+   * @param {object} field Field definition.
+   * @param {boolean} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);
 
@@ -35,11 +41,18 @@ export default class OptionFieldBoolean extends OptionField {
     }
   }
 
+  /**
+   * Reset field to default value.
+   */
   reset() {
     this.contentDOM.checked = this.field.default || false;
     this.setError();
   }
 
+  /**
+   * Get field value.
+   * @returns {object} Field name and value.
+   */
   getValue() {
     return {
       name: this.field.name,

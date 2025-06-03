@@ -8,7 +8,6 @@ import './options-dialog.scss';
 export default class OptionsDialog {
 
   /**
-   * Overlay dialog.
    * @class
    * @param {object} [params] Parameters.
    * @param {object} [callbacks] Callbacks.
@@ -132,6 +131,10 @@ export default class OptionsDialog {
     }
   }
 
+  /**
+   * Set the editor form.
+   * @param {object} [data] Data to set.
+   */
   setEditorForm(data = {}) {
     this.data = data;
     this.formFields = [];
@@ -169,6 +172,9 @@ export default class OptionsDialog {
     this.saveButton.disabled = hasError;
   }
 
+  /**
+   * Save changes
+   */
   save() {
     this.hide();
 
@@ -284,6 +290,9 @@ export default class OptionsDialog {
     this.isShowingState = false;
   }
 
+  /**
+   * Cancel changes.
+   */
   cancel() {
     this.hide();
 
@@ -333,6 +342,9 @@ export default class OptionsDialog {
     }
   }
 
+  /**
+   * Resize the dialog. Only required as a workaround for CKEditor resizing issues.
+   */
   resize() {
     /*
      * Workaround for CKEditor resizing issues in the editor.

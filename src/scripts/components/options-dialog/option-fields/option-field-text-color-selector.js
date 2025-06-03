@@ -1,4 +1,3 @@
-
 import Pickr from '@simonwep/pickr';
 
 import OptionField from '../option-field.js';
@@ -6,10 +5,17 @@ import './option-field-text-color-selector.scss';
 import '@simonwep/pickr/dist/themes/nano.min.css';
 import Util from '@services/util.js';
 
+/** @constant {string} DEFAULT_RGBA Default color if nothing is specified. */
 const DEFAULT_RGBA = 'rgba(255, 255, 255, 0)';
 
 export default class OptionFieldText extends OptionField {
-
+  /**
+   * Text color selector field for options dialog.
+   * @class
+   * @param {object} field Field definition.
+   * @param {string} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);
 
@@ -92,6 +98,10 @@ export default class OptionFieldText extends OptionField {
     this.content = newDOM;
   }
 
+  /**
+   * Get field value.
+   * @returns {object} Field name and value.
+   */
   getValue() {
     return {
       name: this.field.name,
@@ -99,11 +109,18 @@ export default class OptionFieldText extends OptionField {
     };
   }
 
+  /**
+   * Reset field to default value.
+   */
   reset() {
     this.pickerColor = this.field.defaultValue ?? '#ffffff';
     this.setError();
   }
 
+  /**
+   * Check if field value is valid.
+   * @returns {boolean} True if valid.
+   */
   isValid() {
     const value = this.pickerColor.trim();
     if (value === '') {
@@ -123,6 +140,9 @@ export default class OptionFieldText extends OptionField {
     return true;
   }
 
+  /**
+   * Validate field value and show error if invalid.
+   */
   validate() {
     if (this.isValid()) {
       this.setError();

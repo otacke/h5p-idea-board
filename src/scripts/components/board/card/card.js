@@ -12,7 +12,21 @@ const RATING_MIN = 0;
 const RATING_MAX = 5;
 
 export default class Card {
-
+  /**
+   * Card component for IdeaBoard.
+   * @class
+   * @param {object} params Parameters.
+   * @param {string} params.id Card ID.
+   * @param {object} params.contentType Content type data.
+   * @param {object} params.globals Global variables.
+   * @param {object} params.dictionary Dictionary for translations.
+   * @param {string} params.backgroundColor Background color.
+   * @param {string} params.borderColor Border color.
+   * @param {number} params.rating Card rating.
+   * @param {object} params.capabilities Card capabilities.
+   * @param {object} params.previousState Previous state.
+   * @param {object} callbacks Callbacks.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({}, params);
 
@@ -81,18 +95,34 @@ export default class Card {
     this.setRating(this.params.rating, { silent: true });
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The card DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Get card ID.
+   * @returns {string} Card ID.
+   */
   getId() {
     return this.params.id;
   }
 
+  /**
+   * Focus the card content.
+   * @returns {boolean} True if focus was set.
+   */
   focusContent() {
     return this.exercise.focus();
   }
 
+  /**
+   * Get editor value.
+   * @returns {object} Card editor value.
+   */
   getEditorValue() {
     return {
       id: this.params.id,
@@ -106,10 +136,18 @@ export default class Card {
     };
   }
 
+  /**
+   * Get background color.
+   * @returns {string} Background color.
+   */
   getBackgroundColor() {
     return this.params.backgroundColor;
   }
 
+  /**
+   * Set background color.
+   * @param {string} color Background color.
+   */
   setBackgroundColor(color) {
     this.params.backgroundColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-background-color', color);
@@ -118,30 +156,54 @@ export default class Card {
     this.dom.style.setProperty('--h5p-idea-board-card-contrast-color', contrastColor);
   }
 
+  /**
+   * Get border color.
+   * @returns {string} Border color.
+   */
   getBorderColor() {
     return this.params.borderColor;
   }
 
+  /**
+   * Set border color.
+   * @param {string} color Border color.
+   */
   setBorderColor(color) {
     this.params.borderColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
   }
 
+  /**
+   * Set card capabilities.
+   * @param {object[]} capabilities Card capabilities.
+   */
   setCapabilities(capabilities = []) {
     capabilities.forEach((capability) => {
       this.params.capabilities[capability.name] = capability.value;
     });
   }
 
+  /**
+   * Set content type values.
+   * @param {object} contentTypeValues Content type values.
+   */
   setContentTypeValues(contentTypeValues = {}) {
     const paramsObject = Util.paramsArrayToPlainObject(contentTypeValues);
     this.params.contentType.params = Util.extend(this.params.contentType.params, paramsObject);
   };
 
+  /**
+   * Get content type parameters.
+   * @returns {object} Content type parameters.
+   */
   getContentTypeParams() {
     return this.params.contentType;
   }
 
+  /**
+   * Get card capabilities.
+   * @returns {object} Card capabilities.
+   */
   getCapabilities() {
     return {
       canUserRateCard: this.params.capabilities.canUserRateCard,
@@ -152,6 +214,11 @@ export default class Card {
     };
   }
 
+  /**
+   * Set card rating.
+   * @param {number} rating Rating value.
+   * @param {object} options Options.
+   */
   setRating(rating, options = {}) {
     if (!this.params.capabilities.canUserRateCard) {
       return;
@@ -164,6 +231,10 @@ export default class Card {
     this.ratingBox.setRating(rating, options);
   }
 
+  /**
+   * Get card rating.
+   * @returns {number|undefined} Rating or undefined if rating not enabled.
+   */
   getRating() {
     if (!this.params.capabilities.canUserRateCard) {
       return;
@@ -172,14 +243,25 @@ export default class Card {
     return this.ratingBox.getRating();
   }
 
+  /**
+   * Get exercise instance.
+   * @returns {object} Exercise instance.
+   */
   getExerciseInstance() {
     return this.exercise.getInstance();
   }
 
+  /**
+   * Resize exercise instance.
+   */
   resizeInstance() {
     this.exercise.resize();
   }
 
+  /**
+   * Get summary text for card.
+   * @returns {string} Summary text.
+   */
   getSummaryText() {
     return this.exercise.getSummaryText() ?? this.params.dictionary.get('noSummaryAvailable');
   }

@@ -2,7 +2,13 @@ import OptionField from '../option-field.js';
 import './option-field-unknown.scss';
 
 export default class OptionFieldUnknown extends OptionField {
-
+  /**
+   * Unknown field type for options dialog.
+   * @class
+   * @param {object} field Field definition.
+   * @param {*} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);
 
@@ -14,9 +20,17 @@ export default class OptionFieldUnknown extends OptionField {
     this.dom.append(this.contentDOM);
   }
 
+  /**
+   * Reset field.
+   */
   reset() {
+    // No reset for unknown fields, but may cause trouble if setError was called.
   }
 
+  /**
+   * Get field value.
+   * @returns {object} Field name and value.
+   */
   getValue() {
     return {
       name: this.field.name,

@@ -1,6 +1,13 @@
 import './option-field.scss';
 
 export default class OptionField {
+  /**
+   * Base class for option fields.
+   * @class
+   * @param {object} field Field definition.
+   * @param {number|string|boolean|object} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field, value, dictionary) {
     this.field = field;
 
@@ -36,35 +43,64 @@ export default class OptionField {
     return this;
   }
 
+  /**
+   * Get DOM element for this field.
+   * @returns {HTMLElement} DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Get field name.
+   * @returns {string} Field name.
+   */
   getName() {
     return this.field.name;
   }
 
+  /**
+   * Get field value.
+   * @returns {*} Field value.
+   */
   getValue() {
     return; // Must be implemented
   }
 
+  /**
+   * Check if field value is valid.
+   * @returns {boolean} True if valid.
+   */
   isValid() {
     return true;
   }
 
+  /**
+   * Reset field errors.
+   */
   reset() {
     this.setError();
   }
 
+  /**
+   * Validate field value and show error if invalid.
+   */
   validate() {
     this.dom.classList.toggle('has-error', !this.isValid());
   }
 
+  /**
+   * Set error message.
+   * @param {string} [message] Error message.
+   */
   setError(message) {
     this.dom.classList.toggle('has-error', !!message);
     this.error.innerText = message ?? '';
   }
 
+  /**
+   * Handle resize events.
+   */
   resize() {
     return; // May be implemented by subclasses
   }

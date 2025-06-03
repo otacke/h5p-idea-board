@@ -2,7 +2,13 @@ import Util from '@services/util.js';
 import './element-interactor-resize-knob.scss';
 
 export default class ElementInteractorResizeKnob {
-
+  /**
+   * Resize knob for element interactor.
+   * @class
+   * @param {object} params Parameters.
+   * @param {string} params.position Position of the knob ('top', 'right', 'bottom', 'left', or combinations).
+   * @param {object} callbacks Callbacks.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({}, params);
 
@@ -27,10 +33,17 @@ export default class ElementInteractorResizeKnob {
     this.buildDOM();
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The resize knob DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Build the DOM structure.
+   */
   buildDOM() {
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-idea-board-element-interactor-resize-knob');
@@ -45,10 +58,18 @@ export default class ElementInteractorResizeKnob {
     });
   }
 
+  /**
+   * Handle touch event.
+   * @param {TouchEvent} event Touch event.
+   */
   handleTouchEvent(event) {
     event.preventDefault();
   }
 
+  /**
+   * Handle pointer down event.
+   * @param {PointerEvent} event Pointer down event.
+   */
   handlePointerDown(event) {
     if (event.target !== this.dom) {
       return;
@@ -71,6 +92,10 @@ export default class ElementInteractorResizeKnob {
     document.addEventListener('keyup', this.handleKeyup);
   }
 
+  /**
+   * Handle pointer move event.
+   * @param {PointerEvent} event Pointer move event.
+   */
   handlePointerMove(event) {
     if (event.target !== this.dom || !this.isResizing) {
       return;
@@ -108,6 +133,10 @@ export default class ElementInteractorResizeKnob {
     );
   }
 
+  /**
+   * Handle pointer up event.
+   * @param {PointerEvent} event Pointer up event.
+   */
   handlePointerUp(event) {
     this.isResizing = false;
     delete this.aspectRatio;

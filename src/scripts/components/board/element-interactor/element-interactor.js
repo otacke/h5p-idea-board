@@ -16,9 +16,20 @@ const TELEMETRY_DEFAULT_SIZE = 33.3;
 /** @constant {number} TELEMETRY_MIN_SIZE_PX Minimum size of interactor element in pixels */
 const TELEMETRY_MIN_SIZE_PX = 48;
 
+/** @constant {object} INTERACTOR_MODE Modes for the interactor */
 export const INTERACTOR_MODE = { view: 0, interact: 1 };
 
 export default class ElementInteractor {
+  /**
+   * Element interactor for handling card interactions.
+   * @class
+   * @param {object} params Parameters.
+   * @param {string} [params.id] Element ID.
+   * @param {object} [params.telemetry] Telemetry data (position and size).
+   * @param {HTMLElement} [params.contentDOM] Content DOM element.
+   * @param {object} [params.capabilities] Element capabilities.
+   * @param {object} callbacks Callbacks.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({
       telemetry: {
@@ -74,18 +85,33 @@ export default class ElementInteractor {
     this.buildDOM();
   }
 
+  /**
+   * Get element ID.
+   * @returns {string} Element ID.
+   */
   getId() {
     return this.params.id;
   }
 
+  /**
+   * Get telemetry data.
+   * @returns {object} Telemetry data.
+   */
   getTelemetry() {
     return this.params.telemetry;
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The element DOM.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Build the DOM structure.
+   */
   buildDOM() {
     this.dom = document.createElement('li');
     this.dom.classList.add('h5p-idea-board-element-interactor');
@@ -163,6 +189,9 @@ export default class ElementInteractor {
     this.setTelemetry(this.params.telemetry);
   }
 
+  /**
+   * Build context menu.
+   */
   buildContextMenu() {
     const contextMenuButtonParams = [];
 
@@ -263,6 +292,9 @@ export default class ElementInteractor {
     this.dom.append(this.contextMenu.getDOM());
   }
 
+  /**
+   * Build resize knobs.
+   */
   buildResizeKnobs() {
     [
       'top-left', 'top', 'top-right',
@@ -295,10 +327,17 @@ export default class ElementInteractor {
     });
   }
 
+  /**
+   * Focus the element.
+   */
   focus() {
     this.dom.focus();
   }
 
+  /**
+   * Set interaction mode.
+   * @param {number} mode Interaction mode.
+   */
   setMode(mode = INTERACTOR_MODE.view) {
     this.mode = mode;
 
@@ -319,6 +358,10 @@ export default class ElementInteractor {
     this.callbacks.onEditingModeChanged(this.params.id, mode);
   }
 
+  /**
+   * Toggle whether content DOM is blocked.
+   * @param {boolean} block Whether to block content DOM.
+   */
   toggleContentDOMBlocked(block = true) {
     if (block) {
       this.contentDOM.setAttribute('inert', '');
@@ -360,6 +403,11 @@ export default class ElementInteractor {
     this.dom.style.setProperty('--idea-board-element-height', `${this.params.telemetry.height}%`);
   }
 
+  /**
+   * Check if position is within bounds.
+   * @param {object} position Position object.
+   * @returns {boolean} True if position is within bounds.
+   */
   isPositionWithinBounds(position = {}) {
     const { x, y } = position;
 
@@ -374,6 +422,11 @@ export default class ElementInteractor {
     return true;
   }
 
+  /**
+   * Get sanitized position.
+   * @param {object} position Position object.
+   * @returns {object} Sanitized position.
+   */
   getSanitizedPosition(position = {}) {
     return {
       x: Math.max(0, Math.min(position.x ?? this.params.telemetry.x, 100)),
@@ -381,6 +434,11 @@ export default class ElementInteractor {
     };
   }
 
+  /**
+   * Check if size is within bounds.
+   * @param {object} size Size object.
+   * @returns {boolean} True if size is within bounds.
+   */
   isSizeWithinBounds(size = {}) {
     const { width, height } = size;
 
@@ -395,6 +453,11 @@ export default class ElementInteractor {
     return true;
   }
 
+  /**
+   * Get sanitized size.
+   * @param {object} size Size object.
+   * @returns {object} Sanitized size.
+   */
   getSanitizedSize(size = {}) {
     return {
       width: Math.max(
@@ -408,6 +471,12 @@ export default class ElementInteractor {
     };
   }
 
+  /**
+   * Get sanitized telemetry to prevent overflow.
+   * @param {object} telemetry Telemetry object.
+   * @param {object} options Options for sanitization.
+   * @returns {object} Sanitized telemetry.
+   */
   getSanitizedOverflow(telemetry = {}, options = {}) {
     const sanitizedTelemetry = { ... telemetry };
 
@@ -432,6 +501,12 @@ export default class ElementInteractor {
     return sanitizedTelemetry;
   }
 
+  /**
+   * Convert pixels to percentage.
+   * @param {number} px Pixels.
+   * @param {string} base Base ('width' or 'height').
+   * @returns {number} Percentage.
+   */
   pxToPercent(px, base) {
     const boardSize = this.callbacks.getBoardRect();
     if (boardSize[base] === 0) {
@@ -441,111 +516,11 @@ export default class ElementInteractor {
     return 100 * px / boardSize[base];
   }
 
-  updateTelemetryByPx(deltaPx = {}, options = {}) {
-    const boardSize = this.callbacks.getBoardRect();
-    if (boardSize?.width === 0 || boardSize?.height === 0) {
-      return;
-    }
-
-    const interactorTelemetry = {
-      x: this.params.telemetry.x * boardSize.width / 100,
-      y: this.params.telemetry.y * boardSize.height / 100,
-      width: this.params.telemetry.width * boardSize.width / 100,
-      height: this.params.telemetry.height * boardSize.height / 100
-    };
-
-    let targetTelemetry = {
-      x: interactorTelemetry.x + (deltaPx.x ?? 0),
-      y: interactorTelemetry.y + (deltaPx.y ?? 0),
-      width: interactorTelemetry.width + (deltaPx.width ?? 0),
-      height: interactorTelemetry.height + (deltaPx.height ?? 0)
-    };
-
-    const applyAspectRatioModification = (deltaPx, interactorTelemetry, targetTelemetry, aspectRatio) => {
-      const newTargetTelemetry = { ...targetTelemetry };
-
-      if (deltaPx.x && deltaPx.y) {
-        // top left knob
-        const targetY = interactorTelemetry.y + interactorTelemetry.height;
-        newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
-        newTargetTelemetry.y = targetY - newTargetTelemetry.height;
-      }
-      else if (!deltaPx.x && deltaPx.y) {
-        if (!deltaPx.width) {
-          // top knob
-          newTargetTelemetry.width = newTargetTelemetry.height * aspectRatio;
-        }
-        else {
-          // top right knob
-          const targetY = interactorTelemetry.y + interactorTelemetry.height;
-          newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
-          newTargetTelemetry.y = targetY - newTargetTelemetry.height;
-        }
-      }
-      else if (deltaPx.x && !deltaPx.y) {
-        // bottom left knob
-        const targetY = interactorTelemetry.y;
-        newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
-        newTargetTelemetry.y = targetY;
-      }
-      else if (!deltaPx.x && !deltaPx.y) {
-        if (!deltaPx.width) {
-          // bottom knob
-          newTargetTelemetry.width = newTargetTelemetry.height * aspectRatio;
-        }
-        else {
-          // bottom right knob
-          const targetY = interactorTelemetry.y;
-          newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
-          newTargetTelemetry.y = targetY;
-        }
-      }
-
-      return newTargetTelemetry;
-    };
-
-    if (options.aspectRatio) {
-      targetTelemetry = applyAspectRatioModification(
-        deltaPx, interactorTelemetry, targetTelemetry, options.aspectRatio
-      );
-
-      if (targetTelemetry.x < 0 || targetTelemetry.x + targetTelemetry.width > boardSize.width) {
-        return;
-      }
-
-      if (targetTelemetry.y < 0 || targetTelemetry.y + targetTelemetry.height > boardSize.height) {
-        return;
-      }
-    }
-
-    if (targetTelemetry.x < 0 && deltaPx.width) {
-      targetTelemetry.width = targetTelemetry.width + targetTelemetry.x;
-      targetTelemetry.x = 0;
-    }
-
-    if (targetTelemetry.y < 0 && deltaPx.height) {
-      targetTelemetry.height = targetTelemetry.height + targetTelemetry.y;
-      targetTelemetry.y = 0;
-    }
-
-    if (targetTelemetry.width < TELEMETRY_MIN_SIZE_PX) {
-      return;
-    }
-
-    if (targetTelemetry.height < TELEMETRY_MIN_SIZE_PX) {
-      return;
-    }
-
-    const targetTelemetryPercent = {
-      x: this.pxToPercent(targetTelemetry.x, 'width'),
-      y: this.pxToPercent(targetTelemetry.y, 'height'),
-      width: this.pxToPercent(targetTelemetry.width, 'width'),
-      height: this.pxToPercent(targetTelemetry.height, 'height')
-    };
-
-    this.setTelemetry(targetTelemetryPercent, options);
-  }
-
+  /**
+   * Compute target telemetry in percent.
+   * @param {object} deltaPx Delta in pixels.
+   * @returns {object} Target telemetry in percent.
+   */
   computeTargetTelemetryPercent(deltaPx = {}) {
     const deltaPercent = this.deltaPxToDeltaPercent(deltaPx);
     return {
@@ -556,6 +531,11 @@ export default class ElementInteractor {
     };
   }
 
+  /**
+   * Convert delta pixels to delta percent.
+   * @param {object} deltaPx Delta in pixels.
+   * @returns {object} Delta in percent.
+   */
   deltaPxToDeltaPercent(deltaPx = {}) {
     return {
       x: this.pxToPercent(deltaPx.x ?? 0, 'width'),
@@ -565,6 +545,11 @@ export default class ElementInteractor {
     };
   }
 
+  /**
+   * Handle bring to front action.
+   * @param {Event} event Event.
+   * @param {object} options Options.
+   */
   handleBringToFront(event, options) {
     let nextFocusElement = null;
     const eventWasFromKeyboard = event.pointerType === '';
@@ -578,6 +563,11 @@ export default class ElementInteractor {
     this.callbacks.onBringToFront( this.params.id, { nextFocus: nextFocusElement } );
   }
 
+  /**
+   * Handle send to back action.
+   * @param {Event} event Event.
+   * @param {object} options Options.
+   */
   handleSendToBack(event, options) {
     let nextFocusElement = null;
     const eventWasFromKeyboard = event.pointerType === '';
@@ -591,6 +581,11 @@ export default class ElementInteractor {
     this.callbacks.onSendToBack(this.params.id, { nextFocus: nextFocusElement } );
   }
 
+  /**
+   * Handle move start.
+   * @param {KeyboardEvent} event Keyboard event.
+   * @param {object} options Options.
+   */
   handleMoveStart(event, options) {
     if (!options.active) {
       return;
@@ -616,6 +611,11 @@ export default class ElementInteractor {
     event.stopPropagation();
   }
 
+  /**
+   * Handle move end.
+   * @param {KeyboardEvent} event Keyboard event.
+   * @param {object} options Options.
+   */
   handleMoveEnd(event, options) {
     if (!options.active) {
       return;
@@ -625,6 +625,11 @@ export default class ElementInteractor {
     this.callbacks.onMove();
   }
 
+  /**
+   * Handle resize start.
+   * @param {KeyboardEvent} event Keyboard event.
+   * @param {object} options Options.
+   */
   handleResizeStart(event, options) {
     if (!options.active) {
       return;
@@ -650,6 +655,11 @@ export default class ElementInteractor {
     event.stopPropagation();
   }
 
+  /**
+   * Handle resize end.
+   * @param {KeyboardEvent} event Keyboard event.
+   * @param {object} options Options.
+   */
   handleResizeEnd(event, options) {
     if (!options.active) {
       return;
@@ -660,125 +670,8 @@ export default class ElementInteractor {
   }
 
   /**
-   * Handle pointer down event.
-   * @param {PointerEvent} event Pointer down event.
+   * Retain focus on element.
    */
-  handlePointerDown(event) {
-    if (event.target !== this.dom) {
-      return; // No delegation
-    }
-
-    if (this.mode !== INTERACTOR_MODE.view) {
-      return;
-    }
-
-    event.preventDefault();
-    if (document.activeElement !== this.dom) {
-      this.dom.focus();
-      this.hadFocus = false;
-    }
-    else {
-      this.hadFocus = true;
-    }
-
-    this.isMoving = true;
-
-    document.addEventListener('pointerup', this.handlePointerUp);
-    if (!this.params.capabilities.move) {
-      return;
-    }
-
-    this.moveStartPx = { x: event.clientX, y: event.clientY };
-
-    this.dom.setPointerCapture(event.pointerId);
-
-    document.addEventListener('touchmove', this.handleTouchEvent, { passive: false });
-    document.addEventListener('pointermove', this.handlePointerMove);
-
-    event.preventDefault();
-  }
-
-  /**
-   * Handle touch move event.
-   * @param {TouchEvent} event Touch move event.
-   */
-  handleTouchEvent(event) {
-    if (!this.params.capabilities.move) {
-      return;
-    }
-
-    // Prevent default touch events like moving screen when moving/resizing could take place.
-    if (this.mode === INTERACTOR_MODE.view && event.target === this.dom) {
-      event.preventDefault();
-    }
-  }
-
-  /**
-   * Handle pointer move event.
-   * @param {PointerEvent} event Pointer move event.
-   */
-  handlePointerMove(event) {
-    if (event.target !== this.dom) {
-      return; // No delegation
-    }
-
-    if (this.mode !== INTERACTOR_MODE.view) {
-      return;
-    }
-
-    if (!this.isMoving) {
-      return;
-    }
-
-    this.wasMoved = true;
-
-    const deltaPx = { x: event.clientX - this.moveStartPx.x, y: event.clientY - this.moveStartPx.y };
-
-    const boardRect = this.callbacks.getBoardRect();
-    this.moveStartPx = {
-      x: Math.max(boardRect.left, Math.min(event.clientX, boardRect.right)),
-      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom))
-    };
-
-    this.updateTelemetryByPx(deltaPx, { retainSize: true });
-  }
-
-  /**
-   * Handle pointer up event.
-   * @param {PointerEvent} event Pointer up event.
-   */
-  handlePointerUp(event) {
-    if (event.target !== this.dom) {
-      return; // No delegation
-    }
-
-    if (this.mode !== INTERACTOR_MODE.view) {
-      return;
-    }
-
-    event.preventDefault();
-    if (!this.isMoving) {
-      return;
-    }
-
-    if (this.hadFocus && !this.wasMoved) {
-      this.setMode(INTERACTOR_MODE.interact);
-    }
-
-    this.isMoving = false;
-    this.wasMoved = false;
-
-    if (this.dom.hasPointerCapture(event.pointerId)) {
-      this.dom.releasePointerCapture(event.pointerId);
-    }
-
-    document.removeEventListener('touchmove', this.handleTouchEvent);
-    document.removeEventListener('pointermove', this.handlePointerMove);
-    document.removeEventListener('pointerup', this.handlePointerUp);
-
-    this.callbacks.onMove();
-  }
-
   retainFocus() {
     this.shouldRetainFocus = true;
     window.requestAnimationFrame(() => {
@@ -786,11 +679,18 @@ export default class ElementInteractor {
     });
   }
 
-  handleFocusIn() {
+  /**
+   * Handle focus in event.
+   * @param {FocusEvent} event Focus event.
+   */
+  handleFocusIn(event) {
     this.contextMenu.show();
     this.updateAriaSummary();
   }
 
+  /**
+   * Update ARIA summary for the element.
+   */
   updateAriaSummary() {
     const denominator = this.callbacks.getDenominator(this.params.id);
     const summaryText = this.callbacks.getSummaryText(this.params.id);
@@ -799,6 +699,10 @@ export default class ElementInteractor {
     this.ariaSummary.innerText = `${denominator}. ${summaryText}`;
   }
 
+  /**
+   * Handle focus out event.
+   * @param {FocusEvent} event Focus event.
+   */
   handleFocusOut(event) {
     if (this.shouldRetainFocus) {
       return;

@@ -2,7 +2,13 @@ import OptionField from '../option-field.js';
 import './option-field-number.scss';
 
 export default class OptionFieldNumber extends OptionField {
-
+  /**
+   * Number field for options dialog.
+   * @class
+   * @param {object} field Field definition.
+   * @param {number} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   */
   constructor(field = {}, value, dictionary) {
     super(field, value, dictionary);
 
@@ -35,11 +41,18 @@ export default class OptionFieldNumber extends OptionField {
     this.content = newDOM;
   }
 
+  /**
+   * Reset field to default value.
+   */
   reset() {
     this.contentDOM.value = this.field.defaultValue ?? '';
     this.setError();
   }
 
+  /**
+   * Check if field value is valid.
+   * @returns {boolean} True if valid.
+   */
   isValid() {
     const value = parseFloat(this.contentDOM.value);
 
@@ -62,6 +75,9 @@ export default class OptionFieldNumber extends OptionField {
     return true;
   }
 
+  /**
+   * Validate field value and show error if invalid.
+   */
   validate() {
     if (this.isValid()) {
       this.setError();
@@ -89,6 +105,10 @@ export default class OptionFieldNumber extends OptionField {
     }
   }
 
+  /**
+   * Get field value.
+   * @returns {object} Field name and value.
+   */
   getValue() {
     return {
       name: this.field.name,

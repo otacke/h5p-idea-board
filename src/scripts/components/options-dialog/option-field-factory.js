@@ -8,6 +8,13 @@ import OptionFieldSelect from './option-fields/option-field-select.js';
 import OptionFieldUnknown from './option-fields/option-field-unknown.js';
 
 export default class OptionsFieldFactory {
+  /**
+   * Produce a field instance based on field type and widget.
+   * @param {object} field Field definition.
+   * @param {number|string|boolean|object} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   * @returns {object} Field instance.
+   */
   static produce(field = {}, value, dictionary) {
     let type = field.type;
     if (field.widget) {
@@ -17,6 +24,14 @@ export default class OptionsFieldFactory {
     return this.createField(type, field, value, dictionary);
   }
 
+  /**
+   * Create a field instance for a specific type.
+   * @param {string} type Field type (possibly including widget).
+   * @param {object} field Field definition.
+   * @param {number|string|boolean|object} value Field value.
+   * @param {object} dictionary Dictionary for translations.
+   * @returns {object} Field instance.
+   */
   static createField(type, field, value, dictionary) {
     const [fieldType, widget] = type.split('/');
 

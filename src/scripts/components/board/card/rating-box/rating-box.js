@@ -3,6 +3,15 @@ import Screenreader from '@services/screenreader.js';
 import './rating-box.scss';
 
 export default class RatingBox {
+  /**
+   * Rating box component for cards.
+   * @class
+   * @param {object} params Parameters.
+   * @param {number} params.max Maximum rating value.
+   * @param {object} params.dictionary Dictionary for translations.
+   * @param {object} callbacks Callbacks.
+   * @param {function} callbacks.onRatingChanged Called when rating changes.
+   */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({}, params);
 
@@ -30,10 +39,20 @@ export default class RatingBox {
     }
   }
 
+  /**
+   * Get DOM element.
+   * @returns {HTMLElement} The rating box DOM element.
+   */
   getDOM() {
     return this.dom;
   }
 
+  /**
+   * Set rating value.
+   * @param {number} rating Rating value.
+   * @param {object} options Options.
+   * @param {boolean} [options.silent] If true, don't announce rating change.
+   */
   setRating(rating, options = {}) {
     this.rating = rating;
 
@@ -48,14 +67,25 @@ export default class RatingBox {
     }
   }
 
+  /**
+   * Get current rating value.
+   * @returns {number} Current rating.
+   */
   getRating() {
     return this.rating;
   }
 
+  /**
+   * Change rating based on star index clicked.
+   * @param {number} indexClicked Index of star that was clicked.
+   */
   changeRatingBy(indexClicked) {
     this.setRating(this.rating === indexClicked + 1 ? indexClicked : indexClicked + 1);
   }
 
+  /**
+   * Update ARIA labels for all stars.
+   */
   updateAriaLabels() {
     this.stars.forEach((star, index) => {
       const targetRating = (index === this.rating - 1) ? index : index + 1;

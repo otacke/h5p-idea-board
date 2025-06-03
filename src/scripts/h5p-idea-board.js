@@ -124,6 +124,9 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.extras.IdeaBoardEditor.updateValue(this.getEditorValue());
   }
 
+  /**
+   * Sanitize cards, removing invalid ones.
+   */
   sanitizeCards() {
     this.params.board.cards = (this.params.board.cards ?? []).filter((card) => {
       if (!card.contentType?.library) {
@@ -221,20 +224,37 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.main.setFullscreen(state);
   }
 
+  /**
+   * Get current state.
+   * @returns {object} Current state to be retrieved later.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}
+   */
   getCurrentState() {
     return {
       main: this.main.getCurrentState()
     };
   }
 
+  /**
+   * Set background image.
+   * @param {object} image Image object.
+   */
   setBackgroundImage(image) {
     this.main.setBackgroundImage(image);
   }
 
+  /**
+   * Set background color.
+   * @param {string} color CSS color value.
+   */
   setBackgroundColor(color) {
     this.main.setBackgroundColor(color);
   }
 
+  /**
+   * Get current values for the editor.
+   * @returns {object} Current editor values.
+   */
   getEditorValue() {
     return this.main.getEditorValue();
   }
