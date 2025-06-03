@@ -3,7 +3,9 @@ import OptionsDialog from '@components/options-dialog/options-dialog.js';
 import Toolbar from '@components/toolbar/toolbar.js';
 import Util from '@services/util.js';
 import H5PUtil from '@services/utils-h5p.js';
-import { getH5PClipboard, shapeParamsForClipboard, shapeParamsFromClipboard } from '@services/h5p-clipboard.js';
+import {
+  getH5PClipboard, getNoPasteReason, shapeParamsForClipboard, shapeParamsFromClipboard
+} from '@services/h5p-clipboard.js';
 import './main.scss';
 
 /** @constant {number} FULL_SCREEN_DELAY_SMALL_MS Time some browsers need to go to full screen. */
@@ -59,11 +61,38 @@ export default class Main {
       canPaste = this.canPasteFromClipboard();
     }
 
+    // Using the format that H5PEditor.LibraryListCache.getLibraries would produce, required for canPastePlus.
+    const supportedLibraries = this.getSupportedSubcontentTypes().map((uberName) => {
+      return {
+        uberName: uberName,
+        name: uberName.split(' ')[0],
+        majorVersion: (uberName.split(' ')[1]).split('.')[0],
+        minorVersion: (uberName.split(' ')[1]).split('.')[1]
+      };
+    });
+
+    const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
+
     if (canPaste) {
       this.toolbar.enableButton('paste');
+      this.toolbar.setButtonAttributes('paste', { 'aria-label': this.params.dictionary.get('a11y.pasteContent') });
     }
     else {
       this.toolbar.disableButton('paste');
+
+      let noPasteReason = '';
+      if (H5PUtil.isEditor()) {
+        noPasteReason = H5PEditor.canPastePlus(clipboard, supportedLibraries).description;
+      }
+      else {
+        const noPasteReasonObject = getNoPasteReason(clipboard, supportedLibraries, this.params.dictionary);
+        noPasteReason = this.params.dictionary.get(`a11y.${noPasteReasonObject.reason}`);
+        Object.keys(noPasteReasonObject.replace || {}).forEach((key) => {
+          noPasteReason = noPasteReason.replace(`@${key}`, noPasteReasonObject.replace[key]);
+        });
+      }
+      noPasteReason = noPasteReason || this.params.dictionary.get('a11y.pasteContentDisabled');
+      this.toolbar.setButtonAttributes('paste', { 'aria-label': noPasteReason });
     }
   }
 
@@ -400,8 +429,6 @@ export default class Main {
 
   pasteContentFromClipboard() {
     if (!this.canPasteFromClipboard()) {
-      // TODO
-      console.warn('Cannot paste content from clipboard, no valid data found.');
       return;
     }
 

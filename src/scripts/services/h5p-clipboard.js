@@ -147,3 +147,90 @@ export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberName
     generic: genericParams
   };
 };
+
+/**
+ * Get the reason why pasting is not possible.
+ * @param {object} clipboard H5P clipboard data.
+ * @param {object[]} supportedLibraries Supported libraries for the content type.
+ * @returns {object} Reason and replaceable strings if applicable.
+ */
+export const getNoPasteReason = (clipboard, supportedLibraries) => {
+  if (!clipboard || !clipboard.generic) {
+    return {
+      reason: 'pasteNoContent'
+    };
+  }
+
+  if (!supportedLibraries || !Array.isArray(supportedLibraries)) {
+    return {
+      reason: 'pasteError'
+    };
+  }
+
+  // Parse clipboard library info
+  const [machineNameClipboard, versionClipboard] = clipboard.generic.library.split(' ');
+
+  // Parse supported libraries
+  const supportedVersions = supportedLibraries
+    .filter((library) => library.uberName.split(' ')[0] === machineNameClipboard)
+    .map((library) => {
+      const [major, minor] = library.uberName.split(' ')[1].split('.').map(Number);
+      return { major, minor };
+    });
+
+  if (supportedVersions.length === 0) {
+    return {
+      reason: 'pasteContentNotSupported'
+    };
+  }
+
+  // Check for exact version match
+  const [majorVersionClipboard, minorVersionClipboard] = versionClipboard.split('.').map(Number);
+  const exactMatch = supportedVersions.some((version) =>
+    version.major === majorVersionClipboard && version.minor === minorVersionClipboard
+  );
+
+  if (exactMatch) {
+    return {
+      reason: ''
+    };
+  }
+
+  // Find min and max supported versions
+  const maxVersion = supportedVersions.reduce((max, version) => {
+    return (version.major > max.major || (version.major === max.major && version.minor > max.minor))
+      ? version : max;
+  }, { major: 0, minor: 0 });
+
+  const minVersion = supportedVersions.reduce((min, version) => {
+    return (version.major < min.major || (version.major === min.major && version.minor < min.minor))
+      ? version : min;
+  }, { major: Number.MAX_SAFE_INTEGER, minor: Number.MAX_SAFE_INTEGER });
+
+  // Compare with clipboard version
+  if (majorVersionClipboard > maxVersion.major ||
+      (majorVersionClipboard === maxVersion.major && minorVersionClipboard > maxVersion.minor)) {
+    return {
+      reason: 'pasteTooNew',
+      replace: {
+        clip: versionClipboard,
+        local: `${maxVersion.major}.${maxVersion.minor}`
+      }
+    };
+  }
+
+  if (majorVersionClipboard < minVersion.major ||
+      (majorVersionClipboard === minVersion.major && minorVersionClipboard < minVersion.minor)) {
+    return {
+      reason: 'pasteTooOld',
+      replace: {
+        clip: versionClipboard,
+        local: `${minVersion.major}.${minVersion.minor}`
+      }
+    };
+  }
+
+  return {
+    reason: 'pasteError'
+  };
+};
