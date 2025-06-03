@@ -517,6 +517,121 @@ export default class ElementInteractor {
   }
 
   /**
+   * Update telemetry by pixels.
+   * @param {object} deltaPx Delta in pixels.
+   * @param {object} options Options for updating telemetry.
+   * @param {boolean} [options.retainSize] If true, keep the size of the interactor.
+   * @param {number} [options.aspectRatio] Aspect ratio to maintain during resizing.
+   * @param {boolean} [options.active] If true, update telemetry only if active.
+   * @param {boolean} [options.silent] If true, do not trigger move event.
+   * @param {boolean} [options.skipSanitization] If true, skip sanitization of telemetry.
+   */
+  updateTelemetryByPx(deltaPx = {}, options = {}) {
+    const boardSize = this.callbacks.getBoardRect();
+    if (boardSize?.width === 0 || boardSize?.height === 0) {
+      return;
+    }
+
+    const interactorTelemetry = {
+      x: this.params.telemetry.x * boardSize.width / 100,
+      y: this.params.telemetry.y * boardSize.height / 100,
+      width: this.params.telemetry.width * boardSize.width / 100,
+      height: this.params.telemetry.height * boardSize.height / 100
+    };
+
+    let targetTelemetry = {
+      x: interactorTelemetry.x + (deltaPx.x ?? 0),
+      y: interactorTelemetry.y + (deltaPx.y ?? 0),
+      width: interactorTelemetry.width + (deltaPx.width ?? 0),
+      height: interactorTelemetry.height + (deltaPx.height ?? 0)
+    };
+
+    const applyAspectRatioModification = (deltaPx, interactorTelemetry, targetTelemetry, aspectRatio) => {
+      const newTargetTelemetry = { ...targetTelemetry };
+
+      if (deltaPx.x && deltaPx.y) {
+        // top left knob
+        const targetY = interactorTelemetry.y + interactorTelemetry.height;
+        newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
+        newTargetTelemetry.y = targetY - newTargetTelemetry.height;
+      }
+      else if (!deltaPx.x && deltaPx.y) {
+        if (!deltaPx.width) {
+          // top knob
+          newTargetTelemetry.width = newTargetTelemetry.height * aspectRatio;
+        }
+        else {
+          // top right knob
+          const targetY = interactorTelemetry.y + interactorTelemetry.height;
+          newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
+          newTargetTelemetry.y = targetY - newTargetTelemetry.height;
+        }
+      }
+      else if (deltaPx.x && !deltaPx.y) {
+        // bottom left knob
+        const targetY = interactorTelemetry.y;
+        newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
+        newTargetTelemetry.y = targetY;
+      }
+      else if (!deltaPx.x && !deltaPx.y) {
+        if (!deltaPx.width) {
+          // bottom knob
+          newTargetTelemetry.width = newTargetTelemetry.height * aspectRatio;
+        }
+        else {
+          // bottom right knob
+          const targetY = interactorTelemetry.y;
+          newTargetTelemetry.height = newTargetTelemetry.width / aspectRatio;
+          newTargetTelemetry.y = targetY;
+        }
+      }
+
+      return newTargetTelemetry;
+    };
+
+    if (options.aspectRatio) {
+      targetTelemetry = applyAspectRatioModification(
+        deltaPx, interactorTelemetry, targetTelemetry, options.aspectRatio
+      );
+
+      if (targetTelemetry.x < 0 || targetTelemetry.x + targetTelemetry.width > boardSize.width) {
+        return;
+      }
+
+      if (targetTelemetry.y < 0 || targetTelemetry.y + targetTelemetry.height > boardSize.height) {
+        return;
+      }
+    }
+
+    if (targetTelemetry.x < 0 && deltaPx.width) {
+      targetTelemetry.width = targetTelemetry.width + targetTelemetry.x;
+      targetTelemetry.x = 0;
+    }
+
+    if (targetTelemetry.y < 0 && deltaPx.height) {
+      targetTelemetry.height = targetTelemetry.height + targetTelemetry.y;
+      targetTelemetry.y = 0;
+    }
+
+    if (targetTelemetry.width < TELEMETRY_MIN_SIZE_PX) {
+      return;
+    }
+
+    if (targetTelemetry.height < TELEMETRY_MIN_SIZE_PX) {
+      return;
+    }
+
+    const targetTelemetryPercent = {
+      x: this.pxToPercent(targetTelemetry.x, 'width'),
+      y: this.pxToPercent(targetTelemetry.y, 'height'),
+      width: this.pxToPercent(targetTelemetry.width, 'width'),
+      height: this.pxToPercent(targetTelemetry.height, 'height')
+    };
+
+    this.setTelemetry(targetTelemetryPercent, options);
+  }
+
+  /**
    * Compute target telemetry in percent.
    * @param {object} deltaPx Delta in pixels.
    * @returns {object} Target telemetry in percent.
