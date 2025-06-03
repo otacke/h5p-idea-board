@@ -670,6 +670,126 @@ export default class ElementInteractor {
   }
 
   /**
+   * Handle pointer down event.
+   * @param {PointerEvent} event Pointer down event.
+   */
+  handlePointerDown(event) {
+    if (event.target !== this.dom) {
+      return; // No delegation
+    }
+
+    if (this.mode !== INTERACTOR_MODE.view) {
+      return;
+    }
+
+    event.preventDefault();
+    if (document.activeElement !== this.dom) {
+      this.dom.focus();
+      this.hadFocus = false;
+    }
+    else {
+      this.hadFocus = true;
+    }
+
+    this.isMoving = true;
+
+    document.addEventListener('pointerup', this.handlePointerUp);
+    if (!this.params.capabilities.move) {
+      return;
+    }
+
+    this.moveStartPx = { x: event.clientX, y: event.clientY };
+
+    this.dom.setPointerCapture(event.pointerId);
+
+    document.addEventListener('touchmove', this.handleTouchEvent, { passive: false });
+    document.addEventListener('pointermove', this.handlePointerMove);
+
+    event.preventDefault();
+  }
+
+  /**
+   * Handle touch move event.
+   * @param {TouchEvent} event Touch move event.
+   */
+  handleTouchEvent(event) {
+    if (!this.params.capabilities.move) {
+      return;
+    }
+
+    // Prevent default touch events like moving screen when moving/resizing could take place.
+    if (this.mode === INTERACTOR_MODE.view && event.target === this.dom) {
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Handle pointer move event.
+   * @param {PointerEvent} event Pointer move event.
+   */
+  handlePointerMove(event) {
+    if (event.target !== this.dom) {
+      return; // No delegation
+    }
+
+    if (this.mode !== INTERACTOR_MODE.view) {
+      return;
+    }
+
+    if (!this.isMoving) {
+      return;
+    }
+
+    this.wasMoved = true;
+
+    const deltaPx = { x: event.clientX - this.moveStartPx.x, y: event.clientY - this.moveStartPx.y };
+
+    const boardRect = this.callbacks.getBoardRect();
+    this.moveStartPx = {
+      x: Math.max(boardRect.left, Math.min(event.clientX, boardRect.right)),
+      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom))
+    };
+
+    this.updateTelemetryByPx(deltaPx, { retainSize: true });
+  }
+
+  /**
+   * Handle pointer up event.
+   * @param {PointerEvent} event Pointer up event.
+   */
+  handlePointerUp(event) {
+    if (event.target !== this.dom) {
+      return; // No delegation
+    }
+
+    if (this.mode !== INTERACTOR_MODE.view) {
+      return;
+    }
+
+    event.preventDefault();
+    if (!this.isMoving) {
+      return;
+    }
+
+    if (this.hadFocus && !this.wasMoved) {
+      this.setMode(INTERACTOR_MODE.interact);
+    }
+
+    this.isMoving = false;
+    this.wasMoved = false;
+
+    if (this.dom.hasPointerCapture(event.pointerId)) {
+      this.dom.releasePointerCapture(event.pointerId);
+    }
+
+    document.removeEventListener('touchmove', this.handleTouchEvent);
+    document.removeEventListener('pointermove', this.handlePointerMove);
+    document.removeEventListener('pointerup', this.handlePointerUp);
+
+    this.callbacks.onMove();
+  }
+
+  /**
    * Retain focus on element.
    */
   retainFocus() {
