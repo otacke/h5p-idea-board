@@ -6,8 +6,13 @@ export default class Exercise {
   /**
    * @class
    * @param {object} [params] Parameters.
+   * @param {object} [params.contentType] Content type definition.
+   * @param {number} [params.id] Id of exercise.
+   * @param {object} [params.globals] Global parameters.
+   * @param {object} [params.previousState] Previous state of exercise.
    * @param {object} [callbacks] Callbacks.
    * @param {object} [callbacks.getBoardRect] Get board rect.
+   * @param {function} [callbacks.passEditorDialog] Callback to pass editor dialog.
    */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({}, params);
@@ -74,7 +79,7 @@ export default class Exercise {
    * Initialize H5P instance.
    */
   initializeInstance() {
-    if (this.instance === null || this.instance) {
+    if (this.instance) {
       return; // Only once, please
     }
 
