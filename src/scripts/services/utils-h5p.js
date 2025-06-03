@@ -146,6 +146,23 @@ export default class H5PUtil {
       return '';
     }
 
+    /* There's no simple way to determine the version of a library from H5PEditor, not even
+     * asynchonously with the LibraryListCache :-/ Falling back to defaults that will need to
+     * be updated manually if the library version changes.
+     */
+    if (H5PUtil.isEditor()) {
+      const fallbacks = {
+        'H5P.EditableText': '1.0',
+        'H5P.AdvancedText': '1.1',
+        'H5P.EditableImage': '1.0',
+        'H5P.Image': '1.1',
+        'H5P.Video': '1.6',
+        'H5P.Audio': '1.5',
+      };
+
+      return fallbacks[machineName] || '';
+    }
+
     const dirs = H5PIntegration?.libraryDirectories ?? {};
     const matchedKey = Object.keys(dirs).find((key) => key.startsWith(machineName));
 
