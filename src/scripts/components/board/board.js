@@ -610,6 +610,9 @@ export default class Board {
       const cardId = card.getId();
       const interactor = this.elementInteractors.find((interactor) => interactor.getId() === cardId);
       editorValue.telemetry = interactor.getTelemetry();
+      Object.keys(editorValue.telemetry).forEach((key) => {
+        editorValue.telemetry[key] = String(editorValue.telemetry[key]);
+      });
 
       return editorValue;
     });
