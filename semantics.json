@@ -55,28 +55,13 @@
               ]
             },
             {
-              "name": "contentTypeGroup",
-              "type": "group",
+              "name": "contentType",
+              "type": "library",
               "label": "Content type",
               "importance": "high",
-              "expanded": true,
-              "fields": [
-                {
-                  "name": "contentType",
-                  "type": "library",
-                  "label": "Content type",
-                  "importance": "high",
-                  "options": [
-                    "H5P.EditableText 1.0",
-                    "H5P.EditableMedium 1.0"
-                  ]
-                },
-                {
-                  "name": "Dummy",
-                  "type": "boolean",
-                  "label": "Dummy",
-                  "widget": "none"
-                }
+              "options": [
+                "H5P.EditableText 1.0",
+                "H5P.EditableMedium 1.0"
               ]
             },
             {

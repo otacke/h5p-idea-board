@@ -188,11 +188,11 @@ export default class OptionsDialog {
       values = [];
 
       const contentTypeValues = Object
-        .keys(this.data.values.contentTypeGroup.contentType.params)
+        .keys(this.data.values.contentType.params)
         .map((key) => {
           return {
             name: key,
-            value: this.data.values.contentTypeGroup.contentType.params[key]
+            value: this.data.values.contentType.params[key]
           };
         });
 

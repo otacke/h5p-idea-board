@@ -560,8 +560,8 @@ export default class Main {
 
       const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(0);
 
-      groupInstance.params.contentTypeGroup.contentType.library = params.versionedName;
-      groupInstance.params.contentTypeGroup.contentType.params = params.params;
+      groupInstance.params.contentType.library = params.versionedName;
+      groupInstance.params.contentType.params = params.params;
       groupInstance.params.id = cardParams.id;
       groupInstance.params.telemetry = cardParams.telemetry;
       groupInstance.params.cardSettings = cardParams.cardSettings || {};
