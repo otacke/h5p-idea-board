@@ -92,4 +92,12 @@ export default class RatingBox {
       star.setAttribute('aria-label', this.params.dictionary.get('a11y.giveRatingOf').replace('@rating', targetRating));
     });
   }
+
+  /**
+   * Toggle visibility of the rating box.
+   * @param {boolean} visible Whether to show or hide the rating box.
+   */
+  toggleVisible(visible) {
+    this.dom.classList.toggle('display-none', !visible);
+  }
 }

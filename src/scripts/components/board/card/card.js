@@ -64,28 +64,27 @@ export default class Card {
     );
     this.exerciseDOM.append(this.exercise.getDOM());
 
-    if (this.params.capabilities.canUserRateCard) {
-      this.dom.style.setProperty('--has-rating', 1);
-      this.dom.style.setProperty('--star-count', RATING_MAX);
 
-      const ratingDOM = document.createElement('div');
-      ratingDOM.classList.add('h5p-idea-board-card-rating');
-      this.ratingBox = new RatingBox(
-        {
-          max: RATING_MAX,
-          dictionary: this.params.dictionary,
-        },
-        {
-          onRatingChanged: (rating) => {
-            this.setRating(rating);
-            this.callbacks.onUpdated();
-          }
+    this.dom.style.setProperty('--star-count', RATING_MAX);
+    const ratingDOM = document.createElement('div');
+    ratingDOM.classList.add('h5p-idea-board-card-rating');
+    this.ratingBox = new RatingBox(
+      {
+        max: RATING_MAX,
+        dictionary: this.params.dictionary,
+      },
+      {
+        onRatingChanged: (rating) => {
+          this.setRating(rating);
+          this.callbacks.onUpdated();
         }
-      );
-      ratingDOM.append(this.ratingBox.getDOM());
+      }
+    );
+    ratingDOM.append(this.ratingBox.getDOM());
 
-      this.dom.append(ratingDOM);
-    }
+    this.dom.append(ratingDOM);
+    this.dom.style.setProperty('--has-rating', this.params.capabilities.canUserRateCard ? 1 : 0);
+    this.ratingBox.toggleVisible(this.params.capabilities.canUserRateCard);
 
     this.exercise.attachInstance();
 
@@ -117,6 +116,14 @@ export default class Card {
    */
   focusContent() {
     return this.exercise.focus();
+  }
+
+  /**
+   * Toggle visibility of the rating box.
+   * @param {boolean} visible Whether to show or hide the rating box.
+   */
+  toggleRatingBoxVisible(visible) {
+    this.ratingBox?.toggleVisible(visible);
   }
 
   /**
@@ -182,6 +189,11 @@ export default class Card {
     capabilities.forEach((capability) => {
       this.params.capabilities[capability.name] = capability.value;
     });
+
+    if (typeof this.params.capabilities.canUserRateCard === 'boolean') {
+      this.dom.style.setProperty('--has-rating', this.params.capabilities.canUserRateCard ? 1 : 0);
+      this.ratingBox?.toggleVisible(this.params.capabilities.canUserRateCard);
+    }
   }
 
   /**
@@ -229,7 +241,7 @@ export default class Card {
       return;
     }
 
-    this.ratingBox.setRating(rating, options);
+    this.ratingBox?.setRating(rating, options);
   }
 
   /**
@@ -241,7 +253,7 @@ export default class Card {
       return;
     }
 
-    return this.ratingBox.getRating();
+    return this.ratingBox?.getRating();
   }
 
   /**
