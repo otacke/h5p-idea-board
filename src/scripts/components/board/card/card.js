@@ -154,6 +154,7 @@ export default class Card {
 
     const contrastColor = getAccessibleContrastColor(roundColorString(color));
     this.dom.style.setProperty('--h5p-idea-board-card-contrast-color', contrastColor);
+    this.dom.style.setProperty('--h5p-editable-text-placeholder-color', contrastColor);
   }
 
   /**
