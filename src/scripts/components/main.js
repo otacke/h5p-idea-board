@@ -194,8 +194,7 @@ export default class Main {
           this.openEditorDialog(id, params, callbacks);
         },
         onUpdated: (params = {}) => {
-          // TODO: These params need to be saved for good!
-          this.callbacks.updateEditorValues();
+          this.updateSubcontentFields(params);
         }
       }
     );
@@ -219,6 +218,30 @@ export default class Main {
     document.addEventListener('keydown', (event) => {
       this.handleKeyDown(event);
     });
+  }
+
+  /**
+   * Update subcontent fields in the editor.
+   * Without this, the HTML field widget would call setValue on saving and overwrite the changes
+   * made in the editor. Alternatively, we could skip validation of the IdeaBoard editor widget which
+   * triggers all children to validate and thus call setValue.
+   * @param {object} params Parameters containing index and contentTypeParams.
+   */
+  updateSubcontentFields(params = {}) {
+    if (!H5PUtil.isEditor()) {
+      return;
+    }
+
+    if (typeof params.index !== 'number') {
+      return;
+    }
+
+    const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(params.index);
+    const textInputField = H5PEditor.findField('contentType/text', groupInstance);
+    textInputField.$input[0].innerHTML = params.contentTypeParams.params.text;
+    textInputField.$input[0].dispatchEvent(new Event('input'));
+
+    this.callbacks.updateEditorValues();
   }
 
   /**
