@@ -52,6 +52,7 @@ export default class Board {
       `${this.params.dictionary.get('a11y.board')}. ${this.params.dictionary.get('a11y.boardInstructions')}`
     );
     this.dom.classList.add('h5p-idea-board-board');
+    this.dom.setAttribute('tabindex', '0');
 
     this.dom.addEventListener('dragover', (event) => {
       event.preventDefault();
