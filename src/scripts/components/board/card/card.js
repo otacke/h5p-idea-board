@@ -59,6 +59,14 @@ export default class Card {
         },
         passEditorDialog: (params, callbacks) => {
           this.callbacks.openEditorDialog(this.params.id, params, callbacks);
+        },
+        onUpdated: (params) => {
+          if (typeof params.text === 'string') {
+            if (this.params.contentType.library.startsWith('H5P.EditableText')) {
+              this.params.contentType.params.text = params.text;
+              this.callbacks.onUpdated();
+            }
+          }
         }
       }
     );

@@ -19,7 +19,8 @@ export default class Exercise {
 
     this.callbacks = Util.extend({
       getBoardRect: () => {},
-      passEditorDialog: () => {}
+      passEditorDialog: () => {},
+      onUpdated: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -84,6 +85,9 @@ export default class Exercise {
     }
 
     const machineName = this.params.contentType?.library?.split?.(' ')[0];
+    if (machineName === 'H5P.EditableText') {
+      this.params.contentType.params.backgroundColor = 'rgba(255, 255, 255, 0)';
+    }
 
     if (!this.instance) {
       this.instance = H5P.newRunnable(
@@ -114,6 +118,10 @@ export default class Exercise {
     if (machineName === 'H5P.EditableText') {
       this.instance.on('resize', () => {
         this.resizeHTMLTextFontSize();
+      });
+
+      this.instance.on('changed', (changes) => {
+        this.callbacks.onUpdated(changes.data);
       });
     }
   }

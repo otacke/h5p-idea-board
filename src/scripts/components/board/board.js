@@ -139,7 +139,10 @@ export default class Board {
           this.callbacks.openEditorDialog(id, params, callbacks);
         },
         onUpdated: () => {
-          this.callbacks.onUpdated();
+          this.callbacks.onUpdated({
+            index: this.cards.findIndex((c) => c.getId() === card.getId()),
+            contentTypeParams: card.getContentTypeParams()
+          });
         },
       }
     );

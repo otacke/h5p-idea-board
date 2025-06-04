@@ -194,8 +194,8 @@ export default class Main {
         openEditorDialog: async (id, params, callbacks) => {
           this.openEditorDialog(id, params, callbacks);
         },
-        onUpdated: () => {
-          this.callbacks.updateEditorValues();
+        onUpdated: (params = {}) => {
+          this.fixDirectEditing(params);
         }
       }
     );
@@ -219,6 +219,40 @@ export default class Main {
     document.addEventListener('keydown', (event) => {
       this.handleKeyDown(event);
     });
+  }
+
+  /**
+   * Fix direct editing of EditableText.
+   * I do not know why this is necessary. Calling this.callbacks.updateEditorValues() will make the editor
+   * pass all parameters via setValue. The parameters are correctly set. However, for whatever magical reason that I do
+   * not have the time to investigate, H5P core does not use these values but rather picks values pinned in the
+   * group instance of the EditableText subcontent. Shouldn't the parent's setValue have the last word?
+   * @param {object} params Parameters for direct editing.
+   */
+  fixDirectEditing(params) {
+    if (!H5PUtil.isEditor()) {
+      return;
+    }
+
+    const { index, contentTypeParams } = params;
+    if (typeof index !== 'number' || !contentTypeParams) {
+      return;
+    }
+
+    const contentFormDOM = document.createElement('div');
+    contentFormDOM.classList.add('h5p-idea-board-content-form');
+
+    const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(index);
+    groupInstance.params.contentType.params = contentTypeParams.params;
+
+    H5PEditor.processSemanticsChunk(
+      groupInstance.field.fields,
+      groupInstance.params,
+      H5P.jQuery(contentFormDOM),
+      groupInstance,
+    );
+
+    this.callbacks.updateEditorValues();
   }
 
   /**
@@ -558,7 +592,8 @@ export default class Main {
       const contentFormDOM = document.createElement('div');
       contentFormDOM.classList.add('h5p-idea-board-content-form');
 
-      const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(0);
+      const cardIndex = cardsParams.findIndex((card) => card.id === id);
+      const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(cardIndex);
 
       groupInstance.params.contentType.library = params.versionedName;
       groupInstance.params.contentType.params = params.params;
