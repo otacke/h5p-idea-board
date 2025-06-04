@@ -120,6 +120,10 @@ export default class Board {
       }
     }, params);
 
+    if (H5PUtil.isEditor()) {
+      this.params.globals.get('editor').addCardGroup();
+    }
+
     const card = new Card(
       {
         id: elementParams.id,
@@ -268,6 +272,14 @@ export default class Board {
       return;
     }
 
+    const indexFrom = this.cards.findIndex((c) => c.getId() === id);
+    const indexTo = this.cards.length - 1;
+    if (H5PUtil.isEditor()) {
+      this.params.globals.get('editor').moveCardGroup(indexFrom, indexTo);
+    }
+    const [cardToMove] = this.cards.splice(indexFrom, 1);
+    this.cards.splice(indexTo, 0, cardToMove);
+
     this.elementInteractors = this.elementInteractors.filter((elementInteractor) => elementInteractor.params.id !== id);
     this.elementInteractors = [...this.elementInteractors, interactor];
 
@@ -297,9 +309,16 @@ export default class Board {
       return;
     }
 
+    const indexFrom = this.cards.findIndex((c) => c.getId() === id);
+    const indexTo = 0;
+    if (H5PUtil.isEditor()) {
+      this.params.globals.get('editor').moveCardGroup(indexFrom, indexTo);
+    }
+    const [cardToMove] = this.cards.splice(indexFrom, 1);
+    this.cards.splice(indexTo, 0, cardToMove);
+
     this.elementInteractors = this.elementInteractors.filter((elementInteractor) => elementInteractor.params.id !== id);
     this.elementInteractors = [interactor, ...this.elementInteractors];
-
 
     this.cardsList.insertBefore(interactor.getDOM(), this.cardsList.firstChild);
 
@@ -363,6 +382,11 @@ export default class Board {
           const element = this.getInteractor(id);
           if (!element) {
             return;
+          }
+
+          if (H5PUtil.isEditor()) {
+            const index = this.cards.findIndex((c) => c.getId() === id);
+            this.params.globals.get('editor').removeCardGroup(index);
           }
 
           const elementDOM = element.getDOM();

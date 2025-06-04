@@ -25,7 +25,6 @@ export default class Main {
     this.callbacks = Util.extend({
       onFullscreenClicked: () => {},
       updateEditorValues: () => {},
-      onUpdated: () => {}
     }, callbacks);
 
     this.buildDOM();
@@ -195,7 +194,8 @@ export default class Main {
           this.openEditorDialog(id, params, callbacks);
         },
         onUpdated: (params = {}) => {
-          this.fixDirectEditing(params);
+          // TODO: These params need to be saved for good!
+          this.callbacks.updateEditorValues();
         }
       }
     );
@@ -219,54 +219,6 @@ export default class Main {
     document.addEventListener('keydown', (event) => {
       this.handleKeyDown(event);
     });
-  }
-
-  /**
-   * Fix direct editing of EditableText.
-   * I do not know why this is necessary. Calling this.callbacks.updateEditorValues() will make the editor
-   * pass all parameters via setValue. The parameters are correctly set. However, for whatever magical reason that I do
-   * not have the time to investigate, H5P core does not use these values but rather picks values pinned in the
-   * group instance of the EditableText subcontent. Likewise, when only this fix is applied without running
-   * it after editor form changes, the form changes get ignored.
-   * Shouldn't simply the parent's setValue have the last word, no matter what children might report?
-   * @param {object} params Parameters for direct editing.
-   */
-  fixDirectEditing(params) {
-    if (!H5PUtil.isEditor()) {
-      return;
-    }
-
-    const { index, contentTypeParams } = params;
-    if (typeof index !== 'number' || !contentTypeParams) {
-      return;
-    }
-
-    params.versionedName = contentTypeParams.library;
-    params.params = contentTypeParams.params;
-
-    const cardsParams = this.board.getElementsParams();
-    const cardParams = cardsParams[index];
-
-    const contentFormDOM = document.createElement('div');
-    contentFormDOM.classList.add('h5p-idea-board-content-form');
-
-    const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(index);
-
-    groupInstance.params.contentType.library = params.versionedName;
-    groupInstance.params.contentType.params = params.params;
-    groupInstance.params.id = cardParams.id;
-    groupInstance.params.telemetry = cardParams.telemetry;
-    groupInstance.params.cardSettings = cardParams.cardSettings || {};
-    groupInstance.params.cardCapabilities = cardParams.cardCapabilities;
-
-    H5PEditor.processSemanticsChunk(
-      groupInstance.field.fields,
-      groupInstance.params,
-      H5P.jQuery(contentFormDOM),
-      groupInstance,
-    );
-
-    this.callbacks.updateEditorValues();
   }
 
   /**
@@ -743,11 +695,6 @@ export default class Main {
 
     // Sending back to subcontent type
     callbacks.setValues(contentTypeValues, H5PUtil.isEditor());
-
-    this.fixDirectEditing({
-      index: cards.findIndex((c) => c.getId() === id),
-      contentTypeParams: card.getContentTypeParams()
-    });
 
     // Store for parent content type
     this.callbacks.updateEditorValues();
