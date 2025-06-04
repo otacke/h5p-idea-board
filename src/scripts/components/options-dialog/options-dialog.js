@@ -324,7 +324,7 @@ export default class OptionsDialog {
    * @param {Event} event Click event.
    */
   handleGlobalClick(event) {
-    if (!event.target.isConnected || this.content.contains(this.lastMouseDownElement ?? event.target)) {
+    if (!event.target.isConnected || event.target.closest('.h5p-idea-board-options-dialog-content') === this.content) {
       return;
     }
 
