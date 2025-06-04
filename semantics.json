@@ -315,7 +315,7 @@
         "name": "unknownFieldType",
         "type": "text",
         "label": "Unknown field type",
-        "default": "Fields of type \"@type\" are not supported."
+        "default": "Fields of type '@type' are not supported."
       },
       {
         "name": "errorFieldRequired",
