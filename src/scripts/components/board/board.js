@@ -199,6 +199,10 @@ export default class Board {
     this.cardsList.append(element.getDOM());
     this.elementInteractors.push(element);
 
+    window.requestAnimationFrame(() => {
+      this.params.globals.get('mainInstance').trigger('resize');
+    });
+
     element.focus();
     // TODO: Add on drag event!? Check how DnB does it
   }
