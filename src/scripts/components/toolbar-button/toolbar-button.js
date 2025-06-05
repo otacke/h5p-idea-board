@@ -90,7 +90,15 @@ export default class ToolbarButton {
     }
 
     if (this.button.draggable) {
+      this.button.addEventListener('mousedown', () => {
+        // Track H5P.Tooltip to not display when dragging
+        this.button.dispatchEvent(new Event('mouseleave', { bubbles: true, cancelable: true }));
+      });
+
       this.button.addEventListener('dragstart', (event) => {
+        // Track H5P.Tooltip to not display when dragging
+        this.button.dispatchEvent(new Event('mouseleave', { bubbles: true, cancelable: true }));
+
         event.dataTransfer.setData('text/plain', this.params.versionedMachineName);
       });
     }
