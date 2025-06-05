@@ -20,8 +20,8 @@ const DEFAULT_CKE_CONFIG = {
   },
   heading: {
     options: [
+      { model: 'formatted', view: 'pre', title: 'Formatted', class: 'ck-heading_formatted' },
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-      { model: 'formatted', view: 'pre', title: 'Formatted' }
     ]
   },
   fontSize: {
