@@ -413,7 +413,7 @@ export default class Board {
 
           element.focus(); // Required to allow focusing the delete button that's hidden on focusout
           activeElement.focus();
-          // Truck H5P.Tooltip to not display on delete button after focus
+          // Track H5P.Tooltip to not display on delete button after focus
           activeElement.dispatchEvent(new Event('mouseleave', { bubbles: true, cancelable: true }));
         }
       }
