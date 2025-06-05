@@ -16,6 +16,9 @@ const TELEMETRY_DEFAULT_SIZE = 33.3;
 /** @constant {number} TELEMETRY_MIN_SIZE_PX Minimum size of interactor element in pixels */
 const TELEMETRY_MIN_SIZE_PX = 48;
 
+/** @constant {number} FOCUS_RETAIN_TIMEOUT_MS Timeout in milliseconds to retain focus */
+const FOCUS_RETAIN_TIMEOUT_MS = 100;
+
 /** @constant {object} INTERACTOR_MODE Modes for the interactor */
 export const INTERACTOR_MODE = { view: 0, interact: 1 };
 
@@ -905,13 +908,15 @@ export default class ElementInteractor {
   }
 
   /**
-   * Retain focus on element.
+   * Retain focus on element. Prevents losing focus by onFocusOut handle kicking in right after mode change.
    */
   retainFocus() {
     this.shouldRetainFocus = true;
-    window.requestAnimationFrame(() => {
+
+    // Workaround. Using requestAnimationFrame does not work on Firefox, it seems to be too slow.
+    window.setTimeout(() => {
       this.shouldRetainFocus = false;
-    });
+    }, FOCUS_RETAIN_TIMEOUT_MS);
   }
 
   /**
