@@ -324,7 +324,11 @@ export default class OptionsDialog {
    * @param {Event} event Click event.
    */
   handleGlobalClick(event) {
-    if (!event.target.isConnected || event.target.closest('.h5p-idea-board-options-dialog-content') === this.content) {
+    const isAttachedToDOM = event.target.isConnected;
+    const isWithinDialog = event.target.closest('.h5p-idea-board-options-dialog') === this.dom;
+    const isOutOfDialogFilePicker = event.target.getAttribute('type') === 'file';
+
+    if (!isAttachedToDOM || isWithinDialog || isOutOfDialogFilePicker) {
       return;
     }
 
