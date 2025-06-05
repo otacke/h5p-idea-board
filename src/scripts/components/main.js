@@ -238,8 +238,10 @@ export default class Main {
 
     const groupInstance = this.params.globals.get('editor').getCardsListGroupInstance(params.index);
     const textInputField = H5PEditor.findField('contentType/text', groupInstance);
-    textInputField.$input[0].innerHTML = params.contentTypeParams.params.text;
-    textInputField.$input[0].dispatchEvent(new Event('input'));
+    if (textInputField?.$input) {
+      textInputField.$input[0].innerHTML = params.contentTypeParams.params.text;
+      textInputField.$input[0].dispatchEvent(new Event('input'));
+    }
 
     this.callbacks.updateEditorValues();
   }
