@@ -3,7 +3,7 @@ import Util from '@services/util.js';
 
 import './option-field-text-html.scss';
 
-/** @constant {object} DEFAULT_CKE_CONFIG Config mirroring html widget in semantics.json */
+/** @constant {object} DEFAULT_CKE_CONFIG Config mirroring default html widget in semantics.json */
 const DEFAULT_CKE_CONFIG = {
   removePlugins: ['MathType'],
   updateSourceElementOnDestroy: true,
@@ -21,9 +21,28 @@ const DEFAULT_CKE_CONFIG = {
   heading: {
     options: [
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-      { model: 'formatted', view: 'pre', title: 'Formatted' },
-      { model: 'address', view: 'address', title: 'Address' },
-      { model: 'normal', view: 'div', title: 'Normal (DIV)' }
+      { model: 'formatted', view: 'pre', title: 'Formatted' }
+    ]
+  },
+  fontSize: {
+    options: [
+      { title: 'Default', model: '1em' },
+      { title: '50%', model: '0.5em' },
+      { title: '56.25%', model: '0.5625em' },
+      { title: '62.5%', model: '0.625em' },
+      { title: '68.75%', model: '0.6875em' },
+      { title: '75%', model: '0.75em' },
+      { title: '87.5%', model: '0.875em' },
+      { title: '100%', model: '1em' },
+      { title: '112.5%', model: '1.125em' },
+      { title: '125%', model: '1.25em' },
+      { title: '137.5%', model: '1.375em' },
+      { title: '150%', model: '1.5em' },
+      { title: '162.5%', model: '1.625em' },
+      { title: '175%', model: '1.75em' },
+      { title: '225%', model: '2.25em' },
+      { title: '300%', model: '3em' },
+      { title: '450%', model: '4.5em' }
     ]
   },
   alignment: {
