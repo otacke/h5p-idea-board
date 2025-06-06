@@ -3,5 +3,15 @@
 
   .h5p-idea-board-exercise-instance {
     height: 100%;
+
+    &.h5p-editable-text {
+      .h5p-editable-text-container .ck-editor {
+        box-shadow: none;;
+      }
+
+      .h5p-ckeditor .ck-editor__main .ck-editor__editable {
+        overflow: hidden;
+      }
+    }
   }
 }
