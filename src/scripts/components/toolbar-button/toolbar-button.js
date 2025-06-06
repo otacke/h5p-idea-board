@@ -155,7 +155,7 @@ export default class ToolbarButton {
       }
     });
 
-    H5P.Tooltip(this.button, { position: 'bottom' });
+    H5P.Tooltip?.(this.button, { position: 'bottom' });
   }
 
   /**
