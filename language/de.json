@@ -1,0 +1,347 @@
+{
+  "semantics": [
+    {
+      "label": "Texteingabe",
+      "fields": [
+        {
+          "label": "Kartenliste",
+          "placeholder": "Himbeeren\n\nErdbeeren (lecker)\n\nHeidelbeeren"
+        },
+        {
+          "label": "Dummy"
+        }
+      ]
+    },
+    {
+      "label": "Überschrift"
+    },
+    {
+      "label": "Ideenboard",
+      "fields": [
+        {
+          "label": "Karten",
+          "entity": "card",
+          "field": {
+            "label": "Karte",
+            "fields": [
+              {
+                "label": "ID"
+              },
+              {
+                "label": "Telemetrie"
+              },
+              {
+                "label": "Inhaltstyp"
+              },
+              {
+                "label": "Karteneinstellungen",
+                "fields": [
+                  {
+                    "label": "Hintergrundfarbe"
+                  },
+                  {
+                    "label": "Randfarbe"
+                  },
+                  {
+                    "label": "Kartenbewertung",
+                    "description": "Bewertung der Karte."
+                  }
+                ]
+              },
+              {
+                "label": "Berechtigungen für Karte",
+                "fields": [
+                  {
+                    "label": "Kann die Karte bearbeitet werden"
+                  },
+                  {
+                    "label": "Kann die Karte verschoben werden"
+                  },
+                  {
+                    "label": "Kann die Kartengröße geändert werden"
+                  },
+                  {
+                    "label": "Kann die Karte gelöscht werden"
+                  },
+                  {
+                    "label": "Kann die Karte bewertet werden",
+                    "description": "Wenn aktiviert, kann die Karte bewertet werden."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "label": "Hintergrund",
+          "fields": [
+            {
+              "label": "Hintergrundbild"
+            },
+            {
+              "label": "Hintergrundfarbe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Hintergrund",
+      "fields": [
+        {
+          "label": "Hintergrundbild",
+          "description": "Wählen Sie ein Bild als Hintergrund für die Spielkarte aus."
+        },
+        {
+          "label": "Hintergrundfarbe",
+          "description": "Wählen Sie eine Farbe als Hintergrund für die Spielkarte aus."
+        }
+      ]
+    },
+    {
+      "label": "Verhaltenseinstellungen",
+      "fields": [
+        {
+          "label": "Hinzufügen von Karten erlaubt"
+        },
+        {
+          "label": "Kartentypen, die hinzugefügt werden können",
+          "fields": [
+            {
+              "label": "Text"
+            },
+            {
+              "label": "Bild"
+            },
+            {
+              "label": "Audio"
+            },
+            {
+              "label": "Video"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Bedienoberfläche",
+      "fields": [
+        {
+          "label": "Dialogüberschrift Karte löschen",
+          "default": "Karte löschen"
+        },
+        {
+          "label": "Dialogtext Karte löschen",
+          "default": "Möchtest du diese Karte wirklich löschen?"
+        },
+        {
+          "label": "Dialogbestätigung Karte löschen",
+          "default": "Ja, löschen!"
+        },
+        {
+          "label": "Nein",
+          "default": "Nein"
+        },
+        {
+          "label": "Speichern",
+          "default": "Speichern"
+        },
+        {
+          "label": "Abbrechen",
+          "default": "Abbrechen"
+        },
+        {
+          "label": "Auswählen",
+          "default": "Auswählen"
+        },
+        {
+          "label": "Unbekannter Feldtyp",
+          "default": "Felder vom Typ '@type' werden nicht unterstützt."
+        },
+        {
+          "label": "Feld erforderlich",
+          "default": "Dieses Feld ist erforderlich und darf nicht leer sein."
+        },
+        {
+          "label": "Zahl Mindestwert",
+          "default": "Der Wert muss größer oder gleich @min sein."
+        },
+        {
+          "label": "Zahl Höchstwert",
+          "default": "Der Wert muss kleiner oder gleich @max sein."
+        },
+        {
+          "label": "Zahl Schrittweite",
+          "default": "Der Wert muss ein Vielfaches von @step sein."
+        },
+        {
+          "label": "Text zu lang",
+          "default": "Der Text ist zu lang. Die maximale Länge beträgt @max Zeichen."
+        },
+        {
+          "label": "Zahl Schrittweite",
+          "default": "Der kleinste erlaubte Schritt ist @step."
+        },
+        {
+          "label": "Karteneinstellungen",
+          "default": "Karteneinstellungen"
+        }
+      ]
+    },
+    {
+      "label": "Texte für Barrierefreiheit",
+      "fields": [
+        {
+          "label": "Board zum Anordnen von Karten",
+          "default": "Board zum Anordnen von Karten"
+        },
+        {
+          "label": "Anweisungen für das Board",
+          "default": "Verwenden Sie die Leertaste, um mit dem Kartenelement zu interagieren oder Tab, um zum Kontextmenü zu gelangen."
+        },
+        {
+          "label": "Werkzeugleiste (Standardbezeichnung)",
+          "default": "Ideenboard"
+        },
+        {
+          "label": "Kontextmenü",
+          "description": "@denominator ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
+          "default": "Kontextmenü für @denominator"
+        },
+        {
+          "label": "Inhaltstyp hinzufügen",
+          "description": "@contentType ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
+          "default": "@contentType hinzufügen"
+        },
+        {
+          "label": "Enter fullscreen",
+          "default": "Vollbildmodus aktivieren"
+        },
+        {
+          "label": "Exit fullscreen",
+          "default": "Vollbildmodus verlassen"
+        },
+        {
+          "label": "Edit",
+          "default": "Bearbeiten"
+        },
+        {
+          "label": "Resize",
+          "default": "Bewegungsmodus aktivieren"
+        },
+        {
+          "label": "Resize",
+          "default": "Bewegungsmodus verlassen. Verwende die Pfeiltasten, um die Karte zu verschieben."
+        },
+        {
+          "label": "Resize",
+          "default": "Größenänderungsmodus aktivieren"
+        },
+        {
+          "label": "Resize",
+          "default": "Größenänderungsmodus verlassen. Verwende die Pfeiltasten, um die Größe der Karte zu ändern."
+        },
+        {
+          "label": "Bring to front",
+          "default": "In den Vordergrund bringen"
+        },
+        {
+          "label": "Send to back",
+          "default": "In den Hintergrund senden"
+        },
+        {
+          "label": "Copy",
+          "default": "Kopieren"
+        },
+        {
+          "label": "Delete",
+          "default": "Löschen"
+        },
+        {
+          "label": "Card brought to front",
+          "default": "Die Karte wurde in den Vordergrund gebracht."
+        },
+        {
+          "label": "Card sent to back",
+          "default": "Die Karte wurde in den Hintergrund gesendet."
+        },
+        {
+          "label": "Card deleted",
+          "default": "Die Karte wurde gelöscht."
+        },
+        {
+          "label": "Card",
+          "default": "Karte"
+        },
+        {
+          "label": "Card at",
+          "description": "@current ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
+          "default": "Karte @current"
+        },
+        {
+          "label": "Card x of y",
+          "description": "@current und @total sind Platzhalter und werden durch die jeweiligen Werte ersetzt.",
+          "default": "Karte @current von @total"
+        },
+        {
+          "label": "Color picker dialog",
+          "default": "Farbauswahldialog"
+        },
+        {
+          "label": "Toggle color picker dialog",
+          "default": "Farbauswahldialog umschalten"
+        },
+        {
+          "label": "Color selection area",
+          "default": "Farbauswahlbereich"
+        },
+        {
+          "label": "Opacity",
+          "default": "Deckkraft"
+        },
+        {
+          "label": "Hue",
+          "default": "Farbton"
+        },
+        {
+          "label": "Give rating of",
+          "description": "@rating ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
+          "default": "Diese Karte mit einer Bewertung von @rating bewerten."
+        },
+        {
+          "label": "Rating changed",
+          "description": "@rating ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
+          "default": "Die Bewertung wurde auf @rating geändert."
+        },
+        {
+          "label": "Paste content",
+          "default": "Inhalt aus der Zwischenablage einfügen"
+        },
+        {
+          "label": "Paste no content",
+          "default": "Kein H5P-Inhalt in der Zwischenablage"
+        },
+        {
+          "label": "Paste error",
+          "default": "Einfügen aus der Zwischenablage nicht möglich"
+        },
+        {
+          "label": "Paste content not supported",
+          "default": "Der Inhalt in der H5P-Zwischenablage wird in diesem Kontext nicht unterstützt"
+        },
+        {
+          "label": "Paste content too old",
+          "default": "Der Inhalt in der H5P-Zwischenablage hat eine niedrigere Version (@clip) als in diesem Kontext unterstützt wird (@local). Wenn möglich, aktualisiere den Inhalt, den du einfügen möchtest, kopiere ihn erneut und versuche ihn hier einzufügen"
+        },
+        {
+          "label": "Paste content too new",
+          "default": "Der Inhalt in der H5P-Zwischenablage hat eine höhere Version (@clip) als in diesem Kontext unterstützt wird (@local). Wenn möglich, aktualisiere zuerst diesen Inhalt und versuche dann, den Inhalt hier wieder einzufügen"
+        },
+        {
+          "label": "Paste content disabled",
+          "default": "Kein geeigneter Inhalt zum Einfügen"
+        }
+      ]
+    }
+  ]
+}

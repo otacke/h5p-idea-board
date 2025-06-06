@@ -1,0 +1,347 @@
+{
+  "semantics": [
+    {
+      "label": "Textual input",
+      "fields": [
+        {
+          "label": "List of cards",
+          "placeholder": "Raspberries\n\nStrawberries (yummie)\n\nBlueberries"
+        },
+        {
+          "label": "Dummy"
+        }
+      ]
+    },
+    {
+      "label": "Headline"
+    },
+    {
+      "label": "Idea board",
+      "fields": [
+        {
+          "label": "Cards",
+          "entity": "card",
+          "field": {
+            "label": "Card",
+            "fields": [
+              {
+                "label": "ID"
+              },
+              {
+                "label": "Telemetry"
+              },
+              {
+                "label": "Content type"
+              },
+              {
+                "label": "Card settings",
+                "fields": [
+                  {
+                    "label": "Background color"
+                  },
+                  {
+                    "label": "Border color"
+                  },
+                  {
+                    "label": "Card rating",
+                    "description": "Rating of the card."
+                  }
+                ]
+              },
+              {
+                "label": "Capabilities for card",
+                "fields": [
+                  {
+                    "label": "Can user edit card"
+                  },
+                  {
+                    "label": "Can user move card"
+                  },
+                  {
+                    "label": "Can user resize card"
+                  },
+                  {
+                    "label": "Can user delete card"
+                  },
+                  {
+                    "label": "Can user rate card",
+                    "description": "If enabled, the user can rate the card."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "label": "Background",
+          "fields": [
+            {
+              "label": "Background image"
+            },
+            {
+              "label": "Background color"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Background",
+      "fields": [
+        {
+          "label": "Background image",
+          "description": "Select an image to use as the background of the game map."
+        },
+        {
+          "label": "Background color",
+          "description": "Choose a color to use as the background of the game map."
+        }
+      ]
+    },
+    {
+      "label": "Behavioural settings",
+      "fields": [
+        {
+          "label": "User is allowed to add cards"
+        },
+        {
+          "label": "Card types that the user may add",
+          "fields": [
+            {
+              "label": "Text"
+            },
+            {
+              "label": "Image"
+            },
+            {
+              "label": "Audio"
+            },
+            {
+              "label": "Video"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "User interface",
+      "fields": [
+        {
+          "label": "Dialog header delete card",
+          "default": "Delete card"
+        },
+        {
+          "label": "Dialog text delete card",
+          "default": "Do you really want to delete this card?"
+        },
+        {
+          "label": "Dialog confirmation delete card",
+          "default": "Yes, delete!"
+        },
+        {
+          "label": "No",
+          "default": "No"
+        },
+        {
+          "label": "Save",
+          "default": "Save"
+        },
+        {
+          "label": "Cancel",
+          "default": "Cancel"
+        },
+        {
+          "label": "Choose",
+          "default": "Choose"
+        },
+        {
+          "label": "Unknown field type",
+          "default": "Fields of type '@type' are not supported."
+        },
+        {
+          "label": "Field required",
+          "default": "This field is required and cannot be empty."
+        },
+        {
+          "label": "Number minimum value",
+          "default": "The value must be greater than or equal to @min."
+        },
+        {
+          "label": "Number maximum value",
+          "default": "The value must be less than or equal to @max."
+        },
+        {
+          "label": "Number step value",
+          "default": "The value must be a multiple of @step."
+        },
+        {
+          "label": "Text too long",
+          "default": "The text is too long. Maximum length is @max characters."
+        },
+        {
+          "label": "Number step value",
+          "default": "The smallest step allowed is @step."
+        },
+        {
+          "label": "Card settings",
+          "default": "Card settings"
+        }
+      ]
+    },
+    {
+      "label": "Accessibility texts",
+      "fields": [
+        {
+          "label": "Board to arragange cards",
+          "default": "Board to arrange cards"
+        },
+        {
+          "label": "Instructions for the board",
+          "default": "Use the space bar to interact with card item or tab to the context menu."
+        },
+        {
+          "label": "Toolbar fallback label",
+          "default": "Idea Board"
+        },
+        {
+          "label": "Context menu",
+          "description": "@denominator is a placeholder and will be replaced by the respective value.",
+          "default": "Context menu for @denominator"
+        },
+        {
+          "label": "Add content type",
+          "description": "@contentType is a placeholder and will be replaced by the respective value.",
+          "default": "Add @contentType"
+        },
+        {
+          "label": "Enter fullscreen",
+          "default": "Enter fullscreen mode"
+        },
+        {
+          "label": "Exit fullscreen",
+          "default": "Exit fullscreen mode"
+        },
+        {
+          "label": "Edit",
+          "default": "Edit"
+        },
+        {
+          "label": "Resize",
+          "default": "Enter move mode"
+        },
+        {
+          "label": "Resize",
+          "default": "Leave move mode. Use arrow keys to move the card."
+        },
+        {
+          "label": "Resize",
+          "default": "Enter resize mode"
+        },
+        {
+          "label": "Resize",
+          "default": "Leave resize mode. Use arrow keys to resize the card."
+        },
+        {
+          "label": "Bring to front",
+          "default": "Bring to front"
+        },
+        {
+          "label": "Send to back",
+          "default": "Send to back"
+        },
+        {
+          "label": "Copy",
+          "default": "Copy"
+        },
+        {
+          "label": "Delete",
+          "default": "Delete"
+        },
+        {
+          "label": "Card brought to front",
+          "default": "The card was brought to front."
+        },
+        {
+          "label": "Card sent to back",
+          "default": "The card was sent to back."
+        },
+        {
+          "label": "Card deleted",
+          "default": "The card was deleted."
+        },
+        {
+          "label": "Card",
+          "default": "Card"
+        },
+        {
+          "label": "Card at",
+          "description": "@current is a placeholder and will be replaced by the respective value.",
+          "default": "Card @current"
+        },
+        {
+          "label": "Card x of y",
+          "description": "@current and @total are placeholders and will be replaced by the respective values.",
+          "default": "Card @current of @total"
+        },
+        {
+          "label": "Color picker dialog",
+          "default": "Color picker dialog"
+        },
+        {
+          "label": "Toggle color picker dialog",
+          "default": "Toggle color picker dialog"
+        },
+        {
+          "label": "Color selection area",
+          "default": "Color selection area"
+        },
+        {
+          "label": "Opacity",
+          "default": "Opacity"
+        },
+        {
+          "label": "Hue",
+          "default": "Hue"
+        },
+        {
+          "label": "Give rating of",
+          "description": "@rating is a placeholder and will be replaced by the respective value.",
+          "default": "Rate this card with a rating of @rating."
+        },
+        {
+          "label": "Rating changed",
+          "description": "@rating is a placeholder and will be replaced by the respective value.",
+          "default": "The rating was changed to @rating."
+        },
+        {
+          "label": "Paste content",
+          "default": "Paste content from the clipboard"
+        },
+        {
+          "label": "Paste no content",
+          "default": "No H5P content on the clipboard"
+        },
+        {
+          "label": "Paste error",
+          "default": "Cannot paste from clipboard"
+        },
+        {
+          "label": "Paste content not supported",
+          "default": "The content in the H5P clipboard is not supported in this context"
+        },
+        {
+          "label": "Paste content too old",
+          "default": "The content in the H5P clipboard is of a lower version (@clip) than what is supported in this context (@local), if possible try to have the content you want to paste upgraded, copy it again and try pasting it here"
+        },
+        {
+          "label": "Paste content too new",
+          "default": "The content in the H5P clipboard is of a higher version (@clip) than what is supported in this context (@local), if possible try to have this content upgraded first, and then try pasting the content here again"
+        },
+        {
+          "label": "Paste content disabled",
+          "default": "No suitable content to be pasted"
+        }
+      ]
+    }
+  ]
+}
