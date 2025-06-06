@@ -51,6 +51,8 @@ export default class Main {
       );
     });
 
+    this.supportedSubcontentTypes = this.getSupportedSubcontentTypes();
+
     H5P.externalDispatcher.on('datainclipboard', (event) => {
       this.updatePasteButtonState(event.data);
     });
@@ -69,7 +71,7 @@ export default class Main {
     }
 
     // Using the format that H5PEditor.LibraryListCache.getLibraries would produce, required for canPastePlus.
-    const supportedLibraries = this.getSupportedSubcontentTypes().map((uberName) => {
+    const supportedLibraries = this.supportedSubcontentTypes.map((uberName) => {
       return {
         uberName: uberName,
         name: uberName.split(' ')[0],
@@ -128,7 +130,7 @@ export default class Main {
    * @returns {boolean} True if content type is supported, false otherwise.
    */
   isSupportedContentType(uberName) {
-    return this.getSupportedSubcontentTypes().includes(uberName);
+    return this.supportedSubcontentTypes.includes(uberName);
   }
 
   /**
@@ -508,7 +510,7 @@ export default class Main {
     }
 
     const clipboard = H5PUtil.isEditor() ? H5P.getClipboard() : getH5PClipboard();
-    const shapedParams = shapeParamsFromClipboard(clipboard, this.getSupportedSubcontentTypes());
+    const shapedParams = shapeParamsFromClipboard(clipboard, this.supportedSubcontentTypes);
     delete shapedParams.specific.contentType;
     delete shapedParams.specific.telemetry?.x;
     delete shapedParams.specific.telemetry?.y;
@@ -544,7 +546,7 @@ export default class Main {
 
     clipboardData.specific = params;
 
-    const reshapedParams = shapeParamsForClipboard(clipboardData, this.getSupportedSubcontentTypes());
+    const reshapedParams = shapeParamsForClipboard(clipboardData, this.supportedSubcontentTypes);
     H5P.setClipboard(reshapedParams);
   }
 
@@ -738,5 +740,106 @@ export default class Main {
    */
   resize() {
     this.optionsDialog.resize();
+  }
+
+  /**
+   * Clear the board.
+   */
+  clearBoard() {
+    this.board.removeAllElements();
+  }
+
+  /**
+   * Compute position and size telemetry data for multiple cards.
+   * @param {number} numberOfCards Number of cards to position.
+   * @returns {object[]} Array of telemetry objects with x, y, width, and height.
+   */
+  computeTelemetries(numberOfCards) {
+    if (numberOfCards === 0) {
+      return [];
+    }
+
+    const layout = this.calculateLayout(numberOfCards);
+    const telemetries = [];
+
+    for (let index = 0; index < numberOfCards; index++) {
+      const column = index % layout.columns;
+      const row = Math.floor(index / layout.columns);
+
+      telemetries.push({
+        x: (column + 1) * layout.gapX + column * layout.cardWidth,
+        y: (row + 1) * layout.gapY + row * layout.cardHeight,
+        width: layout.cardWidth,
+        height: layout.cardHeight
+      });
+    }
+
+    return telemetries;
+  }
+
+  /**
+   * Calculate layout parameters for positioning cards.
+   * @param {number} numberOfCards Number of cards to position.
+   * @returns {object} Layout parameters.
+   */
+  calculateLayout(numberOfCards) {
+    const constraints = {
+      baseGapX: 5,
+      baseGapY: 5,
+      maxCardWidth: 33,
+      maxCardHeight: 33
+    };
+
+    const columns = Math.ceil(Math.sqrt(numberOfCards));
+    const rows = Math.ceil(numberOfCards / columns);
+
+    let gapX = constraints.baseGapX;
+    let gapY = constraints.baseGapY;
+
+    // Calculate card dimensions based on available space
+    let cardWidth = (100 - (columns + 1) * gapX) / columns;
+    let cardHeight = (100 - (rows + 1) * gapY) / rows;
+
+    // Adjust if card width exceeds maximum to center card(s)
+    if (cardWidth > constraints.maxCardWidth) {
+      cardWidth = constraints.maxCardWidth;
+      gapX = (100 - columns * cardWidth) / (columns + 1);
+    }
+
+    // Adjust if card height exceeds maximum to center card(s)
+    if (cardHeight > constraints.maxCardHeight) {
+      cardHeight = constraints.maxCardHeight;
+      gapY = (100 - rows * cardHeight) / (rows + 1);
+    }
+
+    return { columns, rows, gapX, gapY, cardWidth, cardHeight };
+  }
+
+  /**
+   * Add text cards to the board.
+   * @param {string[]} cardHTMLs Array of HTML strings representing text cards.
+   */
+  addTextCards(cardHTMLs = []) {
+    if (cardHTMLs.length === 0) {
+      return; // Nothing to add
+    }
+
+    const editableTextUbername = this.supportedSubcontentTypes.find((name) => name.startsWith('H5P.EditableText '));
+    if (!editableTextUbername) {
+      return;
+    }
+
+    let telemetries = this.computeTelemetries(cardHTMLs.length);
+
+    cardHTMLs.forEach((cardHTML, index) => {
+      this.addElementToBoard(editableTextUbername, { telemetry: telemetries[index] });
+
+      const card = this.board.getCards()[this.board.getCards().length - 1];
+      card.setContentTypeValues([{ name: 'text', value: cardHTML }]);
+      // Should we access updateParams directly or have a way to learn about the right functon to call?
+      card.getExerciseInstance().updateParams([{ name: 'text', value: cardHTML }]);
+
+      this.callbacks.updateEditorValues();
+    });
   }
 }

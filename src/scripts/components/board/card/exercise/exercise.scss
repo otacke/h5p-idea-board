@@ -6,7 +6,8 @@
 
     &.h5p-editable-text {
       .h5p-editable-text-container .ck-editor {
-        box-shadow: none;;
+        border: none;
+        box-shadow: none;
       }
 
       .h5p-ckeditor .ck-editor__main .ck-editor__editable {

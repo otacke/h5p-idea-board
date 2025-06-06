@@ -1,5 +1,33 @@
 [
   {
+    "name": "textualInput",
+    "type": "group",
+    "label": "Textual input",
+    "importance": "low",
+    "fields": [
+      {
+        "name": "input",
+        "type": "text",
+        "label": "List of cards",
+        "optional": true,
+        "widget": "textarea",
+        "placeholder": "Raspberries\n\nStrawberries (yummie)\n\nBlueberries"
+      },
+      {
+        "name": "dummy",
+        "type": "text",
+        "label": "Dummy",
+        "optional": true,
+        "widget": "none"
+      }
+    ],
+    "widget": "textualInputIdeaBoard",
+    "textualInput": {
+      "textarea": "input",
+      "editor": "board"
+    }
+  },
+  {
     "name": "headline",
     "type": "text",
     "label": "Headline",

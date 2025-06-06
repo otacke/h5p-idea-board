@@ -379,31 +379,7 @@ export default class Board {
       },
       {
         onConfirmed: () => {
-          const element = this.getInteractor(id);
-          if (!element) {
-            return;
-          }
-
-          if (H5PUtil.isEditor()) {
-            const index = this.cards.findIndex((c) => c.getId() === id);
-            this.params.globals.get('editor').removeCardGroup(index);
-          }
-
-          const elementDOM = element.getDOM();
-          const focusDOM = elementDOM.nextElementSibling ?? elementDOM.previousElementSibling;
-          this.cardsList.removeChild(elementDOM);
-          this.cards = this.cards.filter((card) => card.params.id !== id);
-          this.elementInteractors = this.elementInteractors
-            .filter((elementInteractor) => elementInteractor.params.id !== id);
-
-          this.params.globals.get('Screenreader').read(this.params.dictionary.get('a11y.cardDeleted'));
-
-          this.callbacks.onCardDeleted({
-            id: element.params.id,
-            focusDOM: focusDOM,
-          });
-
-          this.callbacks.onUpdated();
+          this.deleteElementWithoutConfirmaton(id);
         },
         onCanceled: () => {
           const element = this.getInteractor(id);
@@ -420,6 +396,34 @@ export default class Board {
     );
 
     confirmationDialog.show();
+  }
+
+  deleteElementWithoutConfirmaton(id) {
+    const element = this.getInteractor(id);
+    if (!element) {
+      return;
+    }
+
+    if (H5PUtil.isEditor()) {
+      const index = this.cards.findIndex((c) => c.getId() === id);
+      this.params.globals.get('editor').removeCardGroup(index);
+    }
+
+    const elementDOM = element.getDOM();
+    const focusDOM = elementDOM.nextElementSibling ?? elementDOM.previousElementSibling;
+    this.cardsList.removeChild(elementDOM);
+    this.cards = this.cards.filter((card) => card.params.id !== id);
+    this.elementInteractors = this.elementInteractors
+      .filter((elementInteractor) => elementInteractor.params.id !== id);
+
+    this.params.globals.get('Screenreader').read(this.params.dictionary.get('a11y.cardDeleted'));
+
+    this.callbacks.onCardDeleted({
+      id: element.params.id,
+      focusDOM: focusDOM,
+    });
+
+    this.callbacks.onUpdated();
   }
 
   /**
@@ -656,5 +660,13 @@ export default class Board {
         backgroundColor: this.backgroundColor
       }
     };
+  }
+
+  removeAllElements() {
+    this.cards
+      .map((card) => card.getId())
+      .forEach((id) => {
+        this.deleteElementWithoutConfirmaton(id);
+      });
   }
 }

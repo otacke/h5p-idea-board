@@ -266,6 +266,21 @@ export default class IdeaBoard extends H5P.EventDispatcher {
   }
 
   /**
+   * Clear the board.
+   */
+  clearBoard() {
+    this.main.clearBoard();
+  }
+
+  /**
+   * Add text cards to the board.
+   * @param {string[]} cardHTMLs Array of HTML strings representing text cards.
+   */
+  addTextCards(cardHTMLs) {
+    this.main.addTextCards(cardHTMLs);
+  }
+
+  /**
    * Get current values for the editor.
    * @returns {object} Current editor values.
    */
