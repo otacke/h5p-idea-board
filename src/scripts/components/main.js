@@ -25,6 +25,8 @@ export default class Main {
     this.callbacks = Util.extend({
       onFullscreenClicked: () => {},
       updateEditorValues: () => {},
+      onEdited: () => {},
+      onAdded: () => {},
     }, callbacks);
 
     this.buildDOM();
@@ -197,6 +199,12 @@ export default class Main {
         },
         onUpdated: (params = {}) => {
           this.updateSubcontentFields(params);
+        },
+        onEdited: (data) => {
+          this.callbacks.onEdited(data);
+        },
+        onAdded: (data) => {
+          this.callbacks.onAdded(data);
         }
       }
     );
@@ -414,6 +422,7 @@ export default class Main {
       const contentType = params.contentType ?? {
         library: versionedMachineName,
         params: {},
+        subContentId: H5P.createUUID()
       };
 
       contentType.metadata = contentType.metadata || {};
@@ -432,6 +441,13 @@ export default class Main {
 
       this.callbacks.updateEditorValues();
 
+      if (!params.contentType) {
+        this.callbacks.onAdded({
+          machineName: versionedMachineName.split(' ')[0],
+          subContentId: contentType.subContentId
+        });
+      }
+
       return;
     }
 
@@ -442,7 +458,8 @@ export default class Main {
           library: versionedSubContentMachineName,
           params: {}
         }
-      }
+      },
+      subContentId: H5P.createUUID()
     };
 
     contentType.metadata = contentType.metadata || {};
@@ -467,6 +484,13 @@ export default class Main {
     });
 
     this.callbacks.updateEditorValues();
+
+    if (!params.contentType) {
+      this.callbacks.onAdded({
+        machineName: versionedMachineName.split(' ')[0],
+        subContentId: contentType.subContentId
+      });
+    }
   }
 
   /**

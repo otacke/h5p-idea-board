@@ -20,7 +20,8 @@ export default class Board {
       onCardCopied: () => {},
       onCardDeleted: () => {},
       openEditorDialog: () => {},
-      onUpdated: () => {}
+      onUpdated: () => {},
+      onEdited: () => {}
     }, callbacks);
 
     this.cards = [];
@@ -148,6 +149,9 @@ export default class Board {
             index: this.cards.findIndex((c) => c.getId() === card.getId()),
             contentTypeParams: card.getContentTypeParams()
           });
+        },
+        onEdited: (data) => {
+          this.callbacks.onEdited(data);
         },
       }
     );

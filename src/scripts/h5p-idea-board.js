@@ -80,6 +80,12 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         },
         updateEditorValues: () => {
           this.updateEditorValues();
+        },
+        onEdited: (data) => {
+          this.trigger('edited', data);
+        },
+        onAdded: (data) => {
+          this.trigger('added', data);
         }
       }
     );

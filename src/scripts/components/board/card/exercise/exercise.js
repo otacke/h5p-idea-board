@@ -20,7 +20,8 @@ export default class Exercise {
     this.callbacks = Util.extend({
       getBoardRect: () => {},
       passEditorDialog: () => {},
-      onUpdated: () => {}
+      onUpdated: () => {},
+      onEdited: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -122,6 +123,10 @@ export default class Exercise {
 
       this.instance.on('changed', (changes) => {
         this.callbacks.onUpdated(changes.data);
+      });
+
+      this.instance.on('edited', (event) => {
+        this.callbacks.onEdited(event.data);
       });
     }
   }

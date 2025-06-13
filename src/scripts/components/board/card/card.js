@@ -33,7 +33,8 @@ export default class Card {
     this.callbacks = Util.extend({
       getBoardRect: () => {},
       openEditorDialog: () => {},
-      onUpdated: () => {}
+      onUpdated: () => {},
+      onEdited: () => {}
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -67,6 +68,9 @@ export default class Card {
               this.callbacks.onUpdated();
             }
           }
+        },
+        onEdited: (data) => {
+          this.callbacks.onEdited(data);
         }
       }
     );
