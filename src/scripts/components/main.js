@@ -866,4 +866,12 @@ export default class Main {
       this.callbacks.updateEditorValues();
     });
   }
+
+  /**
+   * Toggle board visibility.
+   * @param {boolean} state True to show the board, false to hide it.
+   */
+  toggleVisibility(state) {
+    this.dom.classList.toggle('display-none', !state);
+  }
 }

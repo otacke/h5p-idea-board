@@ -293,4 +293,12 @@ export default class IdeaBoard extends H5P.EventDispatcher {
   getEditorValue() {
     return this.main.getEditorValue();
   }
+
+  /**
+   * Toggle board visibility.
+   * @param {boolean} state True to hide the board, false to show it.
+   */
+  toggleBoardVisibility(state) {
+    this.main.toggleVisibility(state);
+  }
 }
