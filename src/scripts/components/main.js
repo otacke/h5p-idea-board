@@ -279,7 +279,9 @@ export default class Main {
 
     const isWithinIdeaBoard = event.target.closest('.h5p-idea-board-main') !== null;
     const isFromSubContent = event.target.closest('.h5p-idea-board-card-exercise') !== null;
-    if (isFromSubContent || !isWithinIdeaBoard) {
+    const isFromOptionsForm = event.target.closest('.h5p-idea-board-options-dialog') !== null;
+
+    if (isFromSubContent || !isWithinIdeaBoard || isFromOptionsForm) {
       return;
     }
 
