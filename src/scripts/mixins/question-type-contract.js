@@ -28,9 +28,6 @@ export default class QuestionTypeContract {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}
    */
   getCurrentState() {
-    console.log('getCurrentState', this.getAnswerGiven(), this.contentWasReset);
-
-
     if (!this.getAnswerGiven()) {
       // Nothing relevant to store, but previous state in DB must be cleared after reset
       return this.contentWasReset ? {} : undefined;
