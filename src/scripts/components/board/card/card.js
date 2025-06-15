@@ -37,6 +37,9 @@ export default class Card {
       onEdited: () => {}
     }, callbacks);
 
+    this.backgroundColor = this.params.backgroundColor;
+    this.borderColor = this.params.borderColor;
+
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-idea-board-card');
 
@@ -160,7 +163,7 @@ export default class Card {
    * @returns {string} Background color.
    */
   getBackgroundColor() {
-    return this.params.backgroundColor;
+    return this.backgroundColor;
   }
 
   /**
@@ -168,7 +171,7 @@ export default class Card {
    * @param {string} color Background color.
    */
   setBackgroundColor(color) {
-    this.params.backgroundColor = color;
+    this.backgroundColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-background-color', color);
 
     const contrastColor = getAccessibleContrastColor(roundColorString(color));
@@ -181,7 +184,7 @@ export default class Card {
    * @returns {string} Border color.
    */
   getBorderColor() {
-    return this.params.borderColor;
+    return this.borderColor;
   }
 
   /**
@@ -189,7 +192,7 @@ export default class Card {
    * @param {string} color Border color.
    */
   setBorderColor(color) {
-    this.params.borderColor = color;
+    this.borderColor = color;
     this.dom.style.setProperty('--h5p-idea-board-card-border-color', color);
   }
 
@@ -289,5 +292,16 @@ export default class Card {
    */
   getSummaryText() {
     return this.exercise.getSummaryText() ?? this.params.dictionary.get('noSummaryAvailable');
+  }
+
+  getAnswerGiven() {
+    return this.exercise.getAnswerGiven();
+  }
+
+  reset() {
+    this.exercise.reset();
+    this.setRating(this.params.rating, { silent: true });
+    this.setBackgroundColor(this.params.backgroundColor);
+    this.setBorderColor(this.params.borderColor);
   }
 }

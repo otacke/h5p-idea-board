@@ -81,7 +81,7 @@ export default class Board {
   }
 
   /**
-   * Get parameters for all elements.
+   * Get current parameters for all elements.
    * @returns {object[]} Element parameters.
    */
   getElementsParams() {
@@ -98,7 +98,7 @@ export default class Board {
           cardRating: card.getRating(),
         },
         cardCapabilities: card.getCapabilities(),
-        telemetry: interactor?.params?.telemetry
+        telemetry: interactor.getTelemetry()
       };
     });
   }
@@ -672,5 +672,21 @@ export default class Board {
       .forEach((id) => {
         this.deleteElementWithoutConfirmaton(id);
       });
+  }
+
+  /**
+   * Check if any card has an answer given.
+   * @returns {boolean} True if any card has an answer given, false otherwise.
+   */
+  getAnswerGiven() {
+    return this.cards.some((card) => card.getAnswerGiven());
+  }
+
+  /**
+   * Reset the board.
+   */
+  reset() {
+    this.cards.forEach((card) => card.reset());
+    this.elementInteractors.forEach((interactor) => interactor.reset());
   }
 }

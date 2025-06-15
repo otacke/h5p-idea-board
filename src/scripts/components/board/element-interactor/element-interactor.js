@@ -75,6 +75,7 @@ export default class ElementInteractor {
     }, callbacks);
 
     this.mode = INTERACTOR_MODE.view;
+    this.telemetry = { ...this.params.telemetry };
 
     this.moveDelta = 1;
     this.isMoving = false;
@@ -101,7 +102,7 @@ export default class ElementInteractor {
    * @returns {object} Telemetry data.
    */
   getTelemetry() {
-    return this.params.telemetry;
+    return this.telemetry;
   }
 
   /**
@@ -397,13 +398,13 @@ export default class ElementInteractor {
     );
 
     for (const key in sanitizedTelemetry) {
-      this.params.telemetry[key] = sanitizedTelemetry[key];
+      this.telemetry[key] = sanitizedTelemetry[key];
     }
 
-    this.dom.style.setProperty('--idea-board-element-x', `${this.params.telemetry.x}%`);
-    this.dom.style.setProperty('--idea-board-element-y', `${this.params.telemetry.y}%`);
-    this.dom.style.setProperty('--idea-board-element-width', `${this.params.telemetry.width}%`);
-    this.dom.style.setProperty('--idea-board-element-height', `${this.params.telemetry.height}%`);
+    this.dom.style.setProperty('--idea-board-element-x', `${this.telemetry.x}%`);
+    this.dom.style.setProperty('--idea-board-element-y', `${this.telemetry.y}%`);
+    this.dom.style.setProperty('--idea-board-element-width', `${this.telemetry.width}%`);
+    this.dom.style.setProperty('--idea-board-element-height', `${this.telemetry.height}%`);
   }
 
   /**
@@ -432,8 +433,8 @@ export default class ElementInteractor {
    */
   getSanitizedPosition(position = {}) {
     return {
-      x: Math.max(0, Math.min(position.x ?? this.params.telemetry.x, 100)),
-      y: Math.max(0, Math.min(position.y ?? this.params.telemetry.y, 100))
+      x: Math.max(0, Math.min(position.x ?? this.telemetry.x, 100)),
+      y: Math.max(0, Math.min(position.y ?? this.telemetry.y, 100))
     };
   }
 
@@ -465,11 +466,11 @@ export default class ElementInteractor {
     return {
       width: Math.max(
         this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'width'),
-        Math.min(size.width ?? this.params.telemetry.width, 100)
+        Math.min(size.width ?? this.telemetry.width, 100)
       ),
       height: Math.max(
         this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'height'),
-        Math.min(size.height ?? this.params.telemetry.height, 100)
+        Math.min(size.height ?? this.telemetry.height, 100)
       )
     };
   }
@@ -536,10 +537,10 @@ export default class ElementInteractor {
     }
 
     const interactorTelemetry = {
-      x: this.params.telemetry.x * boardSize.width / 100,
-      y: this.params.telemetry.y * boardSize.height / 100,
-      width: this.params.telemetry.width * boardSize.width / 100,
-      height: this.params.telemetry.height * boardSize.height / 100
+      x: this.telemetry.x * boardSize.width / 100,
+      y: this.telemetry.y * boardSize.height / 100,
+      width: this.telemetry.width * boardSize.width / 100,
+      height: this.telemetry.height * boardSize.height / 100
     };
 
     let targetTelemetry = {
@@ -642,10 +643,10 @@ export default class ElementInteractor {
   computeTargetTelemetryPercent(deltaPx = {}) {
     const deltaPercent = this.deltaPxToDeltaPercent(deltaPx);
     return {
-      x: this.params.telemetry.x + deltaPercent.x ?? 0,
-      y: this.params.telemetry.y + deltaPercent.y ?? 0,
-      width: this.params.telemetry.width + deltaPercent.width ?? 0,
-      height: this.params.telemetry.height + deltaPercent.height ?? 0
+      x: this.telemetry.x + deltaPercent.x ?? 0,
+      y: this.telemetry.y + deltaPercent.y ?? 0,
+      width: this.telemetry.width + deltaPercent.width ?? 0,
+      height: this.telemetry.height + deltaPercent.height ?? 0
     };
   }
 
@@ -956,5 +957,9 @@ export default class ElementInteractor {
     }
 
     this.setMode(INTERACTOR_MODE.view);
+  }
+
+  reset() {
+    this.setTelemetry(this.params.telemetry);
   }
 }

@@ -5,6 +5,7 @@ import Globals from '@services/globals.js';
 import ConfirmationDialog from '@components/confirmation-dialog/confirmation-dialog.js';
 import Screenreader from '@services/screenreader.js';
 import Main from '@components/main.js';
+import QuestionTypeContract from '@mixins/question-type-contract.js';
 import '@styles/h5p-idea-board.scss';
 
 /** @constant {string} Default description */
@@ -34,6 +35,8 @@ export default class IdeaBoard extends H5P.EventDispatcher {
    */
   constructor(params, contentId, extras = {}) {
     super('idea-board');
+
+    Util.addMixins(IdeaBoard, [QuestionTypeContract]);
 
     const defaults = Util.extend({}, H5PUtil.getSemanticsDefaults());
     this.params = Util.extend(defaults, params);
@@ -242,17 +245,6 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     }
 
     this.main.setFullscreen(state);
-  }
-
-  /**
-   * Get current state.
-   * @returns {object} Current state to be retrieved later.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}
-   */
-  getCurrentState() {
-    return {
-      main: this.main.getCurrentState()
-    };
   }
 
   /**

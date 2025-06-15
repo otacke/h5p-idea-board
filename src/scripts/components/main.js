@@ -29,6 +29,8 @@ export default class Main {
       onAdded: () => {},
     }, callbacks);
 
+    this.wasAnswerGiven = params.previousState?.wasAnswerGiven ?? false;
+
     this.buildDOM();
 
     (params.previousState?.elements ?? []).forEach((element) => {
@@ -183,21 +185,26 @@ export default class Main {
       },
       {
         onClick: (versionedMachineName, telemetry) => {
+          this.wasAnswerGiven = true;
           this.addElementToBoard(versionedMachineName, { telemetry });
         },
         onDrop: (versionedMachineName, telemetry) => {
+          this.wasAnswerGiven = true;
           this.addElementToBoard(versionedMachineName, { telemetry });
         },
         onCardCopied: (params = {}) => {
+          this.wasAnswerGiven = true;
           this.handleCardCopied(params);
         },
         onCardDeleted: (params = {}) => {
+          this.wasAnswerGiven = true;
           this.handleCardDeleted(params);
         },
         openEditorDialog: async (id, params, callbacks) => {
           this.openEditorDialog(id, params, callbacks);
         },
         onUpdated: (params = {}) => {
+          this.wasAnswerGiven = true;
           this.updateSubcontentFields(params);
         },
         onEdited: (data) => {
@@ -521,6 +528,7 @@ export default class Main {
    */
   getCurrentState() {
     return {
+      wasAnswerGiven: this.wasAnswerGiven,
       elements: this.board.getElementsParams(),
     };
   }
@@ -873,5 +881,20 @@ export default class Main {
    */
   toggleVisibility(state) {
     this.dom.classList.toggle('display-none', !state);
+  }
+
+  /**
+   * Check if an answer was given.
+   * @returns {boolean} True if an answer was given, false otherwise.
+   */
+  getAnswerGiven() {
+    return this.wasAnswerGiven ?? this.board.getAnswerGiven();
+  }
+
+  /**
+   * Reset the board to its initial state.
+   */
+  reset() {
+    this.board.reset();
   }
 }
