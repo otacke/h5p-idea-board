@@ -334,4 +334,12 @@ export default class Exercise {
   getAnswerGiven() {
     return this.instance.getAnswerGiven?.() ?? false;
   }
+
+  /**
+   * Get xAPI data.
+   * @returns {object} XAPI data.
+   */
+  getXAPIData() {
+    return this.instance.getXAPIData();
+  }
 }

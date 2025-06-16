@@ -689,4 +689,12 @@ export default class Board {
     this.cards.forEach((card) => card.reset());
     this.elementInteractors.forEach((interactor) => interactor.reset());
   }
+
+  /**
+   * Get xAPI data for children.
+   * @returns {object[]} XAPI data for children.
+   */
+  getXAPIData() {
+    return this.cards.map((card) => card.getXAPIData());
+  }
 }

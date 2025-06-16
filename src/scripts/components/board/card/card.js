@@ -304,4 +304,12 @@ export default class Card {
     this.setBackgroundColor(this.params.backgroundColor);
     this.setBorderColor(this.params.borderColor);
   }
+
+  /**
+   * Get xAPI data for instance.
+   * @returns {object} XAPI data.
+   */
+  getXAPIData() {
+    return this.exercise.getXAPIData();
+  }
 }

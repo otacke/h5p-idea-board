@@ -6,10 +6,11 @@ import ConfirmationDialog from '@components/confirmation-dialog/confirmation-dia
 import Screenreader from '@services/screenreader.js';
 import Main from '@components/main.js';
 import QuestionTypeContract from '@mixins/question-type-contract.js';
+import XAPI from '@mixins/xapi.js';
 import '@styles/h5p-idea-board.scss';
 
-/** @constant {string} Default description */
-const DEFAULT_DESCRIPTION = 'Idea Board';
+/** @constant {string} DEFAULT_LANGUAGE_TAG Default language tag used if not specified in metadata. */
+const DEFAULT_LANGUAGE_TAG = 'en';
 
 /** @constant {number} FULL_SCREEN_DELAY_MEDIUM_MS Time some browsers need to go to full screen. */
 const FULL_SCREEN_DELAY_MEDIUM_MS = 200;
@@ -36,7 +37,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
   constructor(params, contentId, extras = {}) {
     super('idea-board');
 
-    Util.addMixins(IdeaBoard, [QuestionTypeContract]);
+    Util.addMixins(IdeaBoard, [QuestionTypeContract, XAPI]);
 
     const defaults = Util.extend({}, H5PUtil.getSemanticsDefaults());
     this.params = Util.extend(defaults, params);
@@ -44,6 +45,9 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.contentId = contentId;
     this.extras = extras ?? {};
     this.previousState = extras?.previousState ?? {};
+
+    const defaultLanguage = extras?.metadata?.defaultLanguage || DEFAULT_LANGUAGE_TAG;
+    this.languageTag = Util.formatLanguageCode(defaultLanguage);
 
     this.globals = new Globals();
     this.globals.set('contentId', this.contentId);
@@ -53,7 +57,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.globals.set('baseFontSizePx', BASE_FONT_SIZE_PX);
     this.globals.set('isFullscreenSupported', this.isRoot() && H5P.fullscreenSupported);
     this.globals.set('Screenreader', Screenreader);
-    this.globals.set('defaultLanguage', extras?.metadata?.defaultLanguage || 'en');
+    this.globals.set('defaultLanguage', defaultLanguage);
     this.globals.set('editor', this.extras.IdeaBoardEditor ?? false);
 
     this.dictionary = new Dictionary();
@@ -182,25 +186,6 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     const baseHeight = (domHeight !== 0) ? domHeight : BASE_SIZE.height;
 
     this.globals.set('baseSize', { width: baseWidth, height: baseHeight });
-  }
-
-  /**
-   * Get task title.
-   * @returns {string} Title.
-   */
-  getTitle() {
-    // H5P Core function: createTitle
-    return H5P.createTitle(
-      this.extras?.metadata?.title || DEFAULT_DESCRIPTION
-    );
-  }
-
-  /**
-   * Get description.
-   * @returns {string} Description.
-   */
-  getDescription() {
-    return DEFAULT_DESCRIPTION;
   }
 
   /**

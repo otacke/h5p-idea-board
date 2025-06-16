@@ -899,4 +899,12 @@ export default class Main {
   reset() {
     this.board.reset();
   }
+
+  /**
+   * Get xAPI data for children.
+   * @returns {object[]} XAPI data for children.
+   */
+  getXAPIData() {
+    return this.board.getXAPIData();
+  }
 }
