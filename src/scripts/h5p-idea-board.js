@@ -24,8 +24,8 @@ const BASE_SIZE = { width: 640, height: 400 };
 /** @constant {number} BASE_FONT_SIZE_PX base font size in px. */
 const BASE_FONT_SIZE_PX = 16;
 
-/** @constant {number} TELEMETRY_PROPERTY_COUNT Number of properties in telemetry object. */
-const TELEMETRY_PROPERTY_COUNT = 4;
+/** @constant {string[]} TELEMETRY_PROPERTIES Properties that must be present in telemetry. */
+const TELEMETRY_PROPERTIES = ['x', 'y', 'width', 'height'];
 
 export default class IdeaBoard extends H5P.EventDispatcher {
   /**
@@ -146,8 +146,8 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         return false;
       }
 
-      if (Object.keys(card.telemetry ?? {}).length !== TELEMETRY_PROPERTY_COUNT) {
-        return false; // TODO: This could be nicer by checking for telemetry properties
+      if (TELEMETRY_PROPERTIES.some((prop) => !(prop in card.telemetry))) {
+        return false;
       }
 
       return true;

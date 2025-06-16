@@ -111,7 +111,6 @@ export default class OptionFieldText extends OptionField {
       this.hideCKEditor();
     });
 
-    // TODO: CHECK
     this.textarea.id = this.id;
 
     const newDOM = this.contentDOM;
