@@ -3,6 +3,12 @@ import Color from 'color';
 /** @constant {number} WCAG_CONTRAST_THRESHOLD_AA Minimum contrast ratio for AA compliance. */
 const WCAG_CONTRAST_THRESHOLD_AA = 4.5;
 
+/** @constant {string} CONTRAST_COLOR_FALLBACK_LIGHT Color white in hex format. */
+const CONTRAST_COLOR_FALLBACK_LIGHT = '#ffffff';
+
+/** @constant {string} CONTRAST_COLOR_FALLBACK_DARK Color black in hex format. */
+const CONTRAST_COLOR_FALLBACK_DARK = '#000000';
+
 /**
  * Ensure an rgb/rgba color string is rounded to the nearest integer.
  * @param {string} colorString Color string in rgb or rgba format.
@@ -41,5 +47,5 @@ export const getAccessibleContrastColor = (baseColor, maxAttempts = 20, step = 0
     }
   }
 
-  return isDark ? '#ffffff' : '#000000';
+  return isDark ? CONTRAST_COLOR_FALLBACK_LIGHT : CONTRAST_COLOR_FALLBACK_DARK;
 };

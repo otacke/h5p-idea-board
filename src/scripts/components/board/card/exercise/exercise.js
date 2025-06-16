@@ -331,6 +331,10 @@ export default class Exercise {
     return machineName;
   }
 
+  /**
+   * Get answer given for the exercise.
+   * @returns {boolean} True if an answer was given, false otherwise.
+   */
   getAnswerGiven() {
     return this.instance.getAnswerGiven?.() ?? false;
   }

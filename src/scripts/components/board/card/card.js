@@ -294,10 +294,17 @@ export default class Card {
     return this.exercise.getSummaryText() ?? this.params.dictionary.get('noSummaryAvailable');
   }
 
+  /**
+   * Get answer given for the exercise.
+   * @returns {boolean} True if an answer was given, false otherwise.
+   */
   getAnswerGiven() {
     return this.exercise.getAnswerGiven();
   }
 
+  /**
+   * Reset the card to its initial state.
+   */
   reset() {
     this.exercise.reset();
     this.setRating(this.params.rating, { silent: true });

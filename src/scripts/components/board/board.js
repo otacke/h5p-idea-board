@@ -216,7 +216,6 @@ export default class Board {
     });
 
     element.focus();
-    // TODO: Add on drag event!? Check how DnB does it
   }
 
   /**
@@ -402,6 +401,10 @@ export default class Board {
     confirmationDialog.show();
   }
 
+  /**
+   * Delete an element without confirmation.
+   * @param {string} id Id of the element to delete.
+   */
   deleteElementWithoutConfirmaton(id) {
     const element = this.getInteractor(id);
     if (!element) {
@@ -666,6 +669,9 @@ export default class Board {
     };
   }
 
+  /**
+   * Remove all elements from the board.
+   */
   removeAllElements() {
     this.cards
       .map((card) => card.getId())

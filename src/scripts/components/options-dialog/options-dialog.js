@@ -168,6 +168,10 @@ export default class OptionsDialog {
     this.contentContainer.append(this.buttonRow);
   }
 
+  /**
+   * Handle error state change.
+   * @param {boolean} hasError Whether there is an error.
+   */
   handleErrorStateChanged(hasError) {
     this.saveButton.disabled = hasError;
   }

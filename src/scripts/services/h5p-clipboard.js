@@ -1,3 +1,18 @@
+/** @constant {string} ERROR_PASTE General paste error. */
+const ERROR_PASTE = 'pasteError';
+
+/** @constant {string} ERROR_PASTE_CONTENT_NOT_SUPPORTED Error when content is not supported */
+const ERROR_PASTE_CONTENT_NOT_SUPPORTED = 'pasteContentNotSupported';
+
+/** @constant {string} ERROR_PASTE_NO_CONTENT Error when clipboard has no content. */
+const ERROR_PASTE_NO_CONTENT = 'pasteNoContent';
+
+/** @constant {string} ERROR_PASTE_TOO_NEW Error when pasted content is newer than supported. */
+const ERROR_PASTE_TOO_NEW = 'pasteTooNew';
+
+/** @constant {string} ERROR_PASTE_TOO_OLD Error when pasted content is older than supported. */
+const ERROR_PASTE_TOO_OLD = 'pasteTooOld';
+
 /**
  * Recursively updates paths in the params object.
  * @param {object} params The parameters object to update.
@@ -162,13 +177,13 @@ export const shapeParamsFromClipboard = (params, supportedSubcontentTypeUberName
 export const getNoPasteReason = (clipboard, supportedLibraries) => {
   if (!clipboard || !clipboard.generic) {
     return {
-      reason: 'pasteNoContent'
+      reason: ERROR_PASTE_NO_CONTENT
     };
   }
 
   if (!supportedLibraries || !Array.isArray(supportedLibraries)) {
     return {
-      reason: 'pasteError'
+      reason: ERROR_PASTE
     };
   }
 
@@ -184,9 +199,7 @@ export const getNoPasteReason = (clipboard, supportedLibraries) => {
     });
 
   if (supportedVersions.length === 0) {
-    return {
-      reason: 'pasteContentNotSupported'
-    };
+    return { reason: ERROR_PASTE_CONTENT_NOT_SUPPORTED };
   }
 
   // Check for exact version match
@@ -196,9 +209,7 @@ export const getNoPasteReason = (clipboard, supportedLibraries) => {
   );
 
   if (exactMatch) {
-    return {
-      reason: ''
-    };
+    return { reason: '' };
   }
 
   // Find min and max supported versions
@@ -216,7 +227,7 @@ export const getNoPasteReason = (clipboard, supportedLibraries) => {
   if (majorVersionClipboard > maxVersion.major ||
       (majorVersionClipboard === maxVersion.major && minorVersionClipboard > maxVersion.minor)) {
     return {
-      reason: 'pasteTooNew',
+      reason: ERROR_PASTE_TOO_NEW,
       replace: {
         clip: versionClipboard,
         local: `${maxVersion.major}.${maxVersion.minor}`
@@ -227,7 +238,7 @@ export const getNoPasteReason = (clipboard, supportedLibraries) => {
   if (majorVersionClipboard < minVersion.major ||
       (majorVersionClipboard === minVersion.major && minorVersionClipboard < minVersion.minor)) {
     return {
-      reason: 'pasteTooOld',
+      reason: ERROR_PASTE_TOO_OLD,
       replace: {
         clip: versionClipboard,
         local: `${minVersion.major}.${minVersion.minor}`
@@ -235,7 +246,5 @@ export const getNoPasteReason = (clipboard, supportedLibraries) => {
     };
   }
 
-  return {
-    reason: 'pasteError'
-  };
+  return { reason: ERROR_PASTE };
 };
