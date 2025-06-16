@@ -293,4 +293,15 @@ export default class IdeaBoard extends H5P.EventDispatcher {
   toggleBoardVisibility(state) {
     this.main.toggleVisibility(state);
   }
+
+  /**
+   * Get current state.
+   * @returns {object} Current state to be retrieved later.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}
+   */
+  getCurrentStateWhenNoAnswerGiven() {
+    return {
+      main: this.main.getCurrentState()
+    };
+  }
 }
