@@ -63,7 +63,8 @@
       }
 
       &.toolbar-button-text::before {
-        content: var(--icon-fontawesome-text);
+        content: var(--icon-ideaboard-text);
+        font-family: "H5PIdeaBoard", sans-serif;
       }
 
       &.toolbar-button-image::before {
