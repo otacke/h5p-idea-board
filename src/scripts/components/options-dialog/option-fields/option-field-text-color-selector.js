@@ -42,17 +42,22 @@ export default class OptionFieldText extends OptionField {
     pickerDOM.setAttribute('id', `h5p-idea-board-options-dialog-option-field-text-color-selector-picker-${uuid}`);
     this.contentDOM.append(pickerDOM);
 
+    const swatches = Array.isArray(field?.spectrum?.palette) ? field.spectrum.palette.flat() : [];
+
     Util.callOnceVisible(pickerDOM, () => {
       this.pickr = Pickr.create({
         el: `#h5p-idea-board-options-dialog-option-field-text-color-selector-picker-${uuid}`,
         container: this.contentDOM,
         inline: true,
         theme: 'nano',
+        swatches: swatches,
         components: {
           preview: true,
           hue: true,
-
           interaction: {
+            hex: true,
+            rgba: true,
+            input: true,
             cancel: true,
             save: true
           }

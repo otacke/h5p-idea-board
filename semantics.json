@@ -107,7 +107,17 @@
                   "spectrum": {
                     "showInput": true,
                     "showInitial": true,
-                    "preferredFormat": "rgb"
+                    "preferredFormat": "rgb",
+                    "showPalette": true,
+                    "palette": [
+                      ["rgba(247, 249, 54, 1)"],
+                      ["rgba(168, 230, 207, 1)"],
+                      ["rgba(220, 237, 193, 1)"],
+                      ["rgba(255, 211, 182, 1)"],
+                      ["rgba(255, 170, 165, 1)"],
+                      ["rgba(255, 139, 148, 1)"],
+                      ["rgba(255, 108, 129, 1)"]
+                    ]
                   }
                 },
                 {
@@ -119,7 +129,17 @@
                   "spectrum": {
                     "showInput": true,
                     "showInitial": true,
-                    "preferredFormat": "rgb"
+                    "preferredFormat": "rgb",
+                    "showPalette": true,
+                    "palette": [
+                      ["rgba(226, 227, 45, 1)"],
+                      ["rgba(147, 207, 185, 1)"],
+                      ["rgba(199, 214, 169, 1)"],
+                      ["rgba(235, 189, 161, 1)"],
+                      ["rgba(235, 148, 143, 1)"],
+                      ["rgba(235, 117, 126, 1)"],
+                      ["rgba(235, 86, 107, 1)"]
+                    ]
                   }
                 },
                 {
