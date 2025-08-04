@@ -7,7 +7,7 @@
   margin: 0;
   outline: none;
   padding: var(--padding);
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   width: calc(100% - 2 * var(--padding));
 
   &:focus {

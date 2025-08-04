@@ -113,6 +113,7 @@
           -webkit-line-clamp: 3;
           overflow: hidden;
           overflow-wrap: anywhere;
+          /* stylelint-disable-next-line property-no-deprecated */
           -webkit-box-orient: vertical;
         }
       }
