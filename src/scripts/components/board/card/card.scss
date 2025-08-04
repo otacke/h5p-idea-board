@@ -33,6 +33,6 @@
 
 @container element-interactor (width > 0) {
   .h5p-idea-board-card {
-    --rating-size: min(1.5rem, 100cqw / calc(var(--star-count, 5) + 1));
+    --rating-size: min(1.25rem, 100cqw / calc(var(--star-count, 5) + 1));
   }
 }
