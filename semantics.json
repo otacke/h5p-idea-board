@@ -99,6 +99,13 @@
               "importance": "low",
               "fields": [
                 {
+                  "name": "cardWasGeneratedByUser",
+                  "type": "boolean",
+                  "label": "Dummy",
+                  "default": false,
+                  "widget": "none"
+                },
+                {
                   "name": "cardBackgroundColor",
                   "type": "text",
                   "label": "Background color",
@@ -148,7 +155,7 @@
                   "label": "Card rating",
                   "importance": "low",
                   "description": "Rating of the card.",
-                  "default": 0,
+                  "optional": true,
                   "min": 0,
                   "max": 5,
                   "step": 1
@@ -164,37 +171,36 @@
                 {
                   "name": "canUserEditCard",
                   "type": "boolean",
-                  "label": "Can user edit card",
+                  "label": "User can edit card",
                   "importance": "low",
                   "default": true
                 },
                 {
                   "name": "canUserMoveCard",
                   "type": "boolean",
-                  "label": "Can user move card",
+                  "label": "User can move card",
                   "importance": "low",
                   "default": true
                 },
                 {
                   "name": "canUserResizeCard",
                   "type": "boolean",
-                  "label": "Can user resize card",
+                  "label": "User can resize card",
                   "importance": "low",
                   "default": true
                 },
                 {
                   "name": "canUserDeleteCard",
                   "type": "boolean",
-                  "label": "Can user delete card",
+                  "label": "User can delete card",
                   "importance": "low",
                   "default": true
                 },
                 {
                   "name": "canUserRateCard",
                   "type": "boolean",
-                  "label": "Can user rate card",
+                  "label": "User can rate card",
                   "importance": "low",
-                  "description": "If enabled, the user can rate the card.",
                   "default": false
                 }
               ]
@@ -266,16 +272,11 @@
     "label": "Behavioural settings",
     "fields": [
       {
-        "name": "userCanAddCards",
-        "type": "boolean",
-        "label": "User is allowed to add cards",
-        "default": true
-      },
-      {
         "name": "addableTypes",
         "type": "group",
         "importance": "low",
         "label": "Card types that the user may add",
+        "expanded": true,
         "fields": [
           {
             "name": "addableTypeText",
@@ -298,16 +299,7 @@
             "type": "boolean",
             "label": "Video"
           }
-        ],
-        "widget": "showWhen",
-        "showWhen": {
-          "rules": [
-            {
-              "field": "userCanAddCards",
-              "equals": true
-            }
-          ]
-        }
+        ]
       }
     ]
   },

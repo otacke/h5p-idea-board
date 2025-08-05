@@ -52,20 +52,19 @@
                 "label": "Capabilities for card",
                 "fields": [
                   {
-                    "label": "Can user edit card"
+                    "label": "User can edit card"
                   },
                   {
-                    "label": "Can user move card"
+                    "label": "User can move card"
                   },
                   {
-                    "label": "Can user resize card"
+                    "label": "User can resize card"
                   },
                   {
-                    "label": "Can user delete card"
+                    "label": "User can delete card"
                   },
                   {
-                    "label": "Can user rate card",
-                    "description": "If enabled, the user can rate the card."
+                    "label": "User can rate card"
                   }
                 ]
               }
@@ -101,9 +100,6 @@
     {
       "label": "Behavioural settings",
       "fields": [
-        {
-          "label": "User is allowed to add cards"
-        },
         {
           "label": "Card types that the user may add",
           "fields": [

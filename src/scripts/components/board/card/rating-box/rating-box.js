@@ -19,8 +19,6 @@ export default class RatingBox {
       onRatingChanged: () => {}
     }, callbacks);
 
-    this.rating = 0;
-
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-idea-board-card-rating-box');
 
@@ -69,7 +67,7 @@ export default class RatingBox {
 
   /**
    * Get current rating value.
-   * @returns {number} Current rating.
+   * @returns {number|undefined} Current rating.
    */
   getRating() {
     return this.rating;

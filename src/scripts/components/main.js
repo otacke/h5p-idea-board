@@ -39,7 +39,6 @@ export default class Main {
         const versionedSubContentMachineName = element.contentType?.params?.contentType?.library ?? '';
         taintedMachineName = `${taintedMachineName}/${versionedSubContentMachineName}`;
       }
-
       this.addElementToBoard(
         taintedMachineName,
         {
@@ -47,6 +46,7 @@ export default class Main {
           telemetry: element.telemetry,
           contentType: element.contentType,
           cardBackgroundColor: element.cardSettings.cardBackgroundColor,
+          wasGeneratedByUser: element.cardSettings.cardWasGeneratedByUser ?? false,
           cardBorderColor: element.cardSettings.cardBorderColor,
           cardRating: element.cardSettings.cardRating,
           cardCapabilities: element.cardCapabilities,
@@ -444,6 +444,7 @@ export default class Main {
         cardBorderColor: params.cardBorderColor,
         cardRating: params.cardRating,
         cardCapabilities: params.cardCapabilities || {},
+        wasGeneratedByUser: params.wasGeneratedByUser ?? !H5PUtil.isEditor(),
         contentType: contentType,
         previousState: params.previousState || {}
       });
@@ -487,6 +488,7 @@ export default class Main {
       cardBackgroundColor: params.cardBackgroundColor,
       cardBorderColor: params.cardBorderColor,
       cardRating: params.cardRating,
+      wasGeneratedByUser: params.wasGeneratedByUser ?? !H5PUtil.isEditor(),
       cardCapabilities: params.cardCapabilities,
       contentType: contentType,
       previousState: params.previousState || {}
@@ -744,7 +746,10 @@ export default class Main {
     card.setBorderColor(cardBorderColor);
 
     const cardRating = parseFloat(cardSettings.find((field) => field.name === 'cardRating')?.value);
-    if (typeof cardRating === 'number' && !isNaN(cardRating)) {
+    if (Number.isNaN(cardRating)) {
+      card.setRating();
+    }
+    else if ((typeof cardRating === 'undefined') || (typeof cardRating === 'number' && !isNaN(cardRating))) {
       card.setRating(cardRating);
     }
 

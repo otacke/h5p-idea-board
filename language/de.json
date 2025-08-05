@@ -52,20 +52,19 @@
                 "label": "Berechtigungen für Karte",
                 "fields": [
                   {
-                    "label": "Kann die Karte bearbeitet werden"
+                    "label": "Nutzende können die Karte bearbeiten"
                   },
                   {
-                    "label": "Kann die Karte verschoben werden"
+                    "label": "Nutzende können die Karte verschieben"
                   },
                   {
-                    "label": "Kann die Kartengröße geändert werden"
+                    "label": "Nutzende können die Kartengröße ändern"
                   },
                   {
-                    "label": "Kann die Karte gelöscht werden"
+                    "label": "Nutzende können die Karte löschen"
                   },
                   {
-                    "label": "Kann die Karte bewertet werden",
-                    "description": "Wenn aktiviert, kann die Karte bewertet werden."
+                    "label": "Nutzende können die Karte bewerten"
                   }
                 ]
               }
@@ -101,9 +100,6 @@
     {
       "label": "Verhaltenseinstellungen",
       "fields": [
-        {
-          "label": "Hinzufügen von Karten erlaubt"
-        },
         {
           "label": "Kartentypen, die hinzugefügt werden können",
           "fields": [

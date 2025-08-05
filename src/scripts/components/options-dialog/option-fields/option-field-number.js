@@ -56,8 +56,8 @@ export default class OptionFieldNumber extends OptionField {
   isValid() {
     const value = parseFloat(this.contentDOM.value);
 
-    if (typeof value !== 'number' || value === NaN) {
-      return false;
+    if (typeof value !== 'number' || isNaN(value) ) {
+      return this.field.optional === true;
     }
 
     if (this.field.min !== undefined && value < this.field.min) {

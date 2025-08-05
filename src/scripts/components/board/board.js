@@ -93,6 +93,7 @@ export default class Board {
         contentType: card.params.contentType,
         previousState: card.exercise.getCurrentState(),
         cardSettings: {
+          cardWasGeneratedByUser: card.wasGeneratedByUser(),
           cardBackgroundColor: card.getBackgroundColor(),
           cardBorderColor: card.getBorderColor(),
           cardRating: card.getRating(),
@@ -109,6 +110,7 @@ export default class Board {
    */
   addElement(params = {}) {
     const elementParams = Util.extend({
+      wasGeneratedByUser: typeof H5PUtil.isEditor() === 'boolean' ? !H5PUtil.isEditor() : false,
       cardBackgroundColor: H5PUtil.semanticsFieldSelector({ name: 'cardBackgroundColor' })?.default,
       cardBorderColor: H5PUtil.semanticsFieldSelector({ name: 'cardBorderColor' })?.default,
       cardRating: H5PUtil.semanticsFieldSelector({ name: 'cardRating' })?.default,
@@ -135,7 +137,8 @@ export default class Board {
         borderColor: elementParams.cardBorderColor,
         rating: elementParams.cardRating,
         capabilities: elementParams.cardCapabilities,
-        previousState: elementParams.previousState
+        previousState: elementParams.previousState,
+        wasGeneratedByUser: elementParams.wasGeneratedByUser,
       },
       {
         getBoardRect: () => {
