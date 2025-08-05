@@ -1,6 +1,9 @@
 import Util from '@services/util.js';
 import './exercise.scss';
 
+/** @constant {number} FONT_SIZE_FACTOR Factor to scale font size for HTML text content. */
+const FONT_SIZE_FACTOR = 0.8;
+
 export default class Exercise {
 
   /**
@@ -132,7 +135,7 @@ export default class Exercise {
   }
 
   /**
-   * Resize font size for HTML text content.
+   * Resize font size for HTML text content. Uses same logic as Course Presentation + FONT_SIZE_FACTOR.
    */
   resizeHTMLTextFontSize() {
     if (!this.instance) {
@@ -144,7 +147,7 @@ export default class Exercise {
     const baseWidth = this.params.globals.get('baseSize').width;
 
     const widthRatio = boardWidth / baseWidth;
-    const scaledFontSize = this.params.globals.get('baseFontSizePx') * widthRatio;
+    const scaledFontSize = this.params.globals.get('baseFontSizePx') * widthRatio * FONT_SIZE_FACTOR;
 
     this.instance.setFontSize(scaledFontSize);
   }
