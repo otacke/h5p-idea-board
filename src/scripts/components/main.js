@@ -305,13 +305,11 @@ export default class Main {
       allowedContentTypes = addableTypes.fields.map((field) => field.name.replace('addableType', '').toLowerCase());
     }
     else {
-      if (globalParams.behaviour.userCanAddCards || H5PUtil.isEditor()) {
-        Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
-          if (globalParams.behaviour.addableTypes[key] === true || H5PUtil.isEditor()) {
-            allowedContentTypes.push(key.replace('addableType', '').toLowerCase());
-          }
-        });
-      }
+      Object.keys(globalParams.behaviour.addableTypes).forEach((key) => {
+        if (globalParams.behaviour.addableTypes[key] === true || H5PUtil.isEditor()) {
+          allowedContentTypes.push(key.replace('addableType', '').toLowerCase());
+        }
+      });
     }
 
     const contentTypeField = H5PUtil.semanticsFieldSelector({ name: 'contentType' });

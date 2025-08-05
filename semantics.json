@@ -272,6 +272,12 @@
     "label": "Behavioural settings",
     "fields": [
       {
+        "name": "dummy",
+        "type": "boolean",
+        "label": "Dummy",
+        "widget": "none"
+      },
+      {
         "name": "addableTypes",
         "type": "group",
         "importance": "low",
