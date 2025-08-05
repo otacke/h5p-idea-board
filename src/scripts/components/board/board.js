@@ -693,10 +693,24 @@ export default class Board {
 
   /**
    * Reset the board.
+   * @param {object[]} [cardParams] Array of card parameters to reset.
    */
-  reset() {
-    this.cards.forEach((card) => card.reset());
-    this.elementInteractors.forEach((interactor) => interactor.reset());
+  reset(cardParams = []) {
+    this.cards.forEach((card) => {
+      const id = card.getId();
+
+      if (card.wasGeneratedByUser()) {
+        this.deleteElementWithoutConfirmaton(id);
+        return;
+      }
+
+      card.reset(cardParams.find((params) => params.id === id)?.cardSettings);
+    });
+
+    this.elementInteractors.forEach((interactor) => {
+      const id = interactor.getId();
+      interactor.reset(cardParams.find((params) => params.id === id)?.telemetry);
+    });
   }
 
   /**

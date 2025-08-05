@@ -900,9 +900,10 @@ export default class Main {
 
   /**
    * Reset the board to its initial state.
+   * @param {object[]} cards Array of card parameters to reset.
    */
-  reset() {
-    this.board.reset();
+  reset(cards) {
+    this.board.reset(cards);
   }
 
   /**

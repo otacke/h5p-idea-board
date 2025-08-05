@@ -19,7 +19,7 @@ export default class QuestionTypeContract {
     this.contentWasReset = true;
     this.wasAnswerGiven = false;
 
-    this.main.reset();
+    this.main.reset(this.params.board.cards);
   }
 
   /**

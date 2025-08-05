@@ -962,7 +962,11 @@ export default class ElementInteractor {
     this.setMode(INTERACTOR_MODE.view);
   }
 
-  reset() {
-    this.setTelemetry(this.params.telemetry);
+  /**
+   * Reset the interactor.
+   * @param {object} telemetry Telemetry data to reset to.
+   */
+  reset(telemetry) {
+    this.setTelemetry(telemetry ?? this.params.telemetry);
   }
 }

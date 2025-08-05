@@ -335,12 +335,14 @@ export default class Card {
 
   /**
    * Reset the card to its initial state.
+   * @param {object} cardSettings Card settings to reset.
    */
-  reset() {
+  reset(cardSettings) {
     this.exercise.reset();
-    this.setRating(this.params.rating, { silent: true });
-    this.setBackgroundColor(this.params.backgroundColor);
-    this.setBorderColor(this.params.borderColor);
+
+    this.setRating(cardSettings.cardRating ?? this.params.rating, { silent: true });
+    this.setBackgroundColor(cardSettings.cardBackgroundColor ?? this.params.backgroundColor);
+    this.setBorderColor(cardSettings.cardBorderColor ?? this.params.borderColor);
   }
 
   /**
