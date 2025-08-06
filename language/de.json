@@ -37,6 +37,9 @@
                 "label": "Karteneinstellungen",
                 "fields": [
                   {
+                    "label": "Dummy"
+                  },
+                  {
                     "label": "Hintergrundfarbe"
                   },
                   {
@@ -100,6 +103,9 @@
     {
       "label": "Verhaltenseinstellungen",
       "fields": [
+        {
+          "label": "Dummy"
+        },
         {
           "label": "Kartentypen, die hinzugefügt werden können",
           "fields": [

@@ -37,6 +37,9 @@
                 "label": "Card settings",
                 "fields": [
                   {
+                    "label": "Dummy"
+                  },
+                  {
                     "label": "Background color"
                   },
                   {
@@ -100,6 +103,9 @@
     {
       "label": "Behavioural settings",
       "fields": [
+        {
+          "label": "Dummy"
+        },
         {
           "label": "Card types that the user may add",
           "fields": [
