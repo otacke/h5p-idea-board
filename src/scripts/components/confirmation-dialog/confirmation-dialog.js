@@ -16,7 +16,7 @@ export default class ConfirmationDialog {
     this.params = Util.extend({}, params);
 
     this.dom = document.createElement('div');
-    this.dom.classList.add('h5p-game-map-confirmation-dialog');
+    this.dom.classList.add('h5p-idea-board-confirmation-dialog');
 
     this.dom.addEventListener('click', (event) => {
       event.stopPropagation();
