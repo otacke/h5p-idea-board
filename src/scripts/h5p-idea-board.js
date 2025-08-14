@@ -280,6 +280,22 @@ export default class IdeaBoard extends H5P.EventDispatcher {
   }
 
   /**
+   * Get the minimum height of the toolbar.
+   * @returns {number} Minimum height of the toolbar.
+   */
+  getToolbarMinHeight() {
+    return this.main.getToolbarMinHeight();
+  }
+
+  /**
+   * Get the aspect ratio of the board.
+   * @returns {number} Aspect ratio of the board.
+   */
+  getBoardAspectRatio() {
+    return this.main.getBoardAspectRatio();
+  }
+
+  /**
    * Get current state.
    * @returns {object} Current state to be retrieved later.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}

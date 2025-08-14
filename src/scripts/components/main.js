@@ -911,4 +911,20 @@ export default class Main {
   getXAPIData() {
     return this.board.getXAPIData();
   }
+
+  /**
+   * Get the minimum height of the toolbar.
+   * @returns {number} Minimum height of the toolbar.
+   */
+  getToolbarMinHeight() {
+    return this.toolbar.getMinHeight();
+  }
+
+  /**
+   * Get the aspect ratio of the board.
+   * @returns {number|null} Aspect ratio (width / height) or null if not found.
+   */
+  getBoardAspectRatio() {
+    return this.board.getAspectRatio();
+  }
 }

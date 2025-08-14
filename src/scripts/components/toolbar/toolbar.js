@@ -330,4 +330,19 @@ export default class Toolbar {
     }
     event.preventDefault();
   }
+
+  /**
+   * Get the minimum height of the toolbar.
+   * @returns {number} Minimum height of the toolbar.
+   */
+  getMinHeight() {
+    const childrenMaxHeight = Array.from(this.dom.children).reduce((max, child) => {
+      return Math.max(max, child.offsetHeight);
+    }, 0);
+
+    const padding = parseFloat(getComputedStyle(this.dom).paddingTop) +
+    parseFloat(getComputedStyle(this.dom).paddingBottom);
+
+    return childrenMaxHeight + padding;
+  }
 }

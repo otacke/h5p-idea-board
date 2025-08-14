@@ -692,6 +692,15 @@ export default class Board {
   }
 
   /**
+   * Get the aspect ratio of the board.
+   * @returns {number} Aspect ratio of the board (width / height).
+   */
+  getAspectRatio() {
+    const rect = this.dom.getBoundingClientRect();
+    return rect.width / rect.height;
+  }
+
+  /**
    * Reset the board.
    * @param {object[]} [cardParams] Array of card parameters to reset.
    */
