@@ -821,8 +821,8 @@ export default class Main {
    */
   calculateLayout(numberOfCards) {
     const constraints = {
-      baseGapX: 5,
-      baseGapY: 5,
+      baseGapX: 2.5,
+      baseGapY: 2.5,
       maxCardWidth: 33,
       maxCardHeight: 33
     };
