@@ -1,7 +1,9 @@
 .h5p-idea-board-element-interactor-context-menu {
-  --toolbarButtonSize: 2rem;
-  --toolbarButtonBackgroundSize: 1rem;
-  --menuPadding: 0.25rem;
+  --button-size: 2rem;
+  --background-size: 1rem;
+  --border-size: 2px;
+
+  --menuPadding: 0.125rem;
   --menuBorderWidth: 1px;
   --menuGap: 1rem;
   --menuPointerSize: 0.5rem;
@@ -20,7 +22,7 @@
   left: 0;
   position: relative;
   padding: var(--menuPadding);
-  top: calc( -2 * var(--menuBorderWidth) - 2 * var(--menuPadding) - var(--toolbarButtonSize) - var(--menuGap) );
+  top: calc( -2 * var(--menuBorderWidth) - 2 * var(--menuPadding) - var(--button-size) - var(--menuGap) );
   row-gap: 0.25rem;
   width: fit-content;
   z-index: 1;
@@ -70,13 +72,13 @@
 
       &::before {
         font-family: "H5PFontAwesome4", sans-serif;
-        font-size: 1.15em;
-        height: 1.15em;
+        font-size: var(--background-size);
+        height: var(--background-size);
         left: 50%;
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 1.15em;
+        width: var(--background-size);
       }
 
       &.toolbar-button-edit::before {

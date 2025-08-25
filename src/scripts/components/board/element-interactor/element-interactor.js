@@ -11,10 +11,10 @@ const MOVE_DELTA_INCREMENT = 0.4;
 const RESIZE_DELTA_INCREMENT = 0.2;
 
 /** @constant {number} TELEMETRY_DEFAULT_WIDTH Default width of the telemetry element */
-const TELEMETRY_DEFAULT_WIDTH = 33.3;
+const TELEMETRY_DEFAULT_WIDTH = 31;
 
 /** @constant {number} TELEMETRY_DEFAULT_HEIGHT Default height of the telemetry element */
-const TELEMETRY_DEFAULT_HEIGHT = 32;
+const TELEMETRY_DEFAULT_HEIGHT = 31;
 
 /** @constant {number} TELEMETRY_MIN_SIZE_PX Minimum size of interactor element in pixels */
 const TELEMETRY_MIN_SIZE_PX = 48;

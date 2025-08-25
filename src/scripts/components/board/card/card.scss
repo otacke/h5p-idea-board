@@ -16,7 +16,7 @@
   }
 
   &:has(.h5p-idea-board-card-rating) {
-    padding-bottom: calc(2 * var(--padding-single) + var(--rating-box-height));
+    padding-bottom: calc(var(--has-rating) * 2 * var(--padding-single) + var(--rating-box-height));
   }
 
   .h5p-idea-board-card-exercise {
