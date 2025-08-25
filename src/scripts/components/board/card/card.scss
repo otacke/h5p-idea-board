@@ -7,9 +7,9 @@
   box-shadow: 10px 10px 30px var(--color-shadow-light);
   box-sizing: border-box;
   height: 100%;
-  padding-top: var(--padding-single);
-  padding-right: var(--padding-single);
-  padding-left: var(--padding-single);
+  padding-top: 0;
+  padding-right: 0;
+  padding-left: 0;
 
   &:not(:has(.h5p-idea-board-card-rating)) {
     padding-bottom: var(--padding-single);
