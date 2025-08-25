@@ -92,11 +92,11 @@
       "fields": [
         {
           "label": "Hintergrundbild",
-          "description": "Wählen Sie ein Bild als Hintergrund für die Spielkarte aus."
+          "description": "Wähle ein Bild als Hintergrund für die Karte aus."
         },
         {
           "label": "Hintergrundfarbe",
-          "description": "Wählen Sie eine Farbe als Hintergrund für die Spielkarte aus."
+          "description": "Wähle eine Farbe als Hintergrund für die Karte aus."
         }
       ]
     },
@@ -199,7 +199,7 @@
         },
         {
           "label": "Anweisungen für das Board",
-          "default": "Verwenden Sie die Leertaste, um mit dem Kartenelement zu interagieren oder Tab, um zum Kontextmenü zu gelangen."
+          "default": "Verwende die Leertaste, um mit dem Kartenelement zu interagieren oder Tab, um zum Kontextmenü zu gelangen."
         },
         {
           "label": "Werkzeugleiste (Standardbezeichnung)",
