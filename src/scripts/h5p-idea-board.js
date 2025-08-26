@@ -59,6 +59,9 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     this.globals.set('Screenreader', Screenreader);
     this.globals.set('defaultLanguage', defaultLanguage);
     this.globals.set('editor', this.extras.IdeaBoardEditor ?? false);
+    this.globals.set('resize', () => {
+      this.trigger('resize');
+    });
 
     this.dictionary = new Dictionary();
     this.dictionary.fill({ l10n: this.params.l10n, a11y: this.params.a11y });

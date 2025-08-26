@@ -16,9 +16,9 @@
   z-index: 0;
 
   &.forced-size {
-    height: var(--forced-height);
+    height: 100%;
     margin: auto;
-    width: var(--forced-width);
+    width: 100%;
   }
 
   .h5p-idea-board-cards-list {

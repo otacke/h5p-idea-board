@@ -516,18 +516,16 @@ export default class Board {
     }
     else if (sizes.width && sizes.height) {
       window.requestAnimationFrame(() => {
-        this.dom.style.setProperty('--forced-height', `${sizes.height}px`);
-        this.dom.style.setProperty('--forced-width', `${sizes.width}px`);
         this.dom.classList.add('forced-size');
 
         window.requestAnimationFrame(() => {
-          this.params.globals.get('mainInstance').trigger('resize');
+          this.params.globals.get('resize')();
         });
       });
     }
 
     window.requestAnimationFrame(() => {
-      this.params.globals.get('mainInstance').trigger('resize');
+      this.params.globals.get('resize')();
     });
   }
 
