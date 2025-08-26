@@ -340,6 +340,10 @@ export default class Toolbar {
       return Math.max(max, child.offsetHeight);
     }, 0);
 
+    if (childrenMaxHeight === 0) {
+      return 0; // Not ready yet.
+    }
+
     const padding = parseFloat(getComputedStyle(this.dom).paddingTop) +
     parseFloat(getComputedStyle(this.dom).paddingBottom);
 
