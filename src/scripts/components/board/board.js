@@ -510,12 +510,13 @@ export default class Board {
    */
   forceSize(sizes = {}) {
     this.dom.classList.remove('forced-size');
-
     if (!sizes) {
       return;
     }
     else if (sizes.width && sizes.height) {
       window.requestAnimationFrame(() => {
+        this.dom.style.setProperty('--forced-height', `${sizes.height}px`);
+        this.dom.style.setProperty('--forced-width', `${sizes.width}px`);
         this.dom.classList.add('forced-size');
 
         window.requestAnimationFrame(() => {
