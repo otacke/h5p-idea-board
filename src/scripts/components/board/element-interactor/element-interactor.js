@@ -105,7 +105,12 @@ export default class ElementInteractor {
    * @returns {object} Telemetry data.
    */
   getTelemetry() {
-    return this.telemetry;
+    return {
+      x: `${this.telemetry.x}`,
+      y: `${this.telemetry.y}`,
+      width: `${this.telemetry.width}`,
+      height: `${this.telemetry.height}`
+    };
   }
 
   /**
