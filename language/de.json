@@ -92,11 +92,11 @@
       "fields": [
         {
           "label": "Hintergrundbild",
-          "description": "Wähle ein Bild als Hintergrund für die Karte aus."
+          "description": "Wähle ein Bild als Hintergrund für das Board aus."
         },
         {
           "label": "Hintergrundfarbe",
-          "description": "Wähle eine Farbe als Hintergrund für die Karte aus."
+          "description": "Wähle eine Farbe als Hintergrund für das Board aus."
         }
       ]
     },

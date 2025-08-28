@@ -92,11 +92,11 @@
       "fields": [
         {
           "label": "Background image",
-          "description": "Select an image to use as the background of the game map."
+          "description": "Select an image to use as the background of the board."
         },
         {
           "label": "Background color",
-          "description": "Choose a color to use as the background of the game map."
+          "description": "Choose a color to use as the background of the board."
         }
       ]
     },
