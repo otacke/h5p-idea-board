@@ -73,17 +73,6 @@
               }
             ]
           }
-        },
-        {
-          "label": "Background",
-          "fields": [
-            {
-              "label": "Background image"
-            },
-            {
-              "label": "Background color"
-            }
-          ]
         }
       ]
     },

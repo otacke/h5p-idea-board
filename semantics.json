@@ -207,32 +207,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "backgroundSettings",
-        "label": "Background",
-        "type": "group",
-        "importance": "high",
-        "fields": [
-          {
-            "name": "backgroundImage",
-            "type": "image",
-            "label": "Background image",
-            "optional": true
-          },
-          {
-            "name": "backgroundColor",
-            "type": "text",
-            "label": "Background color",
-            "default": "rgb(255, 255, 255)",
-            "widget": "colorSelector",
-            "spectrum": {
-              "showInput": true,
-              "showInitial": true,
-              "preferredFormat": "rgb"
-            }
-          }
-        ]
       }
     ]
   },
@@ -260,7 +234,17 @@
         "spectrum": {
           "showInput": true,
           "showInitial": true,
-          "preferredFormat": "rgb"
+          "preferredFormat": "rgb",
+          "showPalette": true,
+          "palette": [
+            ["rgba(225, 225, 123, 1)"],
+            ["rgba(170, 227, 152, 1)"],
+            ["rgba(162, 194, 196, 1)"],
+            ["rgba(190, 204, 227, 1)"],
+            ["rgba(209, 191, 228, 1)"],
+            ["rgba(228, 151, 155, 1)"],
+            ["rgba(224, 182, 104, 1)"]
+          ]
         }
       }
     ]
