@@ -207,6 +207,32 @@
             }
           ]
         }
+      },
+      {
+        "name": "backgroundSettings",
+        "label": "Background",
+        "type": "group",
+        "importance": "high",
+        "fields": [
+          {
+            "name": "backgroundImage",
+            "type": "image",
+            "label": "Background image",
+            "optional": true
+          },
+          {
+            "name": "backgroundColor",
+            "type": "text",
+            "label": "Background color",
+            "default": "rgb(255, 255, 255)",
+            "widget": "colorSelector",
+            "spectrum": {
+              "showInput": true,
+              "showInitial": true,
+              "preferredFormat": "rgb"
+            }
+          }
+        ]
       }
     ]
   },
