@@ -5,6 +5,8 @@
   background-color: var(--board-background-color, var(--color-background));
   background-image: var(--board-background-image-url);
   background-size: cover;
+  border-bottom: 2px solid var(--color-primary-5);
+  border-top: 2px solid var(--color-primary-5);
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr;
