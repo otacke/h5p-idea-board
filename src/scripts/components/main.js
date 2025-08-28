@@ -206,6 +206,7 @@ export default class Main {
         onUpdated: (params = {}) => {
           this.wasAnswerGiven = true;
           this.updateSubcontentFields(params);
+          this.callbacks.updateEditorValues();
         },
         onEdited: (data) => {
           this.callbacks.onEdited(data);
