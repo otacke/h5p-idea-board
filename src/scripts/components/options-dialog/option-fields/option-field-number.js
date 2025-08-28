@@ -29,6 +29,7 @@ export default class OptionFieldNumber extends OptionField {
     this.contentDOM.value = value ?? this.field.defaultValue ?? '';
 
     this.contentDOM.addEventListener('blur', () => {
+      this.sanitize();
       this.validate();
     });
 
@@ -73,6 +74,18 @@ export default class OptionFieldNumber extends OptionField {
     }
 
     return true;
+  }
+
+  /**
+   * Sanitize field value.
+   */
+  sanitize() {
+    if (this.contentDOM.value < this.field.min) {
+      this.contentDOM.value = this.field.min;
+    }
+    else if (this.contentDOM.value > this.field.max) {
+      this.contentDOM.value = this.field.max;
+    }
   }
 
   /**
