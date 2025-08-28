@@ -170,6 +170,25 @@
         }
       }
     }
+
+    /* Hide unnecessary text card fields in the H5P editor forms */
+    .h5p-idea-board-content-form {
+      >.field.library:has(>.libwrap.h5p-editabletext-editor) {
+        .h5peditor-copypaste-wrap {
+          display: none;
+        }
+      }
+
+      .libwrap.h5p-editabletext-editor {
+        &>.field.field-name-extraTitle {
+          display: none;
+        }
+
+        &>.h5peditor-label-wrapper {
+          display: none;
+        }
+      }
+    }
   }
 }
 
