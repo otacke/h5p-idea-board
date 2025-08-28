@@ -162,10 +162,6 @@
           "default": "Der Wert muss kleiner oder gleich @max sein."
         },
         {
-          "label": "Zahl Schrittweite",
-          "default": "Der Wert muss ein Vielfaches von @step sein."
-        },
-        {
           "label": "Text zu lang",
           "default": "Der Text ist zu lang. Die maximale Länge beträgt @max Zeichen."
         },

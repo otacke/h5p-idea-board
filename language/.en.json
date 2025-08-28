@@ -162,10 +162,6 @@
           "default": "The value must be less than or equal to @max."
         },
         {
-          "label": "Number step value",
-          "default": "The value must be a multiple of @step."
-        },
-        {
           "label": "Text too long",
           "default": "The text is too long. Maximum length is @max characters."
         },
