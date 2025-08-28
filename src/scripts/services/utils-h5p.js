@@ -137,7 +137,7 @@ export default class H5PUtil {
   }
 
   /**
-   * Get loaded library version for an H5P machine name.
+   * Get library version for an H5P machine name.
    * @param {string} machineName Machine name of the library.
    * @returns {string} Version of the library as major.minor or empty string if not found.
    */
@@ -146,27 +146,34 @@ export default class H5PUtil {
       return '';
     }
 
-    /* There's no simple way to determine the version of a library from H5PEditor, not even
-     * asynchonously with the LibraryListCache :-/ Falling back to defaults that will need to
-     * be updated manually if the library version changes.
+    const dependencies = [
+      ...H5PUtil.getDependencies(),
+      // Fallback. We could probably come up with a way to fetch these from the dependencies recursively.
+      'H5P.AdvancedText 1.1',
+      'H5P.Image 1.1',
+      'H5P.Video 1.6',
+      'H5P.Audio 1.5',
+    ];
+
+    /*
+     * H5P.getLibraryPath would return the URL to the dependencies folder,
+     * we could fetch library.json and extract the version information from there. Fetching would
+     * need to be asynchronous though.
      */
-    if (H5PUtil.isEditor()) {
-      const fallbacks = {
-        'H5P.EditableText': '1.1',
-        'H5P.AdvancedText': '1.1',
-        'H5P.EditableImage': '1.1',
-        'H5P.Image': '1.1',
-        'H5P.Video': '1.6',
-        'H5P.Audio': '1.5',
-      };
 
-      return fallbacks[machineName] || '';
-    }
+    return dependencies.find((dep) => dep.startsWith(machineName))?.split(' ').pop() || '';
+  }
 
-    const dirs = H5PIntegration?.libraryDirectories ?? {};
-    const matchedKey = Object.keys(dirs).find((key) => key.startsWith(machineName));
-
-    return matchedKey ? matchedKey.split('-').pop() : '';
+  /**
+   * Get all dependencies for the library.
+   * @returns {object[]} List of dependency machine names.
+   */
+  static getDependencies() {
+    const dependencies = [
+      ...(libraryJson?.preloadedDependencies ?? []),
+      ...(libraryJson?.editorDependencies ?? [])
+    ];
+    return dependencies.map((dep) => `${dep.machineName} ${dep.majorVersion}.${dep.minorVersion}`);
   }
 
   /**
