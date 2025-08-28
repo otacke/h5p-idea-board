@@ -1,6 +1,6 @@
 {
   "name": "h5p-idea-board",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Let your students work with a virtual idea board.",
   "private": true,
   "scripts": {
