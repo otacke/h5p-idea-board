@@ -91,6 +91,8 @@ export default class Exercise {
     const machineName = this.params.contentType?.library?.split?.(' ')[0];
     if (machineName === 'H5P.EditableText') {
       this.params.contentType.params.backgroundColor = 'rgba(255, 255, 255, 0)';
+      this.params.contentType.params.text =
+       this.params.contentType.params.text ?? '<p style=\"text-align:center;\"></p>';
     }
 
     if (!this.instance) {
