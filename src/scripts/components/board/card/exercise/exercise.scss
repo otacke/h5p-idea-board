@@ -14,5 +14,11 @@
         overflow: hidden;
       }
     }
+
+    &.h5p-editable-medium {
+      .h5p-audio-wrapper {
+        box-sizing: border-box;
+      }
+    }
   }
 }
