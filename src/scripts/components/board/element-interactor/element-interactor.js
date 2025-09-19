@@ -42,14 +42,14 @@ export default class ElementInteractor {
         x: Math.floor(Math.random() * 100),
         y: Math.floor(Math.random() * 100),
         width: TELEMETRY_DEFAULT_WIDTH,
-        height: TELEMETRY_DEFAULT_HEIGHT
+        height: TELEMETRY_DEFAULT_HEIGHT,
       },
       capabilities: {
         edit: true,
         move: true,
         resize: true,
-        delete: true
-      }
+        delete: true,
+      },
     }, params);
 
     for (const key in this.params.telemetry) {
@@ -74,7 +74,7 @@ export default class ElementInteractor {
       onMove: () => {},
       resizeCard: () => {},
       getDenominator: () => {},
-      getSummaryText: () => {}
+      getSummaryText: () => {},
     }, callbacks);
 
     this.mode = INTERACTOR_MODE.view;
@@ -109,7 +109,7 @@ export default class ElementInteractor {
       x: `${this.telemetry.x}`,
       y: `${this.telemetry.y}`,
       width: `${this.telemetry.width}`,
-      height: `${this.telemetry.height}`
+      height: `${this.telemetry.height}`,
     };
   }
 
@@ -214,7 +214,7 @@ export default class ElementInteractor {
         pulseStates: [{ id: 'edit', label: this.params.dictionary.get('a11y.edit') }],
         onClick: () => {
           this.callbacks.onEdit(this.params.id);
-        }
+        },
       });
     }
 
@@ -224,14 +224,14 @@ export default class ElementInteractor {
         type: 'toggle',
         a11y: {
           active: this.params.dictionary.get('a11y.toggleMoveModeActive'),
-          inactive: this.params.dictionary.get('a11y.toggleMoveModeInactive')
+          inactive: this.params.dictionary.get('a11y.toggleMoveModeInactive'),
         },
         onKeydown: (event, options) => {
           this.handleMoveStart(event, options);
         },
         onKeyup: (event, options) => {
           this.handleMoveEnd(event, options);
-        }
+        },
       });
     }
 
@@ -241,14 +241,14 @@ export default class ElementInteractor {
         type: 'toggle',
         a11y: {
           active: this.params.dictionary.get('a11y.toggleResizeModeActive'),
-          inactive: this.params.dictionary.get('a11y.toggleResizeModeInactive')
+          inactive: this.params.dictionary.get('a11y.toggleResizeModeInactive'),
         },
         onKeydown: (event, options) => {
           this.handleResizeStart(event, options);
         },
         onKeyup: (event, options) => {
           this.handleResizeEnd(event, options);
-        }
+        },
       });
     }
 
@@ -258,7 +258,7 @@ export default class ElementInteractor {
       pulseStates: [{ id: 'bringToFront', label: this.params.dictionary.get('a11y.bringToFront') }],
       onClick: (event, options) => {
         this.handleBringToFront(event, options);
-      }
+      },
     });
 
     contextMenuButtonParams.push({
@@ -267,7 +267,7 @@ export default class ElementInteractor {
       pulseStates: [{ id: 'sendToBack', label: this.params.dictionary.get('a11y.sendToBack') }],
       onClick: (event, options) => {
         this.handleSendToBack(event, options);
-      }
+      },
     });
 
     contextMenuButtonParams.push({
@@ -276,7 +276,7 @@ export default class ElementInteractor {
       pulseStates: [{ id: 'copy', label: this.params.dictionary.get('a11y.copy') }],
       onClick: (event, options) => {
         this.callbacks.onCopy(this.params.id);
-      }
+      },
     });
 
     if (this.params.capabilities.delete || H5PUtil.isEditor()) {
@@ -286,20 +286,20 @@ export default class ElementInteractor {
         pulseStates: [{ id: 'delete', label: this.params.dictionary.get('a11y.delete') }],
         onClick: (event, options) => {
           this.callbacks.onDelete(this.params.id);
-        }
+        },
       });
     }
 
     this.contextMenu = new ElementInteractorContextMenu(
       {
         dictionary: this.params.dictionary,
-        buttons: contextMenuButtonParams
+        buttons: contextMenuButtonParams,
       },
       {
         getDenominator: () => {
           return this.callbacks.getDenominator(this.params.id);
-        }
-      }
+        },
+      },
     );
     this.dom.append(this.contextMenu.getDOM());
   }
@@ -311,11 +311,11 @@ export default class ElementInteractor {
     [
       'top-left', 'top', 'top-right',
       'left', 'right',
-      'bottom-left', 'bottom', 'bottom-right'
+      'bottom-left', 'bottom', 'bottom-right',
     ].forEach((position) => {
       const knob = new ElementInteractorResizeKnob(
         {
-          position: position
+          position: position,
         },
         {
           getBoardRect: () => {
@@ -332,8 +332,8 @@ export default class ElementInteractor {
           },
           onStoppedResizing: () => {
             this.callbacks.resizeCard(this.params.id);
-          }
-        }
+          },
+        },
       );
       this.dom.append(knob.getDOM());
     });
@@ -400,9 +400,9 @@ export default class ElementInteractor {
         x: sanitizedPosition.x,
         y: sanitizedPosition.y,
         width: sanitizedSize.width,
-        height: sanitizedSize.height
+        height: sanitizedSize.height,
       },
-      options
+      options,
     );
 
     for (const key in sanitizedTelemetry) {
@@ -442,7 +442,7 @@ export default class ElementInteractor {
   getSanitizedPosition(position = {}) {
     return {
       x: Math.max(0, Math.min(position.x ?? this.telemetry.x, 100)),
-      y: Math.max(0, Math.min(position.y ?? this.telemetry.y, 100))
+      y: Math.max(0, Math.min(position.y ?? this.telemetry.y, 100)),
     };
   }
 
@@ -474,12 +474,12 @@ export default class ElementInteractor {
     return {
       width: Math.max(
         this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'width'),
-        Math.min(size.width ?? this.telemetry.width, 100)
+        Math.min(size.width ?? this.telemetry.width, 100),
       ),
       height: Math.max(
         this.pxToPercent(TELEMETRY_MIN_SIZE_PX, 'height'),
-        Math.min(size.height ?? this.telemetry.height, 100)
-      )
+        Math.min(size.height ?? this.telemetry.height, 100),
+      ),
     };
   }
 
@@ -548,14 +548,14 @@ export default class ElementInteractor {
       x: this.telemetry.x * boardSize.width / 100,
       y: this.telemetry.y * boardSize.height / 100,
       width: this.telemetry.width * boardSize.width / 100,
-      height: this.telemetry.height * boardSize.height / 100
+      height: this.telemetry.height * boardSize.height / 100,
     };
 
     let targetTelemetry = {
       x: interactorTelemetry.x + (deltaPx.x ?? 0),
       y: interactorTelemetry.y + (deltaPx.y ?? 0),
       width: interactorTelemetry.width + (deltaPx.width ?? 0),
-      height: interactorTelemetry.height + (deltaPx.height ?? 0)
+      height: interactorTelemetry.height + (deltaPx.height ?? 0),
     };
 
     const applyAspectRatioModification = (deltaPx, interactorTelemetry, targetTelemetry, aspectRatio) => {
@@ -603,7 +603,7 @@ export default class ElementInteractor {
 
     if (options.aspectRatio) {
       targetTelemetry = applyAspectRatioModification(
-        deltaPx, interactorTelemetry, targetTelemetry, options.aspectRatio
+        deltaPx, interactorTelemetry, targetTelemetry, options.aspectRatio,
       );
 
       if (targetTelemetry.x < 0 || targetTelemetry.x + targetTelemetry.width > boardSize.width) {
@@ -637,7 +637,7 @@ export default class ElementInteractor {
       x: this.pxToPercent(targetTelemetry.x, 'width'),
       y: this.pxToPercent(targetTelemetry.y, 'height'),
       width: this.pxToPercent(targetTelemetry.width, 'width'),
-      height: this.pxToPercent(targetTelemetry.height, 'height')
+      height: this.pxToPercent(targetTelemetry.height, 'height'),
     };
 
     this.setTelemetry(targetTelemetryPercent, options);
@@ -654,7 +654,7 @@ export default class ElementInteractor {
       x: this.telemetry.x + deltaPercent.x ?? 0,
       y: this.telemetry.y + deltaPercent.y ?? 0,
       width: this.telemetry.width + deltaPercent.width ?? 0,
-      height: this.telemetry.height + deltaPercent.height ?? 0
+      height: this.telemetry.height + deltaPercent.height ?? 0,
     };
   }
 
@@ -668,7 +668,7 @@ export default class ElementInteractor {
       x: this.pxToPercent(deltaPx.x ?? 0, 'width'),
       y: this.pxToPercent(deltaPx.y ?? 0, 'height'),
       width: this.pxToPercent(deltaPx.width ?? 0, 'width'),
-      height: this.pxToPercent(deltaPx.height ?? 0, 'height')
+      height: this.pxToPercent(deltaPx.height ?? 0, 'height'),
     };
   }
 
@@ -874,7 +874,7 @@ export default class ElementInteractor {
     const boardRect = this.callbacks.getBoardRect();
     this.moveStartPx = {
       x: Math.max(boardRect.left, Math.min(event.clientX, boardRect.right)),
-      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom))
+      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom)),
     };
 
     this.updateTelemetryByPx(deltaPx, { retainSize: true });

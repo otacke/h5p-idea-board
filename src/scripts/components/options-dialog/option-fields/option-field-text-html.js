@@ -13,7 +13,7 @@ const DEFAULT_CKE_CONFIG = {
     'RemoveFormat', '|',
     'alignment', 'bulletedList', 'numberedList', '|',
     'link', '|',
-    'horizontalLine', 'heading', 'fontSize', 'fontColor'
+    'horizontalLine', 'heading', 'fontSize', 'fontColor',
   ],
   link: {
     defaultProtocol: 'https://',
@@ -22,7 +22,7 @@ const DEFAULT_CKE_CONFIG = {
     options: [
       { model: 'formatted', view: 'pre', title: 'Formatted', class: 'ck-heading_formatted' },
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-    ]
+    ],
   },
   fontSize: {
     options: [
@@ -42,12 +42,12 @@ const DEFAULT_CKE_CONFIG = {
       { title: '175%', model: '1.75em' },
       { title: '225%', model: '2.25em' },
       { title: '300%', model: '3em' },
-      { title: '450%', model: '4.5em' }
-    ]
+      { title: '450%', model: '4.5em' },
+    ],
   },
   alignment: {
-    options: ['left', 'center', 'right']
-  }
+    options: ['left', 'center', 'right'],
+  },
 };
 
 export default class OptionFieldText extends OptionField {
@@ -209,7 +209,7 @@ export default class OptionFieldText extends OptionField {
       'en',
       H5P.jQuery(this.dom),
       config.text ?? '',
-      Util.extend(DEFAULT_CKE_CONFIG, config)
+      Util.extend(DEFAULT_CKE_CONFIG, config),
     );
   }
 
@@ -260,7 +260,7 @@ export default class OptionFieldText extends OptionField {
   getValue() {
     return {
       name: this.field.name,
-      value: this.getHTML()
+      value: this.getHTML(),
     };
   }
 

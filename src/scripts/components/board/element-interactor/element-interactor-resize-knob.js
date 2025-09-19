@@ -17,7 +17,7 @@ export default class ElementInteractorResizeKnob {
       getInteractorRect: () => {},
       isShiftPressed: () => false,
       updateTelemetryByPx: () => {},
-      onStoppedResizing: () => {}
+      onStoppedResizing: () => {},
     }, callbacks);
 
     this.canResizeHorizontally = this.params.position.includes('left') || this.params.position.includes('right');
@@ -121,15 +121,15 @@ export default class ElementInteractorResizeKnob {
 
     this.resizeStartPx = {
       x: Math.max(boardRect.left, Math.min(event.clientX, boardRect.right)),
-      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom))
+      y: Math.max(boardRect.top, Math.min(event.clientY, boardRect.bottom)),
     };
 
     const shouldRetainAspectRatio = this.callbacks.isShiftPressed();
     this.callbacks.updateTelemetryByPx(
       deltaPx,
       {
-        ...(shouldRetainAspectRatio && { aspectRatio: this.aspectRatio })
-      }
+        ...(shouldRetainAspectRatio && { aspectRatio: this.aspectRatio }),
+      },
     );
   }
 

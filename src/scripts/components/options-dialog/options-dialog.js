@@ -37,7 +37,7 @@ export default class OptionsDialog {
     // Container for H5P content, can be CSS-transformed
     this.contentContainer = document.createElement('div');
     this.contentContainer.classList.add(
-      'h5p-idea-board-options-dialog-content-container'
+      'h5p-idea-board-options-dialog-content-container',
     );
     this.dom.append(this.contentContainer);
 
@@ -63,7 +63,7 @@ export default class OptionsDialog {
     this.buttonClose = document.createElement('button');
     this.buttonClose.classList.add('h5p-idea-board-options-dialog-button-close');
     this.buttonClose.setAttribute(
-      'aria-label', this.params.dictionary.get('a11y.close')
+      'aria-label', this.params.dictionary.get('a11y.close'),
     );
     this.buttonClose.addEventListener('click', () => {
       this.cancel();
@@ -86,7 +86,7 @@ export default class OptionsDialog {
     this.focusTrap = new FocusTrap({
       trapElement: this.dom,
       closeElement: this.buttonClose,
-      fallbackContainer: this.contentContainer
+      fallbackContainer: this.contentContainer,
     });
 
     this.buttonRow = document.createElement('div');
@@ -196,13 +196,13 @@ export default class OptionsDialog {
         .map((key) => {
           return {
             name: key,
-            value: this.data.values.contentType.params[key]
+            value: this.data.values.contentType.params[key],
           };
         });
 
       values.push({
         name: 'contentType',
-        value: contentTypeValues
+        value: contentTypeValues,
       });
 
       const cardSettingsValues = Object
@@ -210,13 +210,13 @@ export default class OptionsDialog {
         .map((key) => {
           return {
             name: key,
-            value: this.data.values.cardSettings[key]
+            value: this.data.values.cardSettings[key],
           };
         });
 
       values.push({
         name: 'cardSettings',
-        value: cardSettingsValues
+        value: cardSettingsValues,
       });
 
       const cardCapabilitiesValues = Object
@@ -224,13 +224,13 @@ export default class OptionsDialog {
         .map((key) => {
           return {
             name: key,
-            value: this.data.values.cardCapabilities[key]
+            value: this.data.values.cardCapabilities[key],
           };
         });
 
       values.push({
         name: 'cardCapabilities',
-        value: cardCapabilitiesValues
+        value: cardCapabilitiesValues,
       });
     }
     else {

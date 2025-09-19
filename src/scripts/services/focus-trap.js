@@ -45,7 +45,7 @@ export default class FocusTrap {
       () => {
         this.handleVisible();
       },
-      { root: document.documentElement }
+      { root: document.documentElement },
     );
   }
 
@@ -56,7 +56,7 @@ export default class FocusTrap {
     this.updateFocusableElements();
 
     this.params.trapElement.addEventListener(
-      'keydown', this.handleKeydownEvent, true
+      'keydown', this.handleKeydownEvent, true,
     );
 
     this.currentFocusElement = null;

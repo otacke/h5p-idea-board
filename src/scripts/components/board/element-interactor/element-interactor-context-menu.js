@@ -15,11 +15,11 @@ export default class ElementInteractorContextMenu {
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({
       buttons: [],
-      hidden: false
+      hidden: false,
     }, params);
 
     this.callbacks = Util.extend({
-      getDenominator: () => {}
+      getDenominator: () => {},
     }, callbacks);
 
     this.buttons = {};
@@ -123,7 +123,7 @@ export default class ElementInteractorContextMenu {
         ...(button.a11y && { a11y: button.a11y }),
         classes: ['toolbar-button', `toolbar-button-${button.id.toLowerCase()}`],
         ...(typeof button.disabled === 'boolean' && {
-          disabled: button.disabled
+          disabled: button.disabled,
         }),
         ...(button.active && { active: button.active }),
         ...(button.type && { type: button.type }),
@@ -135,19 +135,19 @@ export default class ElementInteractorContextMenu {
         ...(typeof button.onClick === 'function' && {
           onClick: (event, params) => {
             button.onClick(event, params);
-          }
+          },
         }),
         ...(typeof button.onKeydown === 'function' && {
           onKeydown: (event, params) => {
             button.onKeydown(event, params);
-          }
+          },
         }),
         ...(typeof button.onKeyup === 'function' && {
           onKeyup: (event, params) => {
             button.onKeyup(event, params);
-          }
-        })
-      }
+          },
+        }),
+      },
     );
 
     this.buttonsContainer.appendChild(this.buttons[button.id].getDOM());
@@ -346,7 +346,7 @@ export default class ElementInteractorContextMenu {
     }
     else if (event.code === 'End') {
       this.moveButtonFocus(
-        Object.keys(this.buttons).length - 1 - this.currentButtonIndex
+        Object.keys(this.buttons).length - 1 - this.currentButtonIndex,
       );
     }
     else {

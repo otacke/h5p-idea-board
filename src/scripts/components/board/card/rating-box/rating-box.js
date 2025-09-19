@@ -16,7 +16,7 @@ export default class RatingBox {
     this.params = Util.extend({}, params);
 
     this.callbacks = Util.extend({
-      onRatingChanged: () => {}
+      onRatingChanged: () => {},
     }, callbacks);
 
     this.dom = document.createElement('div');

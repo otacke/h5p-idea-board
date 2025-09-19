@@ -89,7 +89,7 @@ export default class OptionFieldGroup extends OptionField {
 
     return {
       name: this.getName(),
-      value: values
+      value: values,
     };
   }
 

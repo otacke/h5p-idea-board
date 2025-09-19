@@ -171,7 +171,7 @@ export default class H5PUtil {
   static getDependencies() {
     const dependencies = [
       ...(libraryJson?.preloadedDependencies ?? []),
-      ...(libraryJson?.editorDependencies ?? [])
+      ...(libraryJson?.editorDependencies ?? []),
     ];
     return dependencies.map((dep) => `${dep.machineName} ${dep.majorVersion}.${dep.minorVersion}`);
   }

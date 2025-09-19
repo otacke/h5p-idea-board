@@ -6,7 +6,7 @@ export default class OptionFieldUnknown extends OptionField {
    * Unknown field type for options dialog.
    * @class
    * @param {object} field Field definition.
-   * @param {*} value Field value.
+   * @param {string|number|object|object[]} value Field value.
    * @param {object} dictionary Dictionary for translations.
    */
   constructor(field = {}, value, dictionary) {

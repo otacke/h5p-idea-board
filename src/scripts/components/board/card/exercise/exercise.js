@@ -24,7 +24,7 @@ export default class Exercise {
       getBoardRect: () => {},
       passEditorDialog: () => {},
       onUpdated: () => {},
-      onEdited: () => {}
+      onEdited: () => {},
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -64,7 +64,7 @@ export default class Exercise {
    */
   focus() {
     const focusable = [... this.dom.querySelectorAll(
-      'input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]'
+      'input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]',
     )].filter((element) => {
       const style = window.getComputedStyle(element);
       const isVisible = style.display !== 'none' && style.visibility !== 'hidden';
@@ -92,7 +92,7 @@ export default class Exercise {
     if (machineName === 'H5P.EditableText') {
       this.params.contentType.params.backgroundColor = 'rgba(255, 255, 255, 0)';
       this.params.contentType.params.text =
-       this.params.contentType.params.text ?? '<p style=\"text-align:center;\"></p>';
+        this.params.contentType.params.text ?? '<p style=\"text-align:center;\"></p>';
     }
 
     if (!this.instance) {
@@ -101,7 +101,7 @@ export default class Exercise {
         this.params.globals.get('contentId'),
         undefined,
         true,
-        { previousState: this.previousState?.instanceState }
+        { previousState: this.previousState?.instanceState },
       );
     }
 
@@ -113,12 +113,12 @@ export default class Exercise {
 
     // Resize parent when children resize
     this.bubbleUp(
-      this.instance, 'resize', this.params.globals.get('mainInstance')
+      this.instance, 'resize', this.params.globals.get('mainInstance'),
     );
 
     // Resize children to fit inside parent
     this.bubbleDown(
-      this.params.globals.get('mainInstance'), 'resize', [this.instance]
+      this.params.globals.get('mainInstance'), 'resize', [this.instance],
     );
 
     if (machineName === 'H5P.EditableText') {

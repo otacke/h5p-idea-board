@@ -61,7 +61,7 @@ export default class OptionField {
 
   /**
    * Get field value.
-   * @returns {*} Field value.
+   * @returns {string|number|object|object[]|undefined} Field value.
    */
   getValue() {
     return; // Must be implemented

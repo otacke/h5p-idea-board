@@ -21,7 +21,7 @@ export default class Board {
       onCardDeleted: () => {},
       openEditorDialog: () => {},
       onUpdated: () => {},
-      onEdited: () => {}
+      onEdited: () => {},
     }, callbacks);
 
     this.cards = [];
@@ -50,7 +50,7 @@ export default class Board {
     this.dom.setAttribute('role', 'application');
     this.dom.setAttribute(
       'aria-label',
-      `${this.params.dictionary.get('a11y.board')}. ${this.params.dictionary.get('a11y.boardInstructions')}`
+      `${this.params.dictionary.get('a11y.board')}. ${this.params.dictionary.get('a11y.boardInstructions')}`,
     );
     this.dom.classList.add('h5p-idea-board-board');
     this.dom.setAttribute('tabindex', '0');
@@ -99,7 +99,7 @@ export default class Board {
           cardRating: card.getRating(),
         },
         cardCapabilities: card.getCapabilities(),
-        telemetry: interactor.getTelemetry()
+        telemetry: interactor.getTelemetry(),
       };
     });
   }
@@ -119,8 +119,8 @@ export default class Board {
         canUserDeleteCard: true,
         canUserMoveCard: true,
         canUserResizeCard: true,
-        canUserRateCard: true
-      }
+        canUserRateCard: true,
+      },
     }, params);
 
     if (H5PUtil.isEditor()) {
@@ -150,13 +150,13 @@ export default class Board {
         onUpdated: () => {
           this.callbacks.onUpdated({
             index: this.cards.findIndex((c) => c.getId() === card.getId()),
-            contentTypeParams: card.getContentTypeParams()
+            contentTypeParams: card.getContentTypeParams(),
           });
         },
         onEdited: (data) => {
           this.callbacks.onEdited(data);
         },
-      }
+      },
     );
     this.cards.push(card);
 
@@ -171,8 +171,8 @@ export default class Board {
           edit: elementParams.cardCapabilities.canUserEditCard,
           delete: elementParams.cardCapabilities.canUserDeleteCard,
           move: elementParams.cardCapabilities.canUserMoveCard,
-          resize: elementParams.cardCapabilities.canUserResizeCard
-        }
+          resize: elementParams.cardCapabilities.canUserResizeCard,
+        },
       },
       {
         getBoardRect: () => {
@@ -207,8 +207,8 @@ export default class Board {
         },
         getDenominator: (id) => {
           return this.getDenominator(id);
-        }
-      }
+        },
+      },
     );
 
     this.cardsList.append(element.getDOM());
@@ -263,7 +263,7 @@ export default class Board {
     }
 
     instance.openEditorDialog?.({
-      activeElement: interactor.getDOM()
+      activeElement: interactor.getDOM(),
     });
   }
 
@@ -362,7 +362,7 @@ export default class Board {
       cardBorderColor: card.getBorderColor(),
       cardRating: card.getRating(),
       cardCapabilities: card.getCapabilities(),
-      telemetry: interactor.getTelemetry()
+      telemetry: interactor.getTelemetry(),
     };
 
     this.callbacks.onCardCopied(copyParams);
@@ -397,8 +397,8 @@ export default class Board {
           activeElement.focus();
           // Track H5P.Tooltip to not display on delete button after focus
           activeElement.dispatchEvent(new Event('mouseleave', { bubbles: true, cancelable: true }));
-        }
-      }
+        },
+      },
     );
 
     confirmationDialog.show();
@@ -666,8 +666,8 @@ export default class Board {
       cards: cardValues,
       backgroundSettings: {
         backgroundImage: this.backgroundImageParams,
-        backgroundColor: this.backgroundColor
-      }
+        backgroundColor: this.backgroundColor,
+      },
     };
   }
 

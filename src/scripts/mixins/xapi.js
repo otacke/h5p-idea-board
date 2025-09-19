@@ -30,7 +30,7 @@ export default class XAPI {
         0, // Score maximum
         this,
         true, // Completed
-        true // Success
+        true, // Success
       );
     }
 
@@ -67,7 +67,7 @@ export default class XAPI {
   getTitle() {
     // H5P Core function: createTitle
     return H5P.createTitle(
-      this.params?.headline || this.extras?.metadata?.title || DEFAULT_DESCRIPTION
+      this.params?.headline || this.extras?.metadata?.title || DEFAULT_DESCRIPTION,
     );
   }
 

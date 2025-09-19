@@ -36,7 +36,7 @@ export default class Card {
       getBoardRect: () => {},
       openEditorDialog: () => {},
       onUpdated: () => {},
-      onEdited: () => {}
+      onEdited: () => {},
     }, callbacks);
 
     this.backgroundColor = this.params.backgroundColor;
@@ -77,8 +77,8 @@ export default class Card {
         },
         onEdited: (data) => {
           this.callbacks.onEdited(data);
-        }
-      }
+        },
+      },
     );
     this.exerciseDOM.append(this.exercise.getDOM());
 
@@ -94,8 +94,8 @@ export default class Card {
         onRatingChanged: (rating) => {
           this.setRating(rating);
           this.callbacks.onUpdated();
-        }
-      }
+        },
+      },
     );
     ratingDOM.append(this.ratingBox.getDOM());
 

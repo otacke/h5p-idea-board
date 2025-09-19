@@ -68,7 +68,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
 
     // Confirmation Dialog
     this.confirmationDialog = new ConfirmationDialog({
-      globals: this.globals
+      globals: this.globals,
     });
     this.globals.set('ConfirmationDialog', this.confirmationDialog);
 
@@ -96,8 +96,8 @@ export default class IdeaBoard extends H5P.EventDispatcher {
         },
         onAdded: (data) => {
           this.trigger('added', data);
-        }
-      }
+        },
+      },
     );
 
     // Resize fullscreen dimensions when rotating screen
@@ -305,7 +305,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
    */
   getCurrentStateWhenNoAnswerGiven() {
     return {
-      main: this.main.getCurrentState()
+      main: this.main.getCurrentState(),
     };
   }
 }

@@ -15,7 +15,7 @@ export default class Toolbar {
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({
       buttons: [],
-      hidden: false
+      hidden: false,
     }, params);
 
     this.callbacks = Util.extend({
@@ -52,7 +52,7 @@ export default class Toolbar {
     }
     else {
       this.dom.setAttribute(
-        'aria-label', this.params.dictionary.get('a11y.toolbarFallbackLabel')
+        'aria-label', this.params.dictionary.get('a11y.toolbarFallbackLabel'),
       );
     }
 
@@ -119,7 +119,7 @@ export default class Toolbar {
         ...(button.a11y && { a11y: button.a11y }),
         classes: ['toolbar-button', `toolbar-button-${button.id.toLowerCase()}`],
         ...(typeof button.disabled === 'boolean' && {
-          disabled: button.disabled
+          disabled: button.disabled,
         }),
         ...(button.active && { active: button.active }),
         ...(button.type && { type: button.type }),
@@ -131,9 +131,9 @@ export default class Toolbar {
         ...(typeof button.onClick === 'function' && {
           onClick: (event, params) => {
             button.onClick(event, params);
-          }
-        })
-      }
+          },
+        }),
+      },
     );
 
     this.buttonsContainer.appendChild(this.buttons[button.id].getDOM());
@@ -322,7 +322,7 @@ export default class Toolbar {
     }
     else if (event.code === 'End') {
       this.moveButtonFocus(
-        Object.keys(this.buttons).length - 1 - this.currentButtonIndex
+        Object.keys(this.buttons).length - 1 - this.currentButtonIndex,
       );
     }
     else {

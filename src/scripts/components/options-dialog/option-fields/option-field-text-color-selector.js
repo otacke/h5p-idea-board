@@ -59,8 +59,8 @@ export default class OptionFieldText extends OptionField {
             rgba: true,
             input: true,
             cancel: true,
-            save: true
-          }
+            save: true,
+          },
         },
         i18n: {
           'ui:dialog': dictionary.get('a11y.colorPickerDialog'),
@@ -72,7 +72,7 @@ export default class OptionFieldText extends OptionField {
           'aria:palette': dictionary.get('a11y.colorSelectionArea'),
           'aria:hue': dictionary.get('a11y.hueSlider'),
           'aria:opacity': dictionary.get('a11y.opacitySlider'),
-        }
+        },
       });
 
       this.pickr.on('init', (instance) => {

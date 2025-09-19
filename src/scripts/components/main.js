@@ -4,7 +4,7 @@ import Toolbar from '@components/toolbar/toolbar.js';
 import Util from '@services/util.js';
 import H5PUtil from '@services/utils-h5p.js';
 import {
-  getH5PClipboard, getNoPasteReason, shapeParamsForClipboard, shapeParamsFromClipboard
+  getH5PClipboard, getNoPasteReason, shapeParamsForClipboard, shapeParamsFromClipboard,
 } from '@services/h5p-clipboard.js';
 import './main.scss';
 
@@ -19,7 +19,7 @@ export default class Main {
    */
   constructor(params = {}, callbacks = {}) {
     this.params = Util.extend({
-      previousState: {}
+      previousState: {},
     }, params);
 
     this.callbacks = Util.extend({
@@ -50,8 +50,8 @@ export default class Main {
           cardBorderColor: element.cardSettings.cardBorderColor,
           cardRating: element.cardSettings.cardRating,
           cardCapabilities: element.cardCapabilities,
-          previousState: element.previousState || {}
-        }
+          previousState: element.previousState || {},
+        },
       );
     });
 
@@ -80,7 +80,7 @@ export default class Main {
         uberName: uberName,
         name: uberName.split(' ')[0],
         majorVersion: (uberName.split(' ')[1]).split('.')[0],
-        minorVersion: (uberName.split(' ')[1]).split('.')[1]
+        minorVersion: (uberName.split(' ')[1]).split('.')[1],
       };
     });
 
@@ -115,7 +115,7 @@ export default class Main {
    */
   getSupportedSubcontentTypes() {
     const subcontentUberNames = Array.from(
-      new Set(H5PUtil.semanticsFieldSelectorAll({ type: 'library' }).flatMap((field) => field.options || []))
+      new Set(H5PUtil.semanticsFieldSelectorAll({ type: 'library' }).flatMap((field) => field.options || [])),
     );
 
     const subsubcontentUberNames = ['H5P.AdvancedText', 'H5P.Image', 'H5P.Audio', 'H5P.Video']
@@ -213,8 +213,8 @@ export default class Main {
         },
         onAdded: (data) => {
           this.callbacks.onAdded(data);
-        }
-      }
+        },
+      },
     );
     this.dom.append(this.board.getDOM());
 
@@ -222,7 +222,7 @@ export default class Main {
       {
         globals: this.params.globals,
         dictionary: this.params.dictionary,
-      }
+      },
     );
     this.dom.append(this.optionsDialog.getDOM());
 
@@ -332,12 +332,12 @@ export default class Main {
           pulseStates: [
             {
               id: contentTypeName,
-              label: this.params.dictionary.get('a11y.addContentType').replace('@contentType', contentTypeName)
-            }
+              label: this.params.dictionary.get('a11y.addContentType').replace('@contentType', contentTypeName),
+            },
           ],
           onClick: () => {
             this.addElementToBoard(versionedMachineName);
-          }
+          },
         });
       }
       else {
@@ -362,12 +362,12 @@ export default class Main {
             pulseStates: [
               {
                 id: type.toLowerCase(),
-                label: this.params.dictionary.get('a11y.addContentType').replace('@contentType', type)
-              }
+                label: this.params.dictionary.get('a11y.addContentType').replace('@contentType', type),
+              },
             ],
             onClick: () => {
               this.addElementToBoard(`${versionedMachineName}/${subcontentMachineName}`);
-            }
+            },
           });
         });
       }
@@ -380,14 +380,14 @@ export default class Main {
         {
           id: 'paste',
           label: this.params.dictionary.get('a11y.pasteContent'),
-        }
+        },
       ],
       a11y: {
-        disabled: this.params.dictionary.get('a11y.pasteContentDisabled')
+        disabled: this.params.dictionary.get('a11y.pasteContentDisabled'),
       },
       onClick: () => {
         this.pasteContentFromClipboard();
-      }
+      },
     });
 
     if (this.params.globals.get('isFullscreenSupported')) {
@@ -397,23 +397,23 @@ export default class Main {
         pulseStates: [
           {
             id: 'enter-fullscreen',
-            label: this.params.dictionary.get('a11y.enterFullscreen')
+            label: this.params.dictionary.get('a11y.enterFullscreen'),
           },
           {
             id: 'exit-fullscreen',
-            label: this.params.dictionary.get('a11y.exitFullscreen')
-          }
+            label: this.params.dictionary.get('a11y.exitFullscreen'),
+          },
         ],
         onClick: () => {
           this.callbacks.onFullscreenClicked();
-        }
+        },
       });
     }
 
     this.toolbar = new Toolbar({
       ...(globalParams.headline && { headline: globalParams.headline }),
       dictionary: this.params.dictionary,
-      buttons: toolbarButtons
+      buttons: toolbarButtons,
     });
     this.dom.append(this.toolbar.getDOM());
   }
@@ -430,7 +430,7 @@ export default class Main {
       const contentType = params.contentType ?? {
         library: versionedMachineName,
         params: {},
-        subContentId: H5P.createUUID()
+        subContentId: H5P.createUUID(),
       };
 
       contentType.metadata = contentType.metadata || {};
@@ -445,7 +445,7 @@ export default class Main {
         cardCapabilities: params.cardCapabilities || {},
         wasGeneratedByUser: params.wasGeneratedByUser ?? !H5PUtil.isEditor(),
         contentType: contentType,
-        previousState: params.previousState || {}
+        previousState: params.previousState || {},
       });
 
       this.callbacks.updateEditorValues();
@@ -453,7 +453,7 @@ export default class Main {
       if (!params.contentType) {
         this.callbacks.onAdded({
           machineName: versionedMachineName.split(' ')[0],
-          subContentId: contentType.subContentId
+          subContentId: contentType.subContentId,
         });
       }
 
@@ -465,10 +465,10 @@ export default class Main {
       params: {
         contentType: {
           library: versionedSubContentMachineName,
-          params: {}
-        }
+          params: {},
+        },
       },
-      subContentId: H5P.createUUID()
+      subContentId: H5P.createUUID(),
     };
 
     contentType.metadata = contentType.metadata || {};
@@ -490,7 +490,7 @@ export default class Main {
       wasGeneratedByUser: params.wasGeneratedByUser ?? !H5PUtil.isEditor(),
       cardCapabilities: params.cardCapabilities,
       contentType: contentType,
-      previousState: params.previousState || {}
+      previousState: params.previousState || {},
     });
 
     this.callbacks.updateEditorValues();
@@ -498,7 +498,7 @@ export default class Main {
     if (!params.contentType) {
       this.callbacks.onAdded({
         machineName: versionedMachineName.split(' ')[0],
-        subContentId: contentType.subContentId
+        subContentId: contentType.subContentId,
       });
     }
   }
@@ -518,7 +518,7 @@ export default class Main {
     window.setTimeout(() => {
       this.board.setFullscreen(shouldBeFullscreen, {
         width: window.innerWidth - marginHorizontal,
-        height: window.innerHeight - marginVertical - this.toolbar.getFullHeight()
+        height: window.innerHeight - marginVertical - this.toolbar.getFullHeight(),
       });
 
       this.params.globals.get('mainInstance').trigger('resize');
@@ -558,7 +558,7 @@ export default class Main {
 
     this.addElementToBoard(
       taintedMachineName,
-      { ...shapedParams.specific, contentType: shapedParams.generic }
+      { ...shapedParams.specific, contentType: shapedParams.generic },
     );
   }
 
@@ -655,7 +655,7 @@ export default class Main {
         importance: 'high',
         expanded: true,
         description: this.params.dictionary.get('l10n.contentTypeDescription'),
-        fields: [ ...params.fields ]
+        fields: [ ...params.fields ],
       };
 
       // Remove background color field if it exists
@@ -668,8 +668,8 @@ export default class Main {
         description: this.params.dictionary.get('l10n.contentTypeDescription'),
         fields: [
           H5PUtil.semanticsFieldSelector({ name: 'cardBackgroundColor' }, this.semantics),
-          H5PUtil.semanticsFieldSelector({ name: 'cardBorderColor' }, this.semantics)
-        ]
+          H5PUtil.semanticsFieldSelector({ name: 'cardBorderColor' }, this.semantics),
+        ],
       };
 
       if (cardParams.cardCapabilities.canUserRateCard) {
@@ -680,7 +680,7 @@ export default class Main {
 
       const fields = [
         contentTypeField,
-        cardSettingsField
+        cardSettingsField,
       ];
 
       const values = {
@@ -688,7 +688,7 @@ export default class Main {
         cardSettings: {
           cardBackgroundColor: cardParams.cardSettings.cardBackgroundColor,
           cardBorderColor: cardParams.cardSettings.cardBorderColor,
-        }
+        },
       };
 
       // Override text background color to transparent
@@ -808,7 +808,7 @@ export default class Main {
         x: (column + 1) * layout.gapX + column * layout.cardWidth,
         y: (row + 1) * layout.gapY + row * layout.cardHeight,
         width: layout.cardWidth,
-        height: layout.cardHeight
+        height: layout.cardHeight,
       });
     }
 
@@ -825,7 +825,7 @@ export default class Main {
       baseGapX: 2.5,
       baseGapY: 2.5,
       maxCardWidth: 33,
-      maxCardHeight: 33
+      maxCardHeight: 33,
     };
 
     const columns = Math.ceil(Math.sqrt(numberOfCards));

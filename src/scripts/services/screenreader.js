@@ -42,7 +42,7 @@ export default class Screenreader {
 
       Screenreader.readText = [
         `${Screenreader.readText}${lastChar === '.' ? '' : '.'}`,
-        text
+        text,
       ].join(' ');
     }
     else {

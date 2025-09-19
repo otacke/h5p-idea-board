@@ -36,8 +36,8 @@ export default class Util {
 
   /**
    * Extend an array just like JQuery's extend.
-   * @param {*} target Target.
-   * @param {...*} sources Sources.
+   * @param {object} target Target.
+   * @param {...object} sources Sources.
    * @returns {object} Merged objects.
    */
   static extend(target, ...sources) {
