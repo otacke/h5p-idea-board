@@ -1,7 +1,6 @@
 import Util from '@services/util.js';
 import H5PUtil from './services/utils-h5p.js';
 import Dictionary from '@services/dictionary.js';
-import Globals from '@services/globals.js';
 import ConfirmationDialog from '@components/confirmation-dialog/confirmation-dialog.js';
 import Screenreader from '@services/screenreader.js';
 import Main from '@components/main.js';
@@ -49,7 +48,7 @@ export default class IdeaBoard extends H5P.EventDispatcher {
     const defaultLanguage = extras?.metadata?.defaultLanguage || DEFAULT_LANGUAGE_TAG;
     this.languageTag = Util.formatLanguageCode(defaultLanguage);
 
-    this.globals = new Globals();
+    this.globals = new Map();
     this.globals.set('contentId', this.contentId);
     this.globals.set('mainInstance', this);
     this.globals.set('params', this.params);
