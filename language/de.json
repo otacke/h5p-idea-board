@@ -212,93 +212,93 @@
           "default": "@contentType hinzufügen"
         },
         {
-          "label": "Enter fullscreen",
+          "label": "Vollbildmodus aktivieren",
           "default": "Vollbildmodus aktivieren"
         },
         {
-          "label": "Exit fullscreen",
+          "label": "Vollbildmodus verlassen",
           "default": "Vollbildmodus verlassen"
         },
         {
-          "label": "Edit",
+          "label": "Bearbeiten",
           "default": "Bearbeiten"
         },
         {
-          "label": "Resize",
+          "label": "Bewegungsmodus aktivieren",
           "default": "Bewegungsmodus aktivieren"
         },
         {
-          "label": "Resize",
+          "label": "Bewegungsmodus verlassen",
           "default": "Bewegungsmodus verlassen. Verwende die Pfeiltasten, um die Karte zu verschieben."
         },
         {
-          "label": "Resize",
+          "label": "Größenänderungsmodus aktivieren",
           "default": "Größenänderungsmodus aktivieren"
         },
         {
-          "label": "Resize",
+          "label": "Größenänderungsmodus verlassen",
           "default": "Größenänderungsmodus verlassen. Verwende die Pfeiltasten, um die Größe der Karte zu ändern."
         },
         {
-          "label": "Bring to front",
+          "label": "In den Vordergrund bringen",
           "default": "In den Vordergrund bringen"
         },
         {
-          "label": "Send to back",
+          "label": "In den Hintergrund senden",
           "default": "In den Hintergrund senden"
         },
         {
-          "label": "Copy",
+          "label": "Kopieren",
           "default": "Kopieren"
         },
         {
-          "label": "Delete",
+          "label": "Löschen",
           "default": "Löschen"
         },
         {
-          "label": "Card brought to front",
+          "label": "Die Karte wurde in den Vordergrund gebracht.",
           "default": "Die Karte wurde in den Vordergrund gebracht."
         },
         {
-          "label": "Card sent to back",
+          "label": "Die Karte wurde in den Hintergrund gesendet.",
           "default": "Die Karte wurde in den Hintergrund gesendet."
         },
         {
-          "label": "Card deleted",
+          "label": "Die Karte wurde gelöscht.",
           "default": "Die Karte wurde gelöscht."
         },
         {
-          "label": "Card",
+          "label": "Karte",
           "default": "Karte"
         },
         {
-          "label": "Card at",
+          "label": "Karte @current",
           "description": "@current ist ein Platzhalter und wird durch den jeweiligen Wert ersetzt.",
           "default": "Karte @current"
         },
         {
-          "label": "Card x of y",
+          "label": "Karte @current von @total",
           "description": "@current und @total sind Platzhalter und werden durch die jeweiligen Werte ersetzt.",
           "default": "Karte @current von @total"
         },
         {
-          "label": "Color picker dialog",
+          "label": "Farbauswahldialog",
           "default": "Farbauswahldialog"
         },
         {
-          "label": "Toggle color picker dialog",
+          "label": "Farbauswahldialog umschalten",
           "default": "Farbauswahldialog umschalten"
         },
         {
-          "label": "Color selection area",
+          "label": "Farbauswahlbereich",
           "default": "Farbauswahlbereich"
         },
         {
-          "label": "Opacity",
+          "label": "Deckkraft",
           "default": "Deckkraft"
         },
         {
-          "label": "Hue",
+          "label": "Farbton",
           "default": "Farbton"
         },
         {
@@ -312,31 +312,31 @@
           "default": "Die Bewertung wurde auf @rating geändert."
         },
         {
-          "label": "Paste content",
+          "label": "Inhalt einfügen",
           "default": "Inhalt aus der Zwischenablage einfügen"
         },
         {
-          "label": "Paste no content",
+          "label": "Kein Inhalt zum Einfügen",
           "default": "Kein H5P-Inhalt in der Zwischenablage"
         },
         {
-          "label": "Paste error",
+          "label": "Fehler beim Einfügen",
           "default": "Einfügen aus der Zwischenablage nicht möglich"
         },
         {
-          "label": "Paste content not supported",
+          "label": "Inhalt wird nicht unterstützt",
           "default": "Der Inhalt in der H5P-Zwischenablage wird in diesem Kontext nicht unterstützt"
         },
         {
-          "label": "Paste content too old",
+          "label": "Inhalt zu alt",
           "default": "Der Inhalt in der H5P-Zwischenablage hat eine niedrigere Version (@clip) als in diesem Kontext unterstützt wird (@local). Wenn möglich, aktualisiere den Inhalt, den du einfügen möchtest, kopiere ihn erneut und versuche ihn hier einzufügen"
         },
         {
-          "label": "Paste content too new",
+          "label": "Inhalt zu neu",
           "default": "Der Inhalt in der H5P-Zwischenablage hat eine höhere Version (@clip) als in diesem Kontext unterstützt wird (@local). Wenn möglich, aktualisiere zuerst diesen Inhalt und versuche dann, den Inhalt hier wieder einzufügen"
         },
         {
-          "label": "Paste content disabled",
+          "label": "Einfügen deaktiviert",
           "default": "Kein geeigneter Inhalt zum Einfügen"
         }
       ]
